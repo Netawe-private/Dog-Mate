@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new AddLocationFragment()).commit();
+                    new AddLocationFragmentEntertainment()).commit();
             navigationView.setCheckedItem(R.id.nav_add_location);
 
         }
@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id){
             case R.id.nav_add_location:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AddLocationFragment()).commit();
+                        new AddLocationFragmentEntertainment()).commit();
                 break;
             case R.id.nav_show_location:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ShowLocationFragment()).commit();
+                        new AddLocationFragmentNature()).commit();
                 break;
         }
 
