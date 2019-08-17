@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.dogmate.Add_Location.AddLocationFragmentEntertainment;
+import com.example.dogmate.Add_Location.AddLocationFragmentNature;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new AddLocationFragmentEntertainment()).commit();
+
             navigationView.setCheckedItem(R.id.nav_add_location);
 
         }
@@ -67,12 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent nextActivity;
         switch (id){
             case R.id.nav_add_location:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AddLocationFragmentEntertainment()).commit();
+
                 break;
             case R.id.nav_show_location:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AddLocationFragmentNature()).commit();
+
                 break;
         }
 
