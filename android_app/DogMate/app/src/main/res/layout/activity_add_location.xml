@@ -11,6 +11,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/asul"
         android:padding="10dp"
         android:text="@string/locationName"
         android:textSize="18sp" />
@@ -19,8 +20,9 @@
         android:id="@+id/autocomplete_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
+        tools:layout="@layout/places_autocomplete_item_prediction" />
 
     <Spinner
         android:id="@+id/categories_spinner"
@@ -39,15 +41,20 @@
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="350dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/buttonAddLoc"
-        android:layout_width="421dp"
+    <com.google.android.material.button.MaterialButton
+
+    android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/addLocText" />
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/addLocText"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
 </LinearLayout>

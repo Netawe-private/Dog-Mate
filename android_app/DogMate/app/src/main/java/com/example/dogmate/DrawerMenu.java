@@ -13,17 +13,18 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.dogmate.Add_Location.AddLocationFragmentEntertainment;
-import com.example.dogmate.Add_Location.AddLocationFragmentNature;
+import com.example.dogmate.Add_Location.AddLocation;
+import com.example.dogmate.Login.LoginActivity;
+import com.example.dogmate.Login.RegistrationActivity;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private DrawerLayout drawer;
+public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    protected DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_drawer);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,10 +69,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent nextActivity;
         switch (id){
             case R.id.nav_add_location:
-
+                nextActivity = new Intent(DrawerMenu.this, AddLocation.class);
+                startActivity(nextActivity);
                 break;
             case R.id.nav_show_location:
-
+                nextActivity = new Intent(DrawerMenu.this, AddLocation.class);
+                startActivity(nextActivity);
                 break;
         }
 

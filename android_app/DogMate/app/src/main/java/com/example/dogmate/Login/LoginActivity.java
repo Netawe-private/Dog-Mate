@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.dogmate.MainActivity;
+import com.example.dogmate.DrawerMenu;
 import com.example.dogmate.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                 boolean isValid = checkDataEntered(email, password);
                 if (isValid)
                 {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class );
+                    Intent intent = new Intent(LoginActivity.this, DrawerMenu.class );
                     startActivity(intent);
                 }
             }

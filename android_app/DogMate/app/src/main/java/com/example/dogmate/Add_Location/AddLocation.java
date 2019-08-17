@@ -1,10 +1,13 @@
 package com.example.dogmate.Add_Location;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.dogmate.DrawerMenu;
 import com.example.dogmate.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -22,7 +26,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-public class AddLocation extends AppCompatActivity {
+public class AddLocation extends DrawerMenu {
     Spinner categoriesSpinner;
     Spinner subCatSpinner;
 
@@ -41,7 +45,10 @@ public class AddLocation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_location);
+        //setContentView(R.layout.activity_add_location);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_add_location, null, false);
+        drawer.addView(contentView, 0);
         categoriesSpinner = findViewById(R.id.categories_spinner);
         subCatSpinner = findViewById(R.id.subcategories_spinner);
         final String TAG = "PlacesAutoAdapter";
@@ -113,6 +120,7 @@ public class AddLocation extends AppCompatActivity {
 
                 } else if (selectedCategory.equals(categories[3])) {
                     subCatSpinner.setAdapter(vacationAdapter);
+                    addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[4])) {
                     subCatSpinner.setAdapter(entertainmentAdapter);
