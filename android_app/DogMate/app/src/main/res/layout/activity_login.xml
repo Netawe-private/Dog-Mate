@@ -48,8 +48,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="410dp"
-        android:layout_height="95dp"
+        android:layout_width="411dp"
+        android:layout_height="162dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,10 +58,11 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="107dp"
-            android:layout_height="91dp"
-            android:layout_gravity="center"
-            android:src="@drawable/dogmate" />
+            android:layout_width="135dp"
+            android:layout_height="117dp"
+            android:layout_marginLeft="@dimen/places_autocomplete_overlay_padding"
+            android:layout_marginTop="@dimen/places_autocomplete_prediction_primary_text"
+            android:src="@drawable/dogmate_brown" />
     </LinearLayout>
 
     <TextView
