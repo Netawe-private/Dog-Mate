@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.dogmate.Add_Location.AddLocation;
 import com.example.dogmate.Login.LoginActivity;
 import com.example.dogmate.Login.RegistrationActivity;
+import com.example.dogmate.Show_Location.ShowLocations;
 import com.google.android.material.navigation.NavigationView;
 
 public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,13 +41,7 @@ public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNa
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-
         if (savedInstanceState == null) {
-
             navigationView.setCheckedItem(R.id.nav_add_location);
 
         }
@@ -73,7 +69,7 @@ public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNa
                 startActivity(nextActivity);
                 break;
             case R.id.nav_show_location:
-                nextActivity = new Intent(DrawerMenu.this, AddLocation.class);
+                nextActivity = new Intent(DrawerMenu.this, ShowLocations.class);
                 startActivity(nextActivity);
                 break;
         }

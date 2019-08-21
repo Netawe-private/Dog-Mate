@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinLayEntertainment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/isSittingInside"
+        android:id="@+id/isSittingInsideCheck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/isInsideSitting" />
 
     <CheckBox
-        android:id="@+id/hasShadow"
+        android:id="@+id/hasShadowCheck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -25,9 +26,9 @@
         android:text="@string/shadowAmount" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/degreeOfShadowRatingEnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:stepSize="1"
-        android:numStars="5"/>
+        android:numStars="5"
+        android:stepSize="1" />
 </LinearLayout>

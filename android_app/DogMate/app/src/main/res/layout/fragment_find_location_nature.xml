@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,11 +12,11 @@
         android:text="@string/shadowAmount" />
 
     <RatingBar
-        android:id="@+id/shadowDegree"
+        android:id="@+id/degreeOfShadowRatingNature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/shadow2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,12 +24,12 @@
         android:text="@string/water" />
 
     <RatingBar
-        android:id="@+id/shadowDegree2"
+        android:id="@+id/waterResNature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:id="@+id/isReleaseDog"
+        android:id="@+id/isReleaseDogNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"

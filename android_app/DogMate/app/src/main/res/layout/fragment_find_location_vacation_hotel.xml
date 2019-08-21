@@ -13,7 +13,7 @@
         android:text="@string/addtionalSer" />
 
     <EditText
-        android:id="@+id/editTextAddionalServices"
+        android:id="@+id/editTextAddionalServicesHotel"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:ems="10"
@@ -21,14 +21,14 @@
         android:maxLength="100"/>
 
     <CheckBox
-        android:id="@+id/nextToBeach"
+        android:id="@+id/nextToBeachHotel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/nextToBeach" />
 
     <CheckBox
-        android:id="@+id/isFoodAround"
+        android:id="@+id/isFoodAroundHotel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

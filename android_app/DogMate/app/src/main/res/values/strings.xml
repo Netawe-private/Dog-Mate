@@ -66,5 +66,9 @@
         <item>Gravel</item>
         <item>Soil</item>
     </string-array>
+    <string name="title_activity_show_locations">Map</string>
+    <string name="SearchForPlaces">Search For Places</string>
+    <string name="searchPlaceHint">i.e. Dog park Dubnov</string>
+    <string name="ShowLoc">Show Location</string>
 
 </resources>

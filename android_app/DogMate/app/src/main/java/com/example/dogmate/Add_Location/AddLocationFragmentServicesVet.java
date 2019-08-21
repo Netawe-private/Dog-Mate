@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -11,8 +12,17 @@ import androidx.fragment.app.Fragment;
 import com.example.dogmate.R;
 
 public class AddLocationFragmentServicesVet extends Fragment {
+    CheckBox serviceHoursVet;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_find_location_services_vet, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_find_location_services_vet, container,false);
+        serviceHoursVet = rootView.findViewById(R.id.serviceHoursVet);
+
+        return rootView;
+    }
+
+    public boolean getIsTwentyFourServiceHoursVet(){
+        return serviceHoursVet.isChecked();
     }
 }

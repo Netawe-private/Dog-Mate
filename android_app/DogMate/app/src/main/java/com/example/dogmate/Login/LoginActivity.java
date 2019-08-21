@@ -3,6 +3,7 @@ package com.example.dogmate.Login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -29,6 +30,14 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.insertEmail);
         password = findViewById(R.id.insertPassword);
         btnLogin = findViewById(R.id.btnLogin);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
+        {
+            getWindow()
+                    .getDecorView()
+              .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
 
         //validations of email & password
         btnLogin.setOnClickListener(new View.OnClickListener(){

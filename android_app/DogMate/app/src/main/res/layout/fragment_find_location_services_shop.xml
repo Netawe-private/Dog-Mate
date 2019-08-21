@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/includeDelivety"
+        android:id="@+id/includeDelivetyService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -20,8 +20,8 @@
         android:text="@string/delArea"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/editTextDelArea"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextDelAreaService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
