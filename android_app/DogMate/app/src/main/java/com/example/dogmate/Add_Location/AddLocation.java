@@ -101,22 +101,7 @@ public class AddLocation extends DrawerMenu {
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteFragment.setCountry("IL");
         listener = new GooglePlaceSelectionListener();
-        autocompleteFragment.setOnPlaceSelectedListener(listener); //{
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//                String selectedPlaceAddress = place.getAddress();
-//                String selectedPlaceName = place.getName();
-//                LatLng selectedPlaceLatLng = place.getLatLng();
-//                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                Log.i(TAG, "An error occurred: " + status);
-//                Toast message = Toast.makeText(getApplicationContext(),"An error had occurred",Toast.LENGTH_SHORT);
-//                message.show();
-//            }
-//        });
+        autocompleteFragment.setOnPlaceSelectedListener(listener);
 
     }
 

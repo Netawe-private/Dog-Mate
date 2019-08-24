@@ -50,9 +50,8 @@ public class AddLocationFragmentEntertainment extends Fragment {
     }
 
     public void setDegreeOfShadowRatingEnt(Float rating) {
-        degreeOfShadowRatingEnt = rootView.findViewById(R.id.degreeOfShadowRatingEnt);
-        this.degreeOfShadowRatingEnt.setRating(rating);
-        this.degreeOfShadowRatingEnt.setEnabled(false);
+        degreeOfShadowRatingEnt.setRating(rating);
+        degreeOfShadowRatingEnt.setEnabled(false);
     }
 
     public void setHasShadowCheck(boolean hasShadowCheck) {

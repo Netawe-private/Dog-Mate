@@ -43,7 +43,7 @@ public class AddLocationFragmentParks extends Fragment {
 
     public boolean isValidated(){
         int selectedId = spacePark.getCheckedRadioButtonId();
-        if (selectedId == 1){
+        if (selectedId == -1){
             spacePark.setBackgroundResource(R.drawable.shapes);
             return false;
         }

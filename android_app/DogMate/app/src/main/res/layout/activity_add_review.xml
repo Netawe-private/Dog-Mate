@@ -7,32 +7,70 @@
     android:orientation="vertical"
     tools:context=".Add_Review.AddReview">
 
-    <FrameLayout
-        android:id="@+id/review_container"
+    <TextView
+        android:id="@+id/textViewLocName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
-    </FrameLayout>
+        android:layout_marginTop="55dp"
+        android:padding="10dp"
+        android:textColor="@color/quantum_deeppurple900"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewLocAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/quantum_deeppurple900"
+        android:padding="10dp"
+        android:textSize="16sp" />
+
+    <RatingBar
+        android:id="@+id/locationRating"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:padding="5dp" />
+
+    <ScrollView
+        android:id="@+id/reviewScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="180dp">
+        <LinearLayout
+            android:id="@+id/reviewLinearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/review_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</FrameLayout>-->
 
     <TextView
         android:id="@+id/textViewRateLoc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:textColor="@color/quantum_deeppurple900"
         android:text="@string/reatePlace"
         android:gravity="center"
         android:textSize="16sp" />
 
     <RatingBar
         android:id="@+id/reviewRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:hint="@string/revComment"
+        android:padding="8dp"
         android:radius="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -43,5 +81,14 @@
             android:inputType="textMultiLine"
             android:maxLength="100" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:onClick="onAddReviewToLocation"
+        android:text="@string/addReviewButton"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
 </LinearLayout>

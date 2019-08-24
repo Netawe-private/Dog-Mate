@@ -26,6 +26,7 @@
     <string name="HotelStarts">Number of Starts</string>
     <string name="chooseCat">Choose Category</string>
     <string name="chooseSubCat">Choose Subcategory</string>
+    <string name="addReviewButton">Add your review</string>
 
     <string-array name="categories_array">
         <item>Nature</item>
