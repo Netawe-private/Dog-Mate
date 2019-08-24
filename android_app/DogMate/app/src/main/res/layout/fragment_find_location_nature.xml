@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:textSize="16sp"
         android:text="@string/shadowAmount" />
 
     <RatingBar
@@ -16,11 +17,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/shadow2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:textSize="16sp"
         android:text="@string/water" />
 
     <RatingBar

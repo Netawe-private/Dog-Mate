@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class AddLocation extends DrawerMenu {
     AutocompleteSupportFragment autocompleteFragment;
     String TAG;
     GooglePlaceSelectionListener listener;
+    AutoCompleteTextView categoriesAutoCom;
+    AutoCompleteTextView subCategoriesAutoCom;
 
     AddLocationFragmentEntertainment EntertainmentFrag;
     AddLocationFragmentNature NatureFrag;
@@ -39,12 +42,14 @@ public class AddLocation extends DrawerMenu {
     AddLocationFragmentVacationCamping vacationCampingFrag;
     AddLocationFragmentVacationHotel vacationHotelFrag;
 
+    List<String> categoriesArray;
     List<String> natureArray;
     List<String> servicesArray;
     List<String> entertainmentArray;
     List<String> dogParkArray;
     List<String> vacationArray;
 
+    ArrayAdapter<String> categoriesAdapter;
     ArrayAdapter<String> natureAdapter;
     ArrayAdapter<String> serviceAdapter;
     ArrayAdapter<String> entertainmentAdapter;
@@ -58,9 +63,16 @@ public class AddLocation extends DrawerMenu {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_add_location, drawer, false);
         drawer.addView(contentView, 0);
-        categoriesSpinner = findViewById(R.id.categories_spinner);
-        subCatSpinner = findViewById(R.id.subcategories_spinner);
+
         TAG = "PlacesAutoAdapter";
+
+        categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
+        categoriesAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, categoriesArray);
+
+        categoriesAutoCom = findViewById(R.id.categories_spinner);
+        categoriesAutoCom.setAdapter(categoriesAdapter);
+
+        subCategoriesAutoCom = findViewById(R.id.subcategories_spinner);
 
         addListenerOnCategoriesSpinnerItemSelection();
 
@@ -69,7 +81,6 @@ public class AddLocation extends DrawerMenu {
         entertainmentArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.entertainment_array)));
         dogParkArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.dog_parks_array)));
         vacationArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.vacation_array)));
-
 
         natureAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, natureArray);
         serviceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servicesArray);
@@ -81,6 +92,7 @@ public class AddLocation extends DrawerMenu {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
+
 
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
@@ -105,55 +117,61 @@ public class AddLocation extends DrawerMenu {
 //                message.show();
 //            }
 //        });
+
     }
 
     public void addListenerOnCategoriesSpinnerItemSelection() {
-        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categoriesAutoCom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCategory = categoriesSpinner.getSelectedItem().toString();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCategory = categoriesAutoCom.getText().toString();
                 String[] categories = getResources().getStringArray(R.array.categories_array);
                 if (selectedCategory.equals(categories[0])) {
-                    subCatSpinner.setAdapter(natureAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(natureAdapter);
                     NatureFrag = new AddLocationFragmentNature();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container,
                             NatureFrag, "Nature").commit();
 
                 } else if (selectedCategory.equals(categories[1])) {
-                    subCatSpinner.setAdapter(dogParkAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(dogParkAdapter);
                     ParksFrag = new AddLocationFragmentParks();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container,
                             ParksFrag, "Park").commit();
 
                 } else if (selectedCategory.equals(categories[2])) {
-                    subCatSpinner.setAdapter(serviceAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(serviceAdapter);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[3])) {
-                    subCatSpinner.setAdapter(vacationAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(vacationAdapter);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[4])) {
-                    subCatSpinner.setAdapter(entertainmentAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(entertainmentAdapter);
                     EntertainmentFrag = new AddLocationFragmentEntertainment();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container,
                             EntertainmentFrag, "Entertainment").commit();
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
 
     }
 
     public void addListenerOnSubCategoriesSpinnerItemSelection() {
-        subCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        subCategoriesAutoCom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedSubCategory = subCatSpinner.getSelectedItem().toString();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedSubCategory = subCategoriesAutoCom.getText().toString();
                 if (selectedSubCategory.equalsIgnoreCase("Veterinarians")){
                     serviceVetFrag = new AddLocationFragmentServicesVet();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -188,10 +206,6 @@ public class AddLocation extends DrawerMenu {
 
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
     }
 

@@ -7,10 +7,15 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="android:fontFamily">@font/asul</item>
-        <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
-
+        <item name="textInputStyle">@style/AppTextField</item>
 
     </style>
+
+
+    <style name="AppTextField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@android:color/white</item>
+    </style>
+
+
 </resources>

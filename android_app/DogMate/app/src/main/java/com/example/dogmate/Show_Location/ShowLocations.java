@@ -1,12 +1,11 @@
 package com.example.dogmate.Show_Location;
 
-import androidx.fragment.app.FragmentActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.dogmate.DrawerMenu;
@@ -17,11 +16,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ShowLocations extends DrawerMenu implements OnMapReadyCallback {
-    TextInputEditText searchLocationEditText;
     private GoogleMap locationsMap;
+    AutoCompleteTextView editTextFilledExposedDropdown;
+    List<String> categoriesArray;
+    ArrayAdapter<String> categoriesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +35,17 @@ public class ShowLocations extends DrawerMenu implements OnMapReadyCallback {
         View contentView = inflater.inflate(R.layout.activity_show_locations, null, false);
         drawer.addView(contentView, 0);
 
+        categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
+        categoriesAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, categoriesArray);
+
+        editTextFilledExposedDropdown = findViewById(R.id.categories_spinner);
+        editTextFilledExposedDropdown.setAdapter(categoriesAdapter);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        searchLocationEditText = findViewById(R.id.locSerachBox);
-        String locationSearch = searchLocationEditText.getText().toString();
+
     }
 
 
@@ -60,16 +68,17 @@ public class ShowLocations extends DrawerMenu implements OnMapReadyCallback {
     }
 
     public void onSearchLocationButton(View v){
-        if (validateField(searchLocationEditText) ){
-            Toast errorMessage = Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT);
-            errorMessage.show();
+        if (validateField(editTextFilledExposedDropdown)){
+            Toast successMessage = Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT);
+            successMessage.show();
         }
+
     }
 
-    public boolean validateField(TextInputEditText textInput){
-        String locationSearch = searchLocationEditText.getText().toString();
-        if (locationSearch == "" || locationSearch == null ) {
-            Toast errorMessage = Toast.makeText(this, "Please enter a search term", Toast.LENGTH_SHORT);
+    public boolean validateField(AutoCompleteTextView textInput){
+        String locationSearch = textInput.getText().toString();
+        if (locationSearch.isEmpty()) {
+            Toast errorMessage = Toast.makeText(this, "Please enter a category", Toast.LENGTH_SHORT);
             errorMessage.show();
             return false;
         }

@@ -7,21 +7,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.example.dogmate.Add_Location.AddLocation;
-import com.example.dogmate.Login.LoginActivity;
-import com.example.dogmate.Login.RegistrationActivity;
 import com.example.dogmate.Show_Location.ShowLocations;
 import com.google.android.material.navigation.NavigationView;
 
 public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     protected DrawerLayout drawer;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +33,7 @@ public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNa
 
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
@@ -65,13 +60,16 @@ public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNa
         Intent nextActivity;
         switch (id){
             case R.id.nav_add_location:
+                navigationView.setCheckedItem(R.id.nav_add_location);
                 nextActivity = new Intent(DrawerMenu.this, AddLocation.class);
                 startActivity(nextActivity);
                 break;
             case R.id.nav_show_location:
+                navigationView.setCheckedItem(R.id.nav_show_location);
                 nextActivity = new Intent(DrawerMenu.this, ShowLocations.class);
                 startActivity(nextActivity);
                 break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);

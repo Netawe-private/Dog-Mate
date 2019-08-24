@@ -17,10 +17,11 @@ public class AddLocationFragmentEntertainment extends Fragment {
     CheckBox isSittingInsideCheck;
     CheckBox hasShadowCheck;
     RatingBar degreeOfShadowRatingEnt;
+    View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_add_location_entertainment, container,false);
+        rootView = inflater.inflate(R.layout.fragment_add_location_entertainment, container,false);
 
         isSittingInsideCheck = (CheckBox)rootView.findViewById(R.id.isSittingInsideCheck);
         hasShadowCheck =(CheckBox) rootView.findViewById(R.id.hasShadowCheck);
@@ -47,4 +48,20 @@ public class AddLocationFragmentEntertainment extends Fragment {
         }
         return true;
     }
+
+    public void setDegreeOfShadowRatingEnt(Float rating) {
+        degreeOfShadowRatingEnt = rootView.findViewById(R.id.degreeOfShadowRatingEnt);
+        this.degreeOfShadowRatingEnt.setRating(rating);
+        this.degreeOfShadowRatingEnt.setEnabled(false);
+    }
+
+    public void setHasShadowCheck(boolean hasShadowCheck) {
+        this.hasShadowCheck.setChecked(hasShadowCheck);
+    }
+
+    public void setIsSittingInsideCheck(boolean isSittingInsideCheck) {
+        this.isSittingInsideCheck.setChecked(isSittingInsideCheck);
+    }
+
+
 }

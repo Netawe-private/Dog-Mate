@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Add_Review.AddReview">
 
-    <CheckBox
-        android:id="@+id/includeDelivetyService"
+    <FrameLayout
+        android:id="@+id/review_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/delivery"
-        android:textSize="16sp" />
+        android:layout_marginTop="50dp">
+    </FrameLayout>
 
     <TextView
-        android:id="@+id/textViewDelArea"
+        android:id="@+id/textViewRateLoc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="@string/delArea"
+        android:text="@string/reatePlace"
+        android:gravity="center"
         android:textSize="16sp" />
 
+    <RatingBar
+        android:id="@+id/reviewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
-        android:hint="@string/delAreaHint"
+        android:hint="@string/revComment"
         android:radius="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextDelAreaService"
+            android:id="@+id/editTextReviewComment"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:maxLength="100"/>
+            android:maxLength="100" />
     </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>
-
-
-
-
