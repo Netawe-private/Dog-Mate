@@ -1,14 +1,20 @@
 package com.example.dogmate.Add_Review;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TableLayout;
@@ -25,6 +31,7 @@ import com.example.dogmate.Add_Location.AddLocationFragmentVacationHotel;
 import com.example.dogmate.DrawerMenu;
 import com.example.dogmate.R;
 import com.example.dogmate.Show_Location.ShowLocations;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONArray;
@@ -34,24 +41,25 @@ import org.json.JSONObject;
 import static com.example.dogmate.R.id.forever;
 import static com.example.dogmate.R.id.fragment_container;
 
-public class AddReview  extends DrawerMenu {
+public class AddReview extends AppCompatActivity {
     RatingBar reviewRating;
     EditText reviewComment;
     TextView locationNameView;
     TextView locationAddressView;
     RatingBar locationRating;
-    TableLayout reviewTable;
     LinearLayout reviewLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_add_review);
+        setContentView(R.layout.activity_add_review);
 
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_add_review, drawer, false);
-        drawer.addView(contentView, 0);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        // Enable the Up button
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         reviewComment = findViewById(R.id.editTextReviewComment);
         reviewRating = findViewById(R.id.reviewRating);
@@ -147,6 +155,19 @@ public class AddReview  extends DrawerMenu {
                 ratingBlock.addView(reviewDate);
                 reviewBlock.addView(ratingBlock);
 
+                ImageButton likeButton = new ImageButton(this );
+                //likeButton.setIcon(getResources().getDrawable(R.drawable.thumb_up_24dp));
+                likeButton.setImageResource(R.drawable.thumb_up_24dp);
+                //likeButton.setBackgroundColor(Color.TRANSPARENT);
+                LinearLayout.LayoutParams thumbButtonParams = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                thumbButtonParams.setMargins(30,0,0,0);
+                likeButton.setLayoutParams(thumbButtonParams);
+                likeButton.setId(object.getInt("id"));
+                ratingBlock.addView(likeButton);
+
+
                 TextView reviewComment =new TextView(this);
                 reviewComment.setText(object.getString("content"));
                 reviewComment.setPadding(40,0,10,10);
@@ -163,6 +184,14 @@ public class AddReview  extends DrawerMenu {
 
     }
 
+    private View.OnClickListener likeButtonOnClickListener = new View.OnClickListener() {
 
+        @Override
+        public void onClick(View view) {
+            ImageButton thumbButton = (ImageButton) view;
+            int buttonId = view.getId();
+
+        }
+    };
 
 }

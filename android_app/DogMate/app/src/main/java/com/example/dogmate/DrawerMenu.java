@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.dogmate.Add_Location.AddLocation;
+import com.example.dogmate.Add_Review.AddReview;
 import com.example.dogmate.Show_Location.ShowLocations;
 import com.google.android.material.navigation.NavigationView;
 
@@ -69,7 +70,10 @@ public class DrawerMenu extends AppCompatActivity implements NavigationView.OnNa
                 nextActivity = new Intent(DrawerMenu.this, ShowLocations.class);
                 startActivity(nextActivity);
                 break;
-
+            case R.id.nav_review:
+                navigationView.setCheckedItem(R.id.nav_review);
+                nextActivity = new Intent(DrawerMenu.this, AddReview.class);
+                startActivity(nextActivity);
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Add_Review.AddReview">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dogmate.Show_Location.ShowLocations" />
         </activity>
 
         <uses-library android:name="com.google.android.maps" />
@@ -27,7 +31,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -35,6 +38,7 @@
         <activity
             android:name=".Show_Location.ShowLocations"
             android:label="@string/title_activity_show_locations">
+
         </activity>
         <activity android:name=".Login.RegistrationActivity" />
         <activity android:name=".Login.LoginActivity">

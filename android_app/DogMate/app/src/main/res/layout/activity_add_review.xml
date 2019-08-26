@@ -7,22 +7,46 @@
     android:orientation="vertical"
     tools:context=".Add_Review.AddReview">
 
-    <TextView
-        android:id="@+id/textViewLocName"
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:padding="10dp"
-        android:textColor="@color/quantum_deeppurple900"
-        android:textSize="16sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewLocAddress"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/quantum_deeppurple900"
-        android:padding="10dp"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textViewLocName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/locationQR"
+            android:textColor="@color/quantum_deeppurple900"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/locationQR"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/dogmate" />
+
+        <TextView
+            android:id="@+id/textViewLocAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/quantum_deeppurple900"
+            android:layout_below="@id/textViewLocName"
+            android:padding="10dp"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
 
     <RatingBar
         android:id="@+id/locationRating"
@@ -70,7 +94,8 @@
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:hint="@string/revComment"
-        android:padding="8dp"
+        android:paddingLeft="10dp"
+        android:layout_marginBottom="5dp"
         android:radius="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
