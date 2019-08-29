@@ -1,27 +1,38 @@
 package com.example.dogmate.Show_Location;
 
-import android.content.Context;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-import com.example.dogmate.DrawerMenu;
+import com.example.dogmate.Add_Location.AddLocation;
+import com.example.dogmate.Add_Review.AddReview;
 import com.example.dogmate.R;
+import com.example.dogmate.ScanLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ShowLocations extends DrawerMenu implements OnMapReadyCallback {
+public class ShowLocations extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+    protected DrawerLayout drawer;
+    NavigationView navigationView;
     private GoogleMap locationsMap;
     AutoCompleteTextView editTextFilledExposedDropdown;
     List<String> categoriesArray;
@@ -30,10 +41,20 @@ public class ShowLocations extends DrawerMenu implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.drawer_layout);
 
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_show_locations, null, false);
-        drawer.addView(contentView, 0);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+
+        toggle.syncState();
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
         categoriesAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, categoriesArray);
@@ -45,19 +66,53 @@ public class ShowLocations extends DrawerMenu implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        Intent nextActivity;
+        switch (id){
+            case R.id.nav_add_location:
+                navigationView.setCheckedItem(R.id.nav_add_location);
+                nextActivity = new Intent(ShowLocations.this, AddLocation.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.nav_show_location:
+                navigationView.setCheckedItem(R.id.nav_show_location);
+                nextActivity = new Intent(ShowLocations.this, ShowLocations.class);
+                startActivity(nextActivity);
+                break;
+
+            case R.id.nav_review:
+                navigationView.setCheckedItem(R.id.nav_review);
+                nextActivity = new Intent(ShowLocations.this, AddReview.class);
+                startActivity(nextActivity);
+                break;
+
+            case R.id.nav_barcode:
+                //navigationView.setCheckedItem(R.id.nav_review);
+                nextActivity = new Intent(ShowLocations.this, ScanLocation.class);
+                startActivity(nextActivity);
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         locationsMap = googleMap;

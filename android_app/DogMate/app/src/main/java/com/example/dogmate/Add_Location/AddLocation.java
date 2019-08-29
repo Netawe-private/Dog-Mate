@@ -1,14 +1,14 @@
 package com.example.dogmate.Add_Location;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.dogmate.DrawerMenu;
 import com.example.dogmate.R;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -32,7 +31,8 @@ import net.glxn.qrgen.android.QRCode;
 import static com.example.dogmate.R.id.autocomplete_fragment;
 import static com.example.dogmate.R.id.fragment_container;
 
-public class AddLocation extends DrawerMenu  {
+public class AddLocation  extends AppCompatActivity {
+
     AutocompleteSupportFragment autocompleteFragment;
     String TAG;
     GooglePlaceSelectionListener listener;
@@ -64,10 +64,13 @@ public class AddLocation extends DrawerMenu  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_add_location);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_add_location, drawer, false);
-        drawer.addView(contentView, 0);
+        setContentView(R.layout.activity_add_location);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        // Enable the Up button
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         TAG = "PlacesAutoAdapter";
 
@@ -93,6 +96,13 @@ public class AddLocation extends DrawerMenu  {
         dogParkAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dogParkArray);
         vacationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, vacationArray);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
+        {
+            getWindow()
+                    .getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));

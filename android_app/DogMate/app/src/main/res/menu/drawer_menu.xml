@@ -25,7 +25,7 @@
     <item android:title="Interactive">
         <menu>
             <item
-                android:id="@+id/barcode"
+                android:id="@+id/nav_barcode"
                 android:icon="@drawable/ic_camera_alt_blue_24dp"
                 android:title="Scan QR Code" />
         </menu>

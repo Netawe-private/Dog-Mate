@@ -4,35 +4,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.dogmate.Add_Location.AddLocationFragmentEntertainment;
-import com.example.dogmate.Add_Location.AddLocationFragmentNature;
-import com.example.dogmate.Add_Location.AddLocationFragmentParks;
-import com.example.dogmate.Add_Location.AddLocationFragmentServicesShop;
-import com.example.dogmate.Add_Location.AddLocationFragmentServicesVet;
-import com.example.dogmate.Add_Location.AddLocationFragmentVacationCamping;
-import com.example.dogmate.Add_Location.AddLocationFragmentVacationHotel;
-import com.example.dogmate.DrawerMenu;
 import com.example.dogmate.R;
-import com.example.dogmate.Show_Location.ShowLocations;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textview.MaterialTextView;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +53,14 @@ public class AddReview extends AppCompatActivity {
 
         setLocationNameRatingAndAddress("NAME", "Clay 10 Tel Aviv", Float.valueOf(3));
         addReviewsToView();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
+        {
+            getWindow()
+                    .getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
     }
 
     public void onAddReviewToLocation(View view){

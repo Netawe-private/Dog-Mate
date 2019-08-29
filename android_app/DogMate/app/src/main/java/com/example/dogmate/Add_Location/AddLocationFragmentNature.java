@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.dogmate.R;
 
 public class AddLocationFragmentNature extends Fragment {
-    RatingBar degreeOfShadowRatingNature;
+    RatingBar amountOfShadowRatingNature;
     RatingBar waterResNature;
     CheckBox isReleaseDogNature;
 
@@ -22,7 +22,7 @@ public class AddLocationFragmentNature extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_find_location_nature, container,false);
 
-        degreeOfShadowRatingNature = rootView.findViewById(R.id.degreeOfShadowRatingNature);
+        amountOfShadowRatingNature = rootView.findViewById(R.id.degreeOfShadowRatingNature);
         waterResNature = rootView.findViewById(R.id.hasShadowCheck);
         isReleaseDogNature = (CheckBox)rootView.findViewById(R.id.isReleaseDogNature);
 
@@ -33,11 +33,15 @@ public class AddLocationFragmentNature extends Fragment {
         return isReleaseDogNature.isChecked();
     }
 
-    public float getDegreeOfShadowRatingNature(){
-        return degreeOfShadowRatingNature.getRating();
+    public float getAmountOfShadowRatingNature(){
+        return amountOfShadowRatingNature.getRating();
     }
 
     public float getWaterResNature(){
         return waterResNature.getRating();
+    }
+
+    public void setAmountOfShadowRatingNature(float amountOfShadowRatingNature){
+        this.amountOfShadowRatingNature.setRating(amountOfShadowRatingNature);
     }
 }

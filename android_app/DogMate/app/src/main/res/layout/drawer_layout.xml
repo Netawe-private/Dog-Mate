@@ -7,7 +7,7 @@
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".DrawerMenu">
+    tools:context=".Show_Location.ShowLocations">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,13 +17,17 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:elevation="16dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
 
-
+        <include
+        android:id="@+id/include"
+        layout="@layout/activity_show_locations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
