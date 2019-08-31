@@ -27,7 +27,7 @@
     <string name="chooseCat">Choose Category</string>
     <string name="chooseSubCat">Choose Subcategory</string>
     <string name="addReviewButton">Add your review</string>
-
+    <string name="deleteLocationButton">Delete Location</string>
     <string name="title_activity_show_locations">Map</string>
 
     <string name="SearchForPlaces">Search For Places</string>
@@ -39,6 +39,7 @@
     <string name="revComment">Let us know More:</string>
 
     <string name="reatePlace">Rate Location</string>
+    <string name="Reviews">Location Reviews</string>
 
     <string-array name="categories_array">
         <item>Nature</item>

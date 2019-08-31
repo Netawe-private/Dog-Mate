@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.dogmate.Add_Location.AddLocation;
 import com.example.dogmate.Add_Review.AddReview;
 import com.example.dogmate.R;
-import com.example.dogmate.ScanLocation;
+import com.example.dogmate.Scan_Location.ScanLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

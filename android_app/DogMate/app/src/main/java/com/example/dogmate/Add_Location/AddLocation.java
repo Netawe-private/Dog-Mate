@@ -29,7 +29,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import net.glxn.qrgen.android.QRCode;
 
 import static com.example.dogmate.R.id.autocomplete_fragment;
-import static com.example.dogmate.R.id.fragment_container;
+import static com.example.dogmate.R.id.fragment_container_add_location;
 
 public class AddLocation  extends AppCompatActivity {
 
@@ -63,6 +63,7 @@ public class AddLocation  extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TAG = "PlacesAutoAdapter";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
 
@@ -72,7 +73,6 @@ public class AddLocation  extends AppCompatActivity {
         // Enable the Up button
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        TAG = "PlacesAutoAdapter";
 
         categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
         categoriesAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, categoriesArray);
@@ -96,13 +96,6 @@ public class AddLocation  extends AppCompatActivity {
         dogParkAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dogParkArray);
         vacationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, vacationArray);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
-        {
-            getWindow()
-                    .getDecorView()
-                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
@@ -130,27 +123,27 @@ public class AddLocation  extends AppCompatActivity {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(natureAdapter);
                     NatureFrag = new AddLocationFragmentNature();
-                    getSupportFragmentManager().beginTransaction().replace(fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
                             NatureFrag, "Nature").commit();
 
                 } else if (selectedCategory.equals(categories[1])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(dogParkAdapter);
                     ParksFrag = new AddLocationFragmentParks();
-                    getSupportFragmentManager().beginTransaction().replace(fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
                             ParksFrag, "Park").commit();
 
                 } else if (selectedCategory.equals(categories[2])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(serviceAdapter);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[3])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(vacationAdapter);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
@@ -158,7 +151,7 @@ public class AddLocation  extends AppCompatActivity {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(entertainmentAdapter);
                     EntertainmentFrag = new AddLocationFragmentEntertainment();
-                    getSupportFragmentManager().beginTransaction().replace(fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
                             EntertainmentFrag, "Entertainment").commit();
                 }
             }
@@ -174,33 +167,33 @@ public class AddLocation  extends AppCompatActivity {
                 String selectedSubCategory = subCategoriesAutoCom.getText().toString();
                 if (selectedSubCategory.equalsIgnoreCase("Veterinarians")){
                     serviceVetFrag = new AddLocationFragmentServicesVet();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             serviceVetFrag, "Vet").commit();
                 }
                 else if (selectedSubCategory.equalsIgnoreCase("Pet Supply Store")){
                     servicesShopFrag = new AddLocationFragmentServicesShop();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             servicesShopFrag, "Shop").commit();
                 }
                 else if (selectedSubCategory.equalsIgnoreCase("Barber Shop")){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             new Fragment()).commit();
                 }
                 else if (selectedSubCategory.equalsIgnoreCase("Hotel") ||
                         selectedSubCategory.equalsIgnoreCase("Zimmer")){
                     vacationHotelFrag = new AddLocationFragmentVacationHotel();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             vacationHotelFrag, "Hotel").commit();
                 }
 
                 else if (selectedSubCategory.equalsIgnoreCase("Camping Site")){
                     vacationCampingFrag = new AddLocationFragmentVacationCamping();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             vacationCampingFrag, "Camping").commit();
                 }
 
                 else if (selectedSubCategory.equalsIgnoreCase("Dog Pension")){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             new Fragment()).commit();
                 }
 
@@ -211,10 +204,10 @@ public class AddLocation  extends AppCompatActivity {
 
     public void onClickSaveLocation(View view){
         validateFields();
-        Fragment current = getSupportFragmentManager().findFragmentById(fragment_container);
+        Fragment current = getSupportFragmentManager().findFragmentById(fragment_container_add_location);
         switch (current.getTag()){
             case "Entertainment":
-                if(EntertainmentFrag.validateShadowField()){
+                if (EntertainmentFrag.validateShadowField()){
                     //get fields and save to Db
                 };
                 break;

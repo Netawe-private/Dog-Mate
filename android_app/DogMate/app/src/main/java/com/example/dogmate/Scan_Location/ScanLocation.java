@@ -1,13 +1,16 @@
-package com.example.dogmate;
+package com.example.dogmate.Scan_Location;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
-import com.example.dogmate.Add_Location.AddLocationFragmentNature;
+import com.example.dogmate.R;
 import com.google.zxing.Result;
 
 import org.json.JSONException;
@@ -15,20 +18,19 @@ import org.json.JSONObject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-import static com.example.dogmate.R.id.fragment_container;
-
 public class ScanLocation extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
-
+    LinearLayout linearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_location);
         mScannerView = new ZXingScannerView(this);
+        onActivityStart();
 
     }
 
-    public void onActivityStart(View view){
+    public void onActivityStart(){
         setContentView(mScannerView);
         mScannerView.setResultHandler(this);
         mScannerView.startCamera();
@@ -47,28 +49,14 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan result");
         builder.setMessage(result.getText());
-        openLocationFragment(result.getText());
+        //openLocationFragment(result.getText());
 //        AlertDialog alertDialog = builder.create();
 //        alertDialog.show();
 
         //Resume scanning remove if you only want one scan
         //mScannerView.resumeCameraPreview(this);
-    }
-
-    public void openLocationFragment(String scanResult){
-        try {
-            JSONObject results = new JSONObject(scanResult);
-            String locationType = results.getString("location_type");
-            switch (locationType){
-                case "Nature":
-
-                    break;
-                case "Services":
-                    break;
-            }
-        } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
-        }
-
+        Intent intent = new Intent(ScanLocation.this, LocationDetails.class);
+        intent.putExtra("scan_result", result.getText());
+        startActivity(intent);
     }
 }

@@ -27,6 +27,12 @@ public class AddLocationFragmentVacationHotel extends Fragment {
         nextToBeachHotel = rootView.findViewById(R.id.nextToBeachHotel);
         isFoodAroundHotel = rootView.findViewById(R.id.isFoodAroundHotel);
         hotelStars = rootView.findViewById(R.id.hotelStars);
+        if (getArguments() != null){
+            setParametersVacationHotel(getArguments().getString("additional_info"),
+                    getArguments().getString("next_beach"),
+                    getArguments().getString("food_around"),
+                    getArguments().getString("stars_number") );
+        }
 
         return rootView;
     }
@@ -51,5 +57,27 @@ public class AddLocationFragmentVacationHotel extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void setParametersVacationHotel(String additionalInfo, String nextToBeach, String foodAround, String numberStars) {
+        if (nextToBeach != null) {
+            this.nextToBeachHotel.setChecked(Boolean.parseBoolean(nextToBeach));
+        }
+        this.nextToBeachHotel.setEnabled(false);
+
+        if (foodAround != null) {
+            this.isFoodAroundHotel.setChecked(Boolean.parseBoolean(foodAround));
+        }
+        this.isFoodAroundHotel.setEnabled(false);
+
+        if (additionalInfo != null) {
+            this.editTextAddionalServicesHotel.setText(additionalInfo);
+        }
+        editTextAddionalServicesHotel.setEnabled(false);
+
+        if (numberStars != null){
+            this.hotelStars.setRating(Float.valueOf(numberStars));
+        }
+        this.hotelStars.setIsIndicator(true);
     }
 }

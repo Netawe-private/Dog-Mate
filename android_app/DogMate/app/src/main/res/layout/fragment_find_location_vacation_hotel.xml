@@ -10,6 +10,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
+        android:layout_margin="7dp"
         android:hint="@string/addtionalSer"
         android:radius="10dp">
 

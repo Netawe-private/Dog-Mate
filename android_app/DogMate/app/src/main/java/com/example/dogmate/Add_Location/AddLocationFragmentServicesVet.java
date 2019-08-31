@@ -19,10 +19,24 @@ public class AddLocationFragmentServicesVet extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_find_location_services_vet, container,false);
         serviceHoursVet = rootView.findViewById(R.id.serviceHoursVet);
 
+        if (getArguments() != null){
+            setParametersServerVet(getArguments().getString("service_hours"));
+        }
+
         return rootView;
     }
 
     public boolean getIsTwentyFourServiceHoursVet(){
         return serviceHoursVet.isChecked();
+    }
+
+
+    private void setParametersServerVet(String serviceHours){
+        if (serviceHours != null){
+            this.serviceHoursVet.setChecked(Boolean.parseBoolean(serviceHours));
+        }
+        this.serviceHoursVet.setEnabled(false);
+
+
     }
 }

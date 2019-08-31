@@ -26,6 +26,7 @@
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:hint="@string/delAreaHint"
+        android:layout_margin="7dp"
         android:radius="10dp">
 
         <com.google.android.material.textfield.TextInputEditText

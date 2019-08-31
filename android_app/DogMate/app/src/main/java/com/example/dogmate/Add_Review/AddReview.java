@@ -3,8 +3,10 @@ package com.example.dogmate.Add_Review;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -21,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.example.dogmate.R.id.forever;
-import static com.example.dogmate.R.id.fragment_container;
 
 public class AddReview extends AppCompatActivity {
     RatingBar reviewRating;
@@ -51,7 +51,10 @@ public class AddReview extends AppCompatActivity {
         locationRating = findViewById(R.id.locationRating);
         reviewLayout =findViewById(R.id.reviewLinearLayout);
 
-        setLocationNameRatingAndAddress("NAME", "Clay 10 Tel Aviv", Float.valueOf(3));
+        Intent intent = getIntent();
+        String scanningResult = intent.getStringExtra("scan_result");
+
+
         addReviewsToView();
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
@@ -147,16 +150,21 @@ public class AddReview extends AppCompatActivity {
                 reviewBlock.addView(ratingBlock);
 
                 ImageButton likeButton = new ImageButton(this );
+                ImageButton deleteButton = new ImageButton(this );
                 //likeButton.setIcon(getResources().getDrawable(R.drawable.thumb_up_24dp));
                 likeButton.setImageResource(R.drawable.thumb_up_24dp);
+                deleteButton.setImageResource(R.drawable.ic_delete_black_24dp);
                 //likeButton.setBackgroundColor(Color.TRANSPARENT);
-                LinearLayout.LayoutParams thumbButtonParams = new LinearLayout.LayoutParams
+                LinearLayout.LayoutParams iconButtonParams = new LinearLayout.LayoutParams
                         (LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                thumbButtonParams.setMargins(30,0,0,0);
-                likeButton.setLayoutParams(thumbButtonParams);
+                iconButtonParams.setMargins(30,0,0,0);
+                deleteButton.setLayoutParams(iconButtonParams);
+                likeButton.setLayoutParams(iconButtonParams);
+                deleteButton.setId(object.getInt("id"));
                 likeButton.setId(object.getInt("id"));
                 ratingBlock.addView(likeButton);
+                ratingBlock.addView(deleteButton);
 
 
                 TextView reviewComment =new TextView(this);
@@ -184,5 +192,9 @@ public class AddReview extends AppCompatActivity {
 
         }
     };
+
+    public void onClickDeleteLocation(View view){
+
+    }
 
 }

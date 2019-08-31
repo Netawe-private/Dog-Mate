@@ -1,6 +1,7 @@
 package com.example.dogmate.Add_Location;
 
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,11 @@ public class AddLocationFragmentServicesShop extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_find_location_services_shop, container,false);
         editTextDelAreaService = rootView.findViewById(R.id.editTextDelAreaService);
         includeDelivetyService = rootView.findViewById(R.id.includeDelivetyService);
+
+        if (getArguments() != null){
+            setParametersServerShop(getArguments().getString("delivery_area"),
+                    getArguments().getString("delivery_included"));
+        }
         return rootView;
     }
 
@@ -30,5 +36,18 @@ public class AddLocationFragmentServicesShop extends Fragment {
 
     public boolean getIncludeDeliveryService(){
         return includeDelivetyService.isChecked();
+    }
+
+    private void setParametersServerShop(String deliveryArea, String isDeliveryIncluded){
+        if (isDeliveryIncluded != null){
+            this.includeDelivetyService.setChecked(Boolean.parseBoolean(isDeliveryIncluded));
+        }
+        this.includeDelivetyService.setEnabled(false);
+
+        if (deliveryArea != null){
+            this.editTextDelAreaService.setText(deliveryArea);
+        }
+        editTextDelAreaService.setEnabled(false);
+
     }
 }

@@ -26,6 +26,12 @@ public class AddLocationFragmentEntertainment extends Fragment {
         isSittingInsideCheck = (CheckBox)rootView.findViewById(R.id.isSittingInsideCheck);
         hasShadowCheck =(CheckBox) rootView.findViewById(R.id.hasShadowCheck);
         degreeOfShadowRatingEnt = rootView.findViewById(R.id.degreeOfShadowRatingEnt);
+        if (getArguments() != null){
+            setParametersEntertainment(getArguments().getString("amount_shadow"),
+                    getArguments().getString("shadow"),
+                    getArguments().getString("sitting_inside"));
+        }
+
 
         return rootView;
     }
@@ -49,17 +55,24 @@ public class AddLocationFragmentEntertainment extends Fragment {
         return true;
     }
 
-    public void setDegreeOfShadowRatingEnt(Float rating) {
+    private void setAmountOfShadowRatingEnt(Float rating) {
         degreeOfShadowRatingEnt.setRating(rating);
         degreeOfShadowRatingEnt.setEnabled(false);
     }
 
-    public void setHasShadowCheck(boolean hasShadowCheck) {
+    private void setHasShadowCheck(boolean hasShadowCheck) {
         this.hasShadowCheck.setChecked(hasShadowCheck);
     }
 
-    public void setIsSittingInsideCheck(boolean isSittingInsideCheck) {
+    private void setIsSittingInsideCheck(boolean isSittingInsideCheck) {
         this.isSittingInsideCheck.setChecked(isSittingInsideCheck);
+    }
+
+    private void setParametersEntertainment(String amountShadow, String hadShadow, String sittingInside){
+        setHasShadowCheck(Boolean.parseBoolean(hadShadow));
+        setIsSittingInsideCheck(Boolean.parseBoolean(sittingInside));
+        setAmountOfShadowRatingEnt(Float.valueOf(amountShadow));
+
     }
 
 
