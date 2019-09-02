@@ -8,40 +8,60 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.dogmate.Add_Location.AddLocation;
 import com.example.dogmate.Add_Review.AddReview;
+import com.example.dogmate.IResult;
+import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
 import com.example.dogmate.Scan_Location.ScanLocation;
+import com.example.dogmate.VolleyService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.dogmate.Contants.SEARCH_LOCATION;
 
 public class ShowLocations extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+    private String TAG = "ShowLocationActivity";
+
     protected DrawerLayout drawer;
     NavigationView navigationView;
     private GoogleMap locationsMap;
     AutoCompleteTextView editTextFilledExposedDropdown;
     List<String> categoriesArray;
     ArrayAdapter<String> categoriesAdapter;
+    IResult mResultCallback = null;
+    VolleyService mVolleyService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
+        initVolleyCallback();
+        mVolleyService = new VolleyService(mResultCallback,this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,14 +138,51 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         locationsMap = googleMap;
 
         LatLng telAviv = new LatLng(32.078948, 34.772278);
-        locationsMap.addMarker(new MarkerOptions().position(telAviv).title("Marker in Tel Aviv"));
-        locationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(telAviv,15));
+//        locationsMap.addMarker(new MarkerOptions().position(telAviv).title("Marker in Tel Aviv"));
+//        locationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(telAviv,15));
     }
 
     public void onSearchLocationButton(View v){
         if (validateField(editTextFilledExposedDropdown)){
-            Toast successMessage = Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT);
-            successMessage.show();
+
+           JSONObject  requestJson = JsonHelperService.
+                   createSearchLocationRequestJson(editTextFilledExposedDropdown.getText().toString());
+            mVolleyService.postDataStringResponseVolley("POSTCALL",
+                                                                    SEARCH_LOCATION,
+                                                                    requestJson, null);
+            //mVolleyService.postDataJSONResponseVolley("POSTCALL", SEARCH_LOCATION, requestJson, null);
+//            RequestQueue queue = Volley.newRequestQueue(this);
+//            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+//                    SEARCH_LOCATION, requestJson,
+//                    new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.e("Rest Response", response.toString());
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Log.e("Rest Response", error.toString());
+//                        }
+//                    }){
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    try {
+//                        Map<String, String> headers  = new HashMap<>();
+//                        String credentials = "x1234:ezjLSVmdQg98nFmH";
+//                        String auth = "Basic "
+//                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+//                        headers.put("Content-Type", "application/json");
+//                        headers.put("Authorization", auth);
+//                        return headers;
+//                    } catch (Exception e) {
+//                        Log.e("Volley", "Authentication Filure" );
+//                    }
+//                    return super.getParams();
+//                }
+//            };
+//            queue.add(jsonObjReq);
         }
 
     }
@@ -138,5 +195,81 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
             return false;
         }
         return true;
+    }
+
+    void initVolleyCallback(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType,JSONObject response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+            }
+
+            @Override
+            public void notifyError(String requestType,VolleyError error) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post error: " + error);
+            }
+
+            @Override
+            public void notifySuccessString(String requestType, String response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+                locationsMap.clear();
+                try {
+                    JSONArray locationsResponse = new JSONArray(response);
+                    if (locationsResponse.length() > 0){
+                        setMarkersOnMap(locationsResponse);
+                    }
+                    else {
+                        Toast successMessage = Toast.makeText(getApplicationContext(),
+                                "No locations found! Might add one?", Toast.LENGTH_SHORT);
+                        successMessage.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    private void setMarkersOnMap(JSONArray locations){
+        try {
+            for (int i = 0; i < locations.length(); i++) {
+                MarkerOptions options = new MarkerOptions();
+                JSONObject jsonObject = locations.getJSONObject(i);
+                LatLng locationLatLng = new LatLng(
+                        Double.valueOf(jsonObject.getString("latitude")),
+                        Double.valueOf(jsonObject.getString("longitude")));
+                options.position(locationLatLng);
+                options.title( String.format("%s at %s", jsonObject.getString("locationName"),jsonObject.getString("address")));
+                options.snippet( String.format("Type: %s subtype %s", jsonObject.getString("locationType"),
+                        jsonObject.getString("locationSubType")));
+                setMarkerColor(options,jsonObject.getString("locationType"));
+                locationsMap.addMarker(options);
+                locationsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng,12));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void setMarkerColor(MarkerOptions markerOptions, String type){
+        switch (type){
+            case "Nature":
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                break;
+            case "Entertainment":
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                break;
+            case "Parks":
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                break;
+            case "Services":
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                break;
+            case "Vacation":
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                break;
+        }
     }
 }
