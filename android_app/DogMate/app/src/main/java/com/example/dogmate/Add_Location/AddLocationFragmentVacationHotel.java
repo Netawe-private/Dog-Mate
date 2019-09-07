@@ -19,6 +19,7 @@ public class AddLocationFragmentVacationHotel extends Fragment {
     CheckBox nextToBeachHotel;
     CheckBox isFoodAroundHotel;
     RatingBar hotelStars;
+    RatingBar priceLevel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,11 +28,13 @@ public class AddLocationFragmentVacationHotel extends Fragment {
         nextToBeachHotel = rootView.findViewById(R.id.nextToBeachHotel);
         isFoodAroundHotel = rootView.findViewById(R.id.isFoodAroundHotel);
         hotelStars = rootView.findViewById(R.id.hotelStars);
+        priceLevel = rootView.findViewById(R.id.hotelPriceLevel);
+
         if (getArguments() != null){
-            setParametersVacationHotel(getArguments().getString("additional_info"),
-                    getArguments().getString("next_beach"),
-                    getArguments().getString("food_around"),
-                    getArguments().getString("stars_number") );
+            setParametersVacationHotel(getArguments().getString("vacationAdditionalServices"),
+                    getArguments().getString("vacationNextToBeach"),
+                    getArguments().getString("vacationDogFood"),
+                    getArguments().getString("vacationRating"), getArguments().getString("priceLevel") );
         }
 
         return rootView;
@@ -47,6 +50,10 @@ public class AddLocationFragmentVacationHotel extends Fragment {
         return editTextAddionalServicesHotel.getText().toString();
     }
 
+    public float getPriceLevel() {
+        return priceLevel.getRating();
+    }
+
     public float getNumberOfHotelStarts(){
         return hotelStars.getRating();
     }
@@ -59,25 +66,31 @@ public class AddLocationFragmentVacationHotel extends Fragment {
         return true;
     }
 
-    private void setParametersVacationHotel(String additionalInfo, String nextToBeach, String foodAround, String numberStars) {
-        if (nextToBeach != null) {
-            this.nextToBeachHotel.setChecked(Boolean.parseBoolean(nextToBeach));
+    private void setParametersVacationHotel(String vacationAdditionalServices, String vacationNextToBeach,
+                                            String vacationDogFood, String vacationRating, String priceLevel) {
+        if (vacationNextToBeach != null) {
+            this.nextToBeachHotel.setChecked(Boolean.parseBoolean(vacationNextToBeach));
         }
         this.nextToBeachHotel.setEnabled(false);
 
-        if (foodAround != null) {
-            this.isFoodAroundHotel.setChecked(Boolean.parseBoolean(foodAround));
+        if (vacationDogFood != null) {
+            this.isFoodAroundHotel.setChecked(Boolean.parseBoolean(vacationDogFood));
         }
         this.isFoodAroundHotel.setEnabled(false);
 
-        if (additionalInfo != null) {
-            this.editTextAddionalServicesHotel.setText(additionalInfo);
+        if (vacationAdditionalServices != null) {
+            this.editTextAddionalServicesHotel.setText(vacationAdditionalServices);
         }
         editTextAddionalServicesHotel.setEnabled(false);
 
-        if (numberStars != null){
-            this.hotelStars.setRating(Float.valueOf(numberStars));
+        if (vacationRating != null){
+            this.hotelStars.setRating(Float.valueOf(vacationRating));
         }
         this.hotelStars.setIsIndicator(true);
+
+        if (priceLevel != null){
+            this.priceLevel.setRating(Float.valueOf(priceLevel));
+        }
+        this.priceLevel.setIsIndicator(true);
     }
 }

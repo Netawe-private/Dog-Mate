@@ -13,7 +13,7 @@
         android:text="@string/isInsideSitting" />
 
     <CheckBox
-        android:id="@+id/hasShadowCheck"
+        android:id="@+id/hasShadowCheckEnt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

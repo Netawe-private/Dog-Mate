@@ -1,53 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="295dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:hint="@string/addtionalSer"
-        android:radius="10dp">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextAddionalServicesHotel"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:maxLength="100"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
     <CheckBox
         android:id="@+id/nextToBeachHotel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="@string/nextToBeach" />
 
     <CheckBox
         android:id="@+id/isFoodAroundHotel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="@string/isFoodAround" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingLeft="5dp"
         android:textSize="16sp"
         android:text="@string/HotelStarts" />
 
     <RatingBar
         android:id="@+id/hotelStars"
         android:layout_width="235dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="43dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:text="@string/priceLevel" />
+
+    <RatingBar
+        android:id="@+id/hotelPriceLevel"
+        android:layout_width="235dp"
+        android:layout_height="45dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="@string/addtionalSer"
+        android:radius="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextAddionalServicesHotel"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:maxLength="100" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

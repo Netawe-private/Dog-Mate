@@ -6,13 +6,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +21,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.android.volley.VolleyError;
+import com.example.dogmate.IResult;
+import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
+import com.example.dogmate.VolleyService;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 
@@ -28,6 +34,9 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 
 import net.glxn.qrgen.android.QRCode;
 
+import org.json.JSONObject;
+
+import static com.example.dogmate.Constants.CREATE_LOCATION_PATH;
 import static com.example.dogmate.R.id.autocomplete_fragment;
 import static com.example.dogmate.R.id.fragment_container_add_location;
 
@@ -38,10 +47,13 @@ public class AddLocation  extends AppCompatActivity {
     GooglePlaceSelectionListener listener;
     AutoCompleteTextView categoriesAutoCom;
     AutoCompleteTextView subCategoriesAutoCom;
+    VolleyService mVolleyService;
+    IResult mResultCallback = null;
 
-    AddLocationFragmentEntertainment EntertainmentFrag;
-    AddLocationFragmentNature NatureFrag;
-    AddLocationFragmentParks ParksFrag;
+
+    AddLocationFragmentEntertainment entertainmentFrag;
+    AddLocationFragmentNature natureFrag;
+    AddLocationFragmentParks parksFrag;
     AddLocationFragmentServicesShop servicesShopFrag;
     AddLocationFragmentServicesVet serviceVetFrag;
     AddLocationFragmentVacationCamping vacationCampingFrag;
@@ -72,6 +84,8 @@ public class AddLocation  extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         // Enable the Up button
         actionBar.setDisplayHomeAsUpEnabled(true);
+        initVolleyCallback();
+        mVolleyService = new VolleyService(mResultCallback,this);
 
 
         categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
@@ -122,16 +136,16 @@ public class AddLocation  extends AppCompatActivity {
                 if (selectedCategory.equals(categories[0])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(natureAdapter);
-                    NatureFrag = new AddLocationFragmentNature();
+                    natureFrag = new AddLocationFragmentNature();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
-                            NatureFrag, "Nature").commit();
+                            natureFrag, "Nature").commit();
 
                 } else if (selectedCategory.equals(categories[1])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(dogParkAdapter);
-                    ParksFrag = new AddLocationFragmentParks();
+                    parksFrag = new AddLocationFragmentParks();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
-                            ParksFrag, "Park").commit();
+                            parksFrag, "Park").commit();
 
                 } else if (selectedCategory.equals(categories[2])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
@@ -150,9 +164,9 @@ public class AddLocation  extends AppCompatActivity {
                 } else if (selectedCategory.equals(categories[4])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(entertainmentAdapter);
-                    EntertainmentFrag = new AddLocationFragmentEntertainment();
+                    entertainmentFrag = new AddLocationFragmentEntertainment();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
-                            EntertainmentFrag, "Entertainment").commit();
+                            entertainmentFrag, "Entertainment").commit();
                 }
             }
 
@@ -165,7 +179,7 @@ public class AddLocation  extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedSubCategory = subCategoriesAutoCom.getText().toString();
-                if (selectedSubCategory.equalsIgnoreCase("Veterinarians")){
+                if (selectedSubCategory.equalsIgnoreCase("Veterinarians") || selectedSubCategory.equalsIgnoreCase("Barber Shop") ){
                     serviceVetFrag = new AddLocationFragmentServicesVet();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             serviceVetFrag, "Vet").commit();
@@ -174,10 +188,6 @@ public class AddLocation  extends AppCompatActivity {
                     servicesShopFrag = new AddLocationFragmentServicesShop();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             servicesShopFrag, "Shop").commit();
-                }
-                else if (selectedSubCategory.equalsIgnoreCase("Barber Shop")){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
-                            new Fragment()).commit();
                 }
                 else if (selectedSubCategory.equalsIgnoreCase("Hotel") ||
                         selectedSubCategory.equalsIgnoreCase("Zimmer")){
@@ -194,7 +204,7 @@ public class AddLocation  extends AppCompatActivity {
 
                 else if (selectedSubCategory.equalsIgnoreCase("Dog Pension")){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
-                            new Fragment()).commit();
+                            new Fragment(),"Pension").commit();
                 }
 
             }
@@ -204,39 +214,102 @@ public class AddLocation  extends AppCompatActivity {
 
     public void onClickSaveLocation(View view){
         validateFields();
+        String name = listener.getSelectedPlaceName();
+        String address = listener.getSelectedPlaceAddress();
+        LatLng locationLatLng = listener.getSelectedPlaceLatLng();
+        String lat = String.valueOf(locationLatLng.latitude);
+        String lng = String.valueOf(locationLatLng.longitude);
         Fragment current = getSupportFragmentManager().findFragmentById(fragment_container_add_location);
+        String subCategory = subCategoriesAutoCom.getText().toString();
+        String category = categoriesAutoCom.getText().toString();
+        JSONObject  requestJson = null;
         switch (current.getTag()){
             case "Entertainment":
-                if (EntertainmentFrag.validateShadowField()){
-                    //get fields and save to Db
-                };
-                break;
-
-            case "Nature":
-                break;
-
-            case "Park":
-                if(ParksFrag.isValidated()){
-                    ParksFrag.getSpaceParkOpen();
+                int shadowLevelEnt = (int) entertainmentFrag.getDegreeOfShadowRatingEnt();
+                boolean sittingInside = entertainmentFrag.getSittingInsideCheck();
+                boolean shadowPlace = entertainmentFrag.getHasShadowCheck();
+                if (entertainmentFrag.validateShadowField()){
+                      requestJson = JsonHelperService.createAddLocationEntertainmentRequestJson
+                            (address, lat, name, "Entertainment",
+                                    "Entertainment",
+                                    lng,shadowLevelEnt, shadowPlace, sittingInside);
+                      Log.i("bla", "bla");
                 }
                 break;
 
+            case "Nature":
+                int shadowLevelNature = (int) natureFrag.getWaterRatingNature();
+                boolean releaseDog = natureFrag.getIsReleaseDogNature();
+                boolean waterResource =  natureFrag.getShadowResNature();
+                requestJson = JsonHelperService.createAddLocationNatureRequestJson
+                        (address,lng, lat, name, subCategory,
+                                category,
+                                waterResource, releaseDog, shadowLevelNature);
+                break;
+
+            case "Park":
+                if (parksFrag.isValidated()){
+                    String space = parksFrag.getSpaceParkOpen();
+                    int busiLevevl = (int) parksFrag.getBusyRating();
+                    int Cleanlines = (int) parksFrag.getCleanliness();
+                    String gardenType =  parksFrag.getSurfaceTypePark();
+                    requestJson = JsonHelperService.createAddLocationDogParksRequestJson
+                            (address,lng, lat, name, subCategory,
+                                    category, busiLevevl, Cleanlines ,space, gardenType);
+                }
+                break;
             case "Vet":
+                boolean allDayService = serviceVetFrag.getIsTwentyFourServiceHoursVet();
+                int priceLevel = (int) serviceVetFrag.getPriceLevel();
+                String treatmentVet = serviceVetFrag.getEditTextTreatment();
+                requestJson = JsonHelperService.createAddLocationServicesVetRequestJson
+                                    (address,lng, lat, name, subCategory,
+                                     category,treatmentVet,allDayService,priceLevel);
                 break;
 
             case "Shop":
+                if (servicesShopFrag.validateFields()) {
+                    boolean isDelivery = servicesShopFrag.getIncludeDeliveryService();
+                    String deliveryAreas = servicesShopFrag.getEditTextDelAreaService();
+                    String treatmentShop = servicesShopFrag.getEditTextTreatment();
+                    int priceLevelShop = (int) servicesShopFrag.getPriceLevel();
+                    requestJson = JsonHelperService.createAddLocationServicesShopRequestJson
+                            (address, lng, lat, name, subCategory,
+                                    category, treatmentShop, priceLevelShop, isDelivery, deliveryAreas);
+                }
                 break;
 
             case "Hotel":
                 if (vacationHotelFrag.validateFeilds()){
-                    //save fields
+                    int hotalStarts = (int) vacationHotelFrag.getNumberOfHotelStarts();
+                    int priceLevelHotel = (int) vacationHotelFrag.getPriceLevel();
+                    String additionalServicesHotel = vacationHotelFrag.getEditTextAddionalServices();
+                    boolean nextToBeachHotel = vacationHotelFrag.getNextToBeachHotel();
+                    boolean isFoodAround = vacationHotelFrag.getIsFoodAroundHotel();
+                    requestJson = JsonHelperService.createAddLocationVacationRequestJson
+                            (address, lng, lat, name, subCategory,
+                                    category, additionalServicesHotel, isFoodAround, nextToBeachHotel, hotalStarts,priceLevelHotel);
                 }
                 break;
 
             case "Camping":
+                boolean nextTobeachCamping = vacationCampingFrag.getNextToBeachCamping();
+                boolean dogFoogAround = vacationCampingFrag.getIsFoodAroundCamping();
+                String  additionalServicesCamping = vacationCampingFrag.getEditTextAdditionalServices();
+                int priceLevelCamping = (int) vacationCampingFrag.getPriceLevel();
+                requestJson = JsonHelperService.createAddLocationVacationRequestJson
+                    (address, lng, lat, name, subCategory,
+                            category, additionalServicesCamping, dogFoogAround, nextTobeachCamping, 0, priceLevelCamping);
+                break;
+            case "Pension":
+                requestJson = JsonHelperService.createAddLocationRequestJson(address, lng, lat, name, subCategory,
+                        category);
                 break;
         }
 
+        mVolleyService.postDataStringResponseVolley("POSTCALL",
+                CREATE_LOCATION_PATH,
+                requestJson, null);
         //check if location is empty
         //get location details
         //send to db for save
@@ -244,8 +317,13 @@ public class AddLocation  extends AppCompatActivity {
 
     public boolean validateFields(){
         //add validation here
-        String address = listener.getSelectedPlaceAddress();
         String name = listener.getSelectedPlaceName();
+        String address = listener.getSelectedPlaceAddress();
+        if (name == null || address == null){
+            Toast errorMessage = Toast.makeText(getApplicationContext(),
+                    "Name field is empty!", Toast.LENGTH_SHORT);
+            errorMessage.show();
+        }
 
         return true;
     }
@@ -263,16 +341,39 @@ public class AddLocation  extends AppCompatActivity {
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
 
-        //python code for backend
-        /*
-            import base64
-            # example img string
-            imgstring = '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'
-            imgdata = base64.b64decode(imgstring)
-            with open ('test.jpg','wb') as f:
-                f.write(imgdata)
-       */
     }
+
+    void initVolleyCallback(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, JSONObject response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+                Toast approvalMessage = Toast.makeText(getApplicationContext(),
+                        "Your Location saved", Toast.LENGTH_SHORT);
+                approvalMessage.show();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post error: " + error);
+                Toast errorMessage = Toast.makeText(getApplicationContext(),
+                        "an error occurred", Toast.LENGTH_SHORT);
+                errorMessage.show();
+            }
+
+            @Override
+            public void notifySuccessString(String requestType, String response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+                Toast approvalMessage = Toast.makeText(getApplicationContext(),
+                        "Your Location saved", Toast.LENGTH_SHORT);
+                approvalMessage.show();
+            }
+        };
+    }
+
 
 
 

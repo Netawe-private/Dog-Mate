@@ -1,8 +1,6 @@
 package com.example.dogmate.Add_Location;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +22,12 @@ public class AddLocationFragmentEntertainment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_add_location_entertainment, container,false);
 
         isSittingInsideCheck = (CheckBox)rootView.findViewById(R.id.isSittingInsideCheck);
-        hasShadowCheck =(CheckBox) rootView.findViewById(R.id.hasShadowCheck);
+        hasShadowCheck =(CheckBox) rootView.findViewById(R.id.hasShadowCheckEnt);
         degreeOfShadowRatingEnt = rootView.findViewById(R.id.degreeOfShadowRatingEnt);
         if (getArguments() != null){
-            setParametersEntertainment(getArguments().getString("amount_shadow"),
-                    getArguments().getString("shadow"),
-                    getArguments().getString("sitting_inside"));
+            setParametersEntertainment(getArguments().getString("shadowLevel"),
+                    getArguments().getString("shadowPlace"),
+                    getArguments().getString("sittingInsideAllowed"));
         }
 
 
@@ -44,12 +42,12 @@ public class AddLocationFragmentEntertainment extends Fragment {
         return hasShadowCheck.isChecked();
     }
 
-    public float degreeOfShadowRatingEnt(){
+    public float getDegreeOfShadowRatingEnt(){
         return degreeOfShadowRatingEnt.getRating();
     }
 
     public boolean validateShadowField(){
-        if (getHasShadowCheck() && degreeOfShadowRatingEnt() == 0){
+        if (getHasShadowCheck() && getDegreeOfShadowRatingEnt() == 0){
             degreeOfShadowRatingEnt.setBackgroundResource(R.drawable.shapes);
         }
         return true;
@@ -57,21 +55,23 @@ public class AddLocationFragmentEntertainment extends Fragment {
 
     private void setAmountOfShadowRatingEnt(Float rating) {
         degreeOfShadowRatingEnt.setRating(rating);
-        degreeOfShadowRatingEnt.setEnabled(false);
+        degreeOfShadowRatingEnt.setIsIndicator(true);
     }
 
     private void setHasShadowCheck(boolean hasShadowCheck) {
         this.hasShadowCheck.setChecked(hasShadowCheck);
+        this.hasShadowCheck.setEnabled(false);
     }
 
     private void setIsSittingInsideCheck(boolean isSittingInsideCheck) {
         this.isSittingInsideCheck.setChecked(isSittingInsideCheck);
+        this.isSittingInsideCheck.setEnabled(false);
     }
 
-    private void setParametersEntertainment(String amountShadow, String hadShadow, String sittingInside){
-        setHasShadowCheck(Boolean.parseBoolean(hadShadow));
-        setIsSittingInsideCheck(Boolean.parseBoolean(sittingInside));
-        setAmountOfShadowRatingEnt(Float.valueOf(amountShadow));
+    private void setParametersEntertainment(String shadowLevel, String shadowPlace, String sittingInsideAllowed){
+        setHasShadowCheck(Boolean.parseBoolean(shadowPlace));
+        setIsSittingInsideCheck(Boolean.parseBoolean(sittingInsideAllowed));
+        setAmountOfShadowRatingEnt(Float.valueOf(shadowLevel));
 
     }
 

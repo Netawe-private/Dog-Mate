@@ -16,10 +16,6 @@
             android:id="@+id/nav_matching"
             android:icon="@drawable/ic_pets_blue_24dp"
             android:title="Find a Play Date" />
-        <item
-            android:id="@+id/nav_review"
-            android:icon="@drawable/ic_pets_blue_24dp"
-            android:title="Add Review" />
     </group>
 
     <item android:title="Interactive">

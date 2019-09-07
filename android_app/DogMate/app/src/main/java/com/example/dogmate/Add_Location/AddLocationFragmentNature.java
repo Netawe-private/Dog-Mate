@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,8 +14,8 @@ import com.example.dogmate.R;
 
 public class AddLocationFragmentNature extends Fragment  {
 
-    private RatingBar amountOfShadowRatingNature;
-    private RatingBar waterResNature;
+    private RatingBar waterRatingNature;
+    private CheckBox shadowResNature;
     private CheckBox isReleaseDogNature;
 
     @Override
@@ -24,14 +23,14 @@ public class AddLocationFragmentNature extends Fragment  {
 
         View rootView = inflater.inflate(R.layout.fragment_find_location_nature, container,false);
 
-        amountOfShadowRatingNature = rootView.findViewById(R.id.degreeOfShadowRatingNature);
-        waterResNature = rootView.findViewById(R.id.waterResNature);
-        isReleaseDogNature = (CheckBox)rootView.findViewById(R.id.isReleaseDogNature);
+        waterRatingNature = rootView.findViewById(R.id.waterResRatingNature);
+        shadowResNature = rootView.findViewById(R.id.isShadowNature);
+        isReleaseDogNature = rootView.findViewById(R.id.isReleaseDogNature);
 
         if (getArguments() != null){
-            setParametersNature(getArguments().getString("rating"),
-                                                getArguments().getString("water_resource"),
-                                                getArguments().getString("release_dog"));
+            setParametersNature(getArguments().getString("shadowPlace"),
+                                                getArguments().getString("availableWater"),
+                                                getArguments().getString("releaseDogIsAllowed"));
         }
 
         return rootView;
@@ -41,25 +40,26 @@ public class AddLocationFragmentNature extends Fragment  {
         return isReleaseDogNature.isChecked();
     }
 
-    public float getAmountOfShadowRatingNature(){
-        return amountOfShadowRatingNature.getRating();
+    public float getWaterRatingNature(){
+        return waterRatingNature.getRating();
     }
 
-    public float getWaterResNature(){
-        return waterResNature.getRating();
+    public boolean getShadowResNature(){
+        return shadowResNature.isChecked();
     }
 
-    private void setParametersNature(String amountOfShadowRatingNature, String waterResourceRating, String releaseDog){
-        if (amountOfShadowRatingNature != null){
-            this.amountOfShadowRatingNature.setRating(Float.valueOf(amountOfShadowRatingNature));
+    private void setParametersNature(String shadowPlace, String availableWater,
+                                                                String releaseDogIsAllowed){
+        if (availableWater != null){
+            this.waterRatingNature.setRating(Float.valueOf(availableWater));
         }
-        this.amountOfShadowRatingNature.setIsIndicator(true);
+        this.waterRatingNature.setIsIndicator(true);
 
-        if (waterResourceRating != null){
-            this.waterResNature.setRating(Float.valueOf(waterResourceRating));
+        if (shadowPlace != null){
+            this.shadowResNature.setChecked(Boolean.parseBoolean(shadowPlace));
         }
-        this.waterResNature.setIsIndicator(true);
-        this.isReleaseDogNature.setChecked(Boolean.parseBoolean(releaseDog));
+        this.shadowResNature.setEnabled(false);
+        this.isReleaseDogNature.setChecked(Boolean.parseBoolean(releaseDogIsAllowed));
         this.isReleaseDogNature.setEnabled(false);
 
     }

@@ -7,26 +7,32 @@
     <string name="location_categories">Choose Location Category</string>
     <string name="location_subcat">Choose Location Sub-Category</string>
     <string name="isInsideSitting">Is sitting allowed inside?</string>
-    <string name="isShadow">Is this place has Shadow</string>
-    <string name="shadowAmount">Amount of Shadow</string>
+    <string name="isShadow">Is this place has shadow?</string>
+    <string name="shadowAmount">Shadow level</string>
     <string name="releaseDog">Can release dog</string>
     <string name="water">Water resources</string>
     <string name="addLocText">Add Location!</string>
     <string name="locationName">Type Location Name:</string>
     <string name="surface">Surface Type:</string>
+    <string name="cleanliness">Cleanliness:</string>
+    <string name="busy">How busy:</string>
     <string name="openSpace">Open Space</string>
     <string name="closedSpace">Gated Space</string>
     <string name="serviceHours">24/7 service</string>
     <string name="delivery">Is delivery included</string>
     <string name="delArea">Delivery areas:</string>
     <string name="delAreaHint">i.e: North Tel Aviv</string>
+    <string name="treatmentHint">Tell us about the service you received</string>
     <string name="nextToBeach">Beach close by</string>
     <string name="addtionalSer">Addional Services:</string>
     <string name="isFoodAround">Dog food in the area</string>
     <string name="HotelStarts">Number of Starts</string>
+    <string name="priceLevel">Price Level</string>
     <string name="chooseCat">Choose Category</string>
     <string name="chooseSubCat">Choose Subcategory</string>
     <string name="addReviewButton">Add your review</string>
+    <string name="goToReviewPage">Go To Reviews Page</string>
+
     <string name="deleteLocationButton">Delete Location</string>
     <string name="title_activity_show_locations">Map</string>
 
@@ -46,7 +52,7 @@
         <item>Dog Parks</item>
         <item>Services</item>
         <item>Vacation</item>
-        <item>Places of Entertainment</item>
+        <item>Entertainment</item>
     </string-array>
     <string-array name="entertainment_array">
         <item>Restaurants</item>
