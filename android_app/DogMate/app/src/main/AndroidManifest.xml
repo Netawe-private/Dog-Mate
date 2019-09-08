@@ -2,18 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dogmate">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Play_Date.SelectProfileCreationOrSearch"></activity>
+        <activity android:name=".Play_Date.DogProfileApproved" />
+        <activity android:name=".Play_Date.AddNewDog" />
+        <activity android:name=".Login.SendEmailPage" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_places_api.xml").
@@ -22,35 +22,40 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity
             android:name=".Show_Location.ShowLocations"
-            android:label="@string/title_activity_show_locations"></activity>
-        <activity android:name=".Login.RegistrationActivity" />
-        <activity android:name=".Login.LoginActivity">
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+            android:label="@string/title_activity_show_locations" />
+        <activity android:name=".Login.RegistrationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <action android:name="android.intent.action.VIEW" />
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".Add_Location.AddLocation">
+        <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DrawerMenu"></activity>
+        <activity android:name=".Add_Location.AddLocation" />
+        <activity android:name=".DrawerMenu" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

@@ -1,4 +1,6 @@
 <resources>
+
+    <string name="google_maps_key">string1</string>
     <string name="app_name">Dog Mate</string>
     <string name="menuString">Dog Owners Social Media</string>
 
@@ -25,6 +27,15 @@
     <string name="isFoodAround">Dog food in the area</string>
     <string name="HotelStarts">Number of Starts</string>
 
+
+    <string name="title_activity_show_locations">Map</string>
+
+    <string name="SearchForPlaces">Search For Places</string>
+
+    <string name="searchPlaceHint">i.e. Dog park Dubnov</string>
+
+    <string name="ShowLoc">Show Location</string>
+
     <string-array name="categories_array">
         <item>Nature</item>
         <item>Dog Parks</item>
@@ -43,32 +54,241 @@
         <item>Beaches</item>
         <item>Nature Reserve</item>
     </string-array>
-
     <string-array name="dog_parks_array">
         <item>Dog Parks</item>
     </string-array>
-
     <string-array name="services_array">
         <item>Veterinarians</item>
         <item>Barber Shop</item>
         <item>Pet Supply Store</item>
     </string-array>
-
     <string-array name="vacation_array">
         <item>Hotel</item>
         <item>Camping Site</item>
         <item>Zimmer</item>
         <item>Dog Pension</item>
     </string-array>
-
     <string-array name="surface_type_array">
         <item>Grass</item>
         <item>Gravel</item>
         <item>Soil</item>
     </string-array>
-    <string name="title_activity_show_locations">Map</string>
-    <string name="SearchForPlaces">Search For Places</string>
-    <string name="searchPlaceHint">i.e. Dog park Dubnov</string>
-    <string name="ShowLoc">Show Location</string>
+
+    <string-array name="search_cities">
+        <item />
+        <item>Acre</item>
+        <item>Afula</item>
+        <item>Arad</item>
+        <item>Arraba</item>
+        <item>Ashdod</item>
+        <item>Ashkelon</item>
+        <item>Baqa al-Gharbiyye</item>
+        <item>Bat Yam</item>
+        <item>Beersheba</item>
+        <item>Beit She\'an</item>
+        <item>Beit Shemesh</item>
+        <item>Bnei Brak</item>
+        <item>Dimona</item>
+        <item>Eilat</item>
+        <item>El\'ad</item>
+        <item>Giv\'at Shmue</item>
+        <item>Givatayim</item>
+        <item>Hadera</item>
+        <item>Haifa</item>
+        <item>Herzliya</item>
+        <item>Hod HaSharon</item>
+        <item>Holon</item>
+        <item>Jerusalem</item>
+        <item>Kafr Qasim</item>
+        <item>Karmie</item>
+        <item>Kfar Saba</item>
+        <item>Kfar Yona</item>
+        <item>Kiryat Ata</item>
+        <item>Kiryat Bialik</item>
+        <item>Kiryat Gat</item>
+        <item>Kiryat Malakh</item>
+        <item>Kiryat Motzkin</item>
+        <item>Kiryat Ono</item>
+        <item>Kiryat Shmona</item>
+        <item>Kiryat Yam</item>
+        <item>Lod</item>
+        <item>Ma\'alot-Tarshiha</item>
+        <item>Migdal HaEmek</item>
+        <item>Modi\'in-Maccabim-Re\'ut</item>
+        <item>Nahariya</item>
+        <item>Nazareth</item>
+        <item>Nesher</item>
+        <item>Ness Ziona</item>
+        <item>Netanya</item>
+        <item>Netivot</item>
+        <item>Nof HaGalil</item>
+        <item>Ofakim</item>
+        <item>Or Akiva</item>
+        <item>Or Yehuda</item>
+        <item>Petah Tikva</item>
+        <item>Qalansawe</item>
+        <item>Ra\'anana</item>
+        <item>Rahat</item>
+        <item>Ramat Gan</item>
+        <item>Ramat HaSharon</item>
+        <item>Ramla</item>
+        <item>Rehovot</item>
+        <item>Rishon LeZion</item>
+        <item>Rosh HaAyin</item>
+        <item>Safed</item>
+        <item>Sakhnin</item>
+        <item>Shefa-\'Amr</item>
+        <item>Tamra</item>
+        <item>Tayibe</item>
+        <item>Tel Aviv-Yafo</item>
+        <item>Tiberias</item>
+        <item>Tira</item>
+        <item>Tirat Carme</item>
+        <item>Umm al-Fahm</item>
+        <item>Yavne</item>
+        <item>Yehud-Monosson</item>
+        <item>Yokneam Illit</item>
+    </string-array>
+
+    <string-array name="search_sizes">
+        <item />
+        <item>Petite</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>X-Large</item>
+    </string-array>
+
+    <string-array name="search_breeds">
+        <item />
+        <item>Affenpinscher</item>
+        <item>Afghan hound</item>
+        <item>Airedale terrier</item>
+        <item>Akita</item>
+        <item>Alaskan Malamute</item>
+        <item>American Staffordshire terrier</item>
+        <item>American water spaniel</item>
+        <item>Australian cattle dog</item>
+        <item>Australian shepherd</item>
+        <item>Australian terrier</item>
+        <item>basenji</item>
+        <item>basset hound</item>
+        <item>beagle</item>
+        <item>bearded collie</item>
+        <item>Bedlington terrier</item>
+        <item>Bernese mountain dog</item>
+        <item>bichon frise</item>
+        <item>black and tan coonhound</item>
+        <item>bloodhound</item>
+        <item>border collie</item>
+        <item>border terrier</item>
+        <item>borzoi</item>
+        <item>Boston terrier</item>
+        <item>bouvier des Flandres</item>
+        <item>boxer</item>
+        <item>briard</item>
+        <item>Brittany</item>
+        <item>Brussels griffon</item>
+        <item>bull terrier</item>
+        <item>bulldog</item>
+        <item>bullmastiff</item>
+        <item>cairn terrier</item>
+        <item>Canaan dog</item>
+        <item>Chesapeake Bay retriever</item>
+        <item>Chihuahua</item>
+        <item>Chinese crested</item>
+        <item>Chinese shar-pei</item>
+        <item>chow chow</item>
+        <item>Clumber spaniel</item>
+        <item>cocker spaniel</item>
+        <item>collie</item>
+        <item>curly-coated retriever</item>
+        <item>dachshund</item>
+        <item>Dalmatian</item>
+        <item>Doberman pinscher</item>
+        <item>English cocker spaniel</item>
+        <item>English setter</item>
+        <item>English springer spaniel</item>
+        <item>English toy spaniel</item>
+        <item>Eskimo dog</item>
+        <item>Finnish spitz</item>
+        <item>flat-coated retriever</item>
+        <item>fox terrier</item>
+        <item>foxhound</item>
+        <item>French bulldog</item>
+        <item>German shepherd</item>
+        <item>German shorthaired pointer</item>
+        <item>German wirehaired pointer</item>
+        <item>golden retriever</item>
+        <item>Gordon setter</item>
+        <item>Great Dane</item>
+        <item>greyhound</item>
+        <item>Irish setter</item>
+        <item>Irish water spaniel</item>
+        <item>Irish wolfhound</item>
+        <item>Jack Russell terrier</item>
+        <item>Japanese spaniel</item>
+        <item>keeshond</item>
+        <item>Kerry blue terrier</item>
+        <item>komondor</item>
+        <item>kuvasz</item>
+        <item>Labrador retriever</item>
+        <item>Lakeland terrier</item>
+        <item>Lhasa apso</item>
+        <item>Maltese</item>
+        <item>Manchester terrier</item>
+        <item>mastiff</item>
+        <item>Mexican hairless</item>
+        <item>Newfoundland</item>
+        <item>Mixed breeds</item>
+        <item>Norwegian elkhound</item>
+        <item>Norwich terrier</item>
+        <item>otterhound</item>
+        <item>papillon</item>
+        <item>Pekingese</item>
+        <item>pointer</item>
+        <item>Pomeranian</item>
+        <item>poodle</item>
+        <item>pug</item>
+        <item>puli</item>
+        <item>Rhodesian ridgeback</item>
+        <item>Rottweiler</item>
+        <item>Saint Bernard</item>
+        <item>saluki</item>
+        <item>Samoyed</item>
+        <item>schipperke</item>
+        <item>schnauzer</item>
+        <item>Scottish deerhound</item>
+        <item>Scottish terrier</item>
+        <item>Sealyham terrier</item>
+        <item>Shetland sheepdog</item>
+        <item>shih tzu</item>
+        <item>Siberian husky</item>
+        <item>silky terrier</item>
+        <item>Skye terrier</item>
+        <item>Staffordshire bull terrier</item>
+        <item>soft-coated wheaten terrier</item>
+        <item>Sussex spaniel</item>
+        <item>spitz</item>
+        <item>Tibetan terrier</item>
+        <item>vizsla</item>
+        <item>Weimaraner</item>
+        <item>Welsh terrier</item>
+        <item>West Highland white terrier</item>
+        <item>whippet</item>
+        <item>Yorkshire terrier</item>
+    </string-array>
+
+    <string-array name="search_temperaments">
+        <item />
+        <item>Confident</item>
+        <item>Dominant</item>
+        <item>Energetic</item>
+        <item>Playful</item>
+        <item>Serene</item>
+        <item>Shy</item>
+        <item>Unsecured</item>
+    </string-array>
+
 
 </resources>
