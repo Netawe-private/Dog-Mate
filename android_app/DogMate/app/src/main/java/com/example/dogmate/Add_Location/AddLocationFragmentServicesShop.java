@@ -45,7 +45,7 @@ public class AddLocationFragmentServicesShop extends Fragment {
     }
 
     public boolean validateFields(){
-        if (includeDelivetyService.isChecked()){
+        if (includeDelivetyService.isChecked() && editTextDelAreaService.getText().toString().isEmpty()){
             editTextDelAreaService.setError("Fill delivery area");
             return  false;
         }

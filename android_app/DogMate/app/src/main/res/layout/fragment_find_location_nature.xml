@@ -5,29 +5,29 @@
     android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/isShadowNature"
+        android:id="@+id/availableWaterNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="@string/isShadow" />
+        android:text="@string/water" />
 
     <CheckBox
-        android:id="@+id/isReleaseDogNature"
+        android:id="@+id/releaseDogIsAllowedNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="@string/releaseDog" />
 
     <TextView
-        android:id="@+id/textViewWaterReNature"
+        android:id="@+id/textViewShadowLevelNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="16sp"
-        android:text="@string/water" />
+        android:text="@string/isShadow" />
 
     <RatingBar
-        android:id="@+id/waterResRatingNature"
+        android:id="@+id/shadowLevelRatingNature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

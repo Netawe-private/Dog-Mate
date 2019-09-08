@@ -144,9 +144,8 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         if (validateField(editTextFilledExposedDropdown)){
            JSONObject  requestJson = JsonHelperService.
                    createSearchLocationRequestJsonByType(editTextFilledExposedDropdown.getText().toString());
-            mVolleyService.postDataStringResponseVolley("POSTCALL_SHEARCH_LOCATION",
-                    SEARCH_LOCATION_PATH,
-                                                                    requestJson, null);
+            mVolleyService.postDataStringResponseVolley("POSTCALL_SEARCH_LOCATION",
+                    SEARCH_LOCATION_PATH, requestJson, null);
         }
 
     }
@@ -187,7 +186,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                     }
                     else {
                         Toast successMessage = Toast.makeText(getApplicationContext(),
-                                "No locations found! Might add one?", Toast.LENGTH_SHORT);
+                                "No locations found! Want to add one?", Toast.LENGTH_SHORT);
                         successMessage.show();
                     }
                 } catch (JSONException e) {
@@ -215,7 +214,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                 setMarkerColor(options,jsonObject.getString("locationType"));
                 Marker locationMarker = mLocationsMap.addMarker(options);
                 locationMarker.setTag(jsonObject);
-                mLocationsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng,13));
+                mLocationsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng,10));
 
             }
         } catch (JSONException e) {

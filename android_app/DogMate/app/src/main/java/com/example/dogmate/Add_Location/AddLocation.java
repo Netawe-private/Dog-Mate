@@ -145,7 +145,7 @@ public class AddLocation  extends AppCompatActivity {
                     subCategoriesAutoCom.setAdapter(dogParkAdapter);
                     parksFrag = new AddLocationFragmentParks();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
-                            parksFrag, "Park").commit();
+                            parksFrag, "Dog Park").commit();
 
                 } else if (selectedCategory.equals(categories[2])) {
                     subCategoriesAutoCom.setText(R.string.chooseSubCat);
@@ -233,29 +233,28 @@ public class AddLocation  extends AppCompatActivity {
                             (address, lat, name, "Entertainment",
                                     "Entertainment",
                                     lng,shadowLevelEnt, shadowPlace, sittingInside);
-                      Log.i("bla", "bla");
                 }
                 break;
 
             case "Nature":
-                int shadowLevelNature = (int) natureFrag.getWaterRatingNature();
-                boolean releaseDog = natureFrag.getIsReleaseDogNature();
-                boolean waterResource =  natureFrag.getShadowResNature();
+                String shadowLevelNature = String.valueOf(natureFrag.getShadowLevelRatingNatureRatingBar());
+                boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();
+                boolean waterResource =  natureFrag.getAvailableWaterCheckBox();
                 requestJson = JsonHelperService.createAddLocationNatureRequestJson
                         (address,lng, lat, name, subCategory,
                                 category,
                                 waterResource, releaseDog, shadowLevelNature);
                 break;
 
-            case "Park":
+            case "Dog Park":
                 if (parksFrag.isValidated()){
                     String space = parksFrag.getSpaceParkOpen();
-                    int busiLevevl = (int) parksFrag.getBusyRating();
+                    int busyLevevl = (int) parksFrag.getBusyRating();
                     int Cleanlines = (int) parksFrag.getCleanliness();
                     String gardenType =  parksFrag.getSurfaceTypePark();
                     requestJson = JsonHelperService.createAddLocationDogParksRequestJson
                             (address,lng, lat, name, subCategory,
-                                    category, busiLevevl, Cleanlines ,space, gardenType);
+                                    category, busyLevevl, Cleanlines ,space, gardenType);
                 }
                 break;
             case "Vet":
@@ -307,20 +306,23 @@ public class AddLocation  extends AppCompatActivity {
                 break;
         }
 
-        mVolleyService.postDataStringResponseVolley("POSTCALL",
+        mVolleyService.postDataStringResponseVolley("ADD_LOCATION_REQUEST",
                 CREATE_LOCATION_PATH,
                 requestJson, null);
-        //check if location is empty
-        //get location details
-        //send to db for save
     }
 
     public boolean validateFields(){
-        //add validation here
+        Toast errorMessage;
+        if (categoriesAutoCom.getText().toString().equalsIgnoreCase(getString(R.string.chooseCat))
+            && subCategoriesAutoCom.getText().toString().equalsIgnoreCase(getString(R.string.chooseSubCat))){
+            errorMessage = Toast.makeText(getApplicationContext(),
+                    getString(R.string.noCategoryChosen), Toast.LENGTH_SHORT);
+            errorMessage.show();
+        }
         String name = listener.getSelectedPlaceName();
         String address = listener.getSelectedPlaceAddress();
-        if (name == null || address == null){
-            Toast errorMessage = Toast.makeText(getApplicationContext(),
+        if (name == null || address == null) {
+            errorMessage = Toast.makeText(getApplicationContext(),
                     "Name field is empty!", Toast.LENGTH_SHORT);
             errorMessage.show();
         }
@@ -358,8 +360,15 @@ public class AddLocation  extends AppCompatActivity {
             public void notifyError(String requestType, VolleyError error) {
                 Log.d(TAG, "Volley requester " + requestType);
                 Log.d(TAG, "Volley JSON post error: " + error);
+                String message;
+                if (error.networkResponse.statusCode == 409){
+                    message = "There's a place with that name already! try and find it in Show Location page!";
+                }
+                else {
+                    message = "An error occurred";
+                }
                 Toast errorMessage = Toast.makeText(getApplicationContext(),
-                        "an error occurred", Toast.LENGTH_SHORT);
+                        message, Toast.LENGTH_SHORT);
                 errorMessage.show();
             }
 

@@ -154,7 +154,7 @@ public class JsonHelperService {
                                                                 String locationType,
                                                                 boolean availableWater,
                                                                 boolean releaseDogIsAllowed,
-                                                                int shadowLevel){
+                                                                String shadowLevel){
 
         JSONObject returnJson = createLocationRequestJson(address,locationName,locationSubType,
                                                             locationType,longitude,latitude);

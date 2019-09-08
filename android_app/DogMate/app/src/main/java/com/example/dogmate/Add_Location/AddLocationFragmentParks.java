@@ -62,8 +62,10 @@ public class AddLocationFragmentParks extends Fragment {
         selected = (RadioButton) rootView.findViewById(selectedId);
         if (selectedId == R.id.isopenSpacePark){
             return "Open";
-        }
+        }else if (selectedId == R.id.isClosedSpacePark){
         return "Gated";
+        }
+        return null;
     }
 
     public boolean isValidated(){

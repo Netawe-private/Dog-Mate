@@ -98,7 +98,7 @@ public class AddReview extends AppCompatActivity {
 
         setLocationNameRatingAndAddress(locationName, locationAddress);
         generateAndSetQRCode(locationId);
-        addReviewsToView();
+        addReviewsToView(locationReviews);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
         {
@@ -113,7 +113,7 @@ public class AddReview extends AppCompatActivity {
         String reviewCommentText = reviewComment.getText().toString();
         String reviewRatingAmount = String.valueOf(reviewRating.getRating());
         JSONObject requestJson = JsonHelperService.createAddReviewRequestJson(locationId,
-                                        reviewCommentText, reviewRatingAmount, "x1234" );
+                                        reviewCommentText, reviewRatingAmount, "hadasM" );
         mVolleyService.postDataStringResponseVolley(ADD_REVIEWS_REQUEST_TYPE,
                 ADD_REVIEW_PATH,
                 requestJson, null);
@@ -124,7 +124,7 @@ public class AddReview extends AppCompatActivity {
         locationNameView.setText(name);
     }
 
-    public void addReviewsToView(){
+    public void addReviewsToView(JSONArray locationReviews){
         JSONArray reviewsArray = locationReviews;
         if (reviewsArray.length() == 0){
             TextView noReview = findViewById(R.id.textViewLocationReviews);
@@ -175,6 +175,7 @@ public class AddReview extends AppCompatActivity {
                     int numberOfLikes = calculateNumberOfLikes(reviewObject.getJSONArray("commentList"));
                     reviewLikes.setText(String.valueOf(numberOfLikes));
                     reviewLikes.setPadding(30,30, 0,15);
+                    reviewLikes.setTag(reviewObject.getString("reviewId"));
                     ratingBlock.addView(reviewLikes);
                     reviewBlock.addView(ratingBlock);
 
@@ -234,7 +235,6 @@ public class AddReview extends AppCompatActivity {
         }
     };
 
-
     public void onClickDeleteLocation(View view){
         String requestUrl = String.format(GET_LOCATION_PATH, locationId);
         mVolleyService.deleteDataStringResponseVolley(DELETE_LOCATION_REQUEST_TYPE,
@@ -293,7 +293,8 @@ public class AddReview extends AppCompatActivity {
         switch (requestType){
             case GET_REVIEWS_REQUEST_TYPE:
                 try {
-                    locationReviews = new JSONArray(response);
+                    JSONArray updatedLocationReviews = new JSONArray(response);
+                    addReviewsToView(updatedLocationReviews);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -310,6 +311,17 @@ public class AddReview extends AppCompatActivity {
                         "Thank you for approving the review!", Toast.LENGTH_SHORT);
                 likeReviewMessage.show();
                 break;
+            case DELETE_REVIEWS_REQUEST_TYPE:
+                sendGetReviewsRequest();
+                Toast deleteReviewMessage = Toast.makeText(getApplicationContext(),
+                        "Review was deleted!", Toast.LENGTH_SHORT);
+                deleteReviewMessage.show();
+                break;
+            case DELETE_LOCATION_REQUEST_TYPE:
+                sendGetReviewsRequest();
+                Toast deleteLocationMessage = Toast.makeText(getApplicationContext(),
+                        "Location is marked as deleted and will no be shown in the future", Toast.LENGTH_SHORT);
+                deleteLocationMessage.show();
 
         }
     }
@@ -320,7 +332,7 @@ public class AddReview extends AppCompatActivity {
 
     private void sendGetReviewsRequest(){
         String requestUrl = String.format(GET_REVIEWS_PATH, locationId);
-        mVolleyService.getDataVolleyStringResponseVolley(GET_REVIEWS_REQUEST_TYPE,requestUrl);
+        mVolleyService.getDataVolleyStringResponseVolley(GET_REVIEWS_REQUEST_TYPE, requestUrl);
     }
 
 }

@@ -7,10 +7,10 @@
     <string name="location_categories">Choose Location Category</string>
     <string name="location_subcat">Choose Location Sub-Category</string>
     <string name="isInsideSitting">Is sitting allowed inside?</string>
-    <string name="isShadow">Is this place has shadow?</string>
+    <string name="isShadow">Shadow level</string>
     <string name="shadowAmount">Shadow level</string>
     <string name="releaseDog">Can release dog</string>
-    <string name="water">Water resources</string>
+    <string name="water">Are there water resources?</string>
     <string name="addLocText">Add Location!</string>
     <string name="locationName">Type Location Name:</string>
     <string name="surface">Surface Type:</string>
@@ -30,6 +30,7 @@
     <string name="priceLevel">Price Level</string>
     <string name="chooseCat">Choose Category</string>
     <string name="chooseSubCat">Choose Subcategory</string>
+    <string name="noCategoryChosen">You need to choose a category and subcategory</string>
     <string name="addReviewButton">Add your review</string>
     <string name="goToReviewPage">Go To Reviews Page</string>
 

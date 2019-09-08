@@ -133,7 +133,7 @@ public class LocationDetails extends AppCompatActivity implements OnMapReadyCall
                                 servicesShop, "servicesShop").commit();
                     }
                     break;
-                case "Park":
+                case "Dog Park":
                     AddLocationFragmentParks parks = new AddLocationFragmentParks();
                     parks.setArguments(data);
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,
@@ -279,7 +279,7 @@ public class LocationDetails extends AppCompatActivity implements OnMapReadyCall
             String locationId = locationDetails.get("locationId").toString();
             //get reviews from DB
             String requestUrl = String.format(GET_REVIEWS_PATH, locationId);
-            mVolleyService.getDataVolleyStringResponseVolley("GETCALL",requestUrl);
+            mVolleyService.getDataVolleyStringResponseVolley("GET_REVIEWS_CALL",requestUrl);
 
         } catch (JSONException e) {
             e.printStackTrace();
