@@ -213,102 +213,103 @@ public class AddLocation  extends AppCompatActivity {
     }
 
     public void onClickSaveLocation(View view){
-        validateFields();
-        String name = listener.getSelectedPlaceName();
-        String address = listener.getSelectedPlaceAddress();
-        LatLng locationLatLng = listener.getSelectedPlaceLatLng();
-        String lat = String.valueOf(locationLatLng.latitude);
-        String lng = String.valueOf(locationLatLng.longitude);
-        Fragment current = getSupportFragmentManager().findFragmentById(fragment_container_add_location);
-        String subCategory = subCategoriesAutoCom.getText().toString();
-        String category = categoriesAutoCom.getText().toString();
-        JSONObject  requestJson = null;
-        switch (current.getTag()){
-            case "Entertainment":
-                int shadowLevelEnt = (int) entertainmentFrag.getDegreeOfShadowRatingEnt();
-                boolean sittingInside = entertainmentFrag.getSittingInsideCheck();
-                boolean shadowPlace = entertainmentFrag.getHasShadowCheck();
-                if (entertainmentFrag.validateShadowField()){
-                      requestJson = JsonHelperService.createAddLocationEntertainmentRequestJson
-                            (address, lat, name, "Entertainment",
-                                    "Entertainment",
-                                    lng,shadowLevelEnt, shadowPlace, sittingInside);
-                }
-                break;
+        if (validateFields()) {
+            String name = listener.getSelectedPlaceName();
+            String address = listener.getSelectedPlaceAddress();
+            LatLng locationLatLng = listener.getSelectedPlaceLatLng();
+            String lat = String.valueOf(locationLatLng.latitude);
+            String lng = String.valueOf(locationLatLng.longitude);
+            Fragment current = getSupportFragmentManager().findFragmentById(fragment_container_add_location);
+            String subCategory = subCategoriesAutoCom.getText().toString();
+            String category = categoriesAutoCom.getText().toString();
+            JSONObject requestJson = null;
+            switch (current.getTag()) {
+                case "Entertainment":
+                    int shadowLevelEnt = (int) entertainmentFrag.getDegreeOfShadowRatingEnt();
+                    boolean sittingInside = entertainmentFrag.getSittingInsideCheck();
+                    boolean shadowPlace = entertainmentFrag.getHasShadowCheck();
+                    if (entertainmentFrag.validateShadowField()) {
+                        requestJson = JsonHelperService.createAddLocationEntertainmentRequestJson
+                                (address, lat, name, "Entertainment",
+                                        "Entertainment",
+                                        lng, shadowLevelEnt, shadowPlace, sittingInside);
+                    }
+                    break;
 
-            case "Nature":
-                String shadowLevelNature = String.valueOf(natureFrag.getShadowLevelRatingNatureRatingBar());
-                boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();
-                boolean waterResource =  natureFrag.getAvailableWaterCheckBox();
-                requestJson = JsonHelperService.createAddLocationNatureRequestJson
-                        (address,lng, lat, name, subCategory,
-                                category,
-                                waterResource, releaseDog, shadowLevelNature);
-                break;
-
-            case "Dog Park":
-                if (parksFrag.isValidated()){
-                    String space = parksFrag.getSpaceParkOpen();
-                    int busyLevevl = (int) parksFrag.getBusyRating();
-                    int Cleanlines = (int) parksFrag.getCleanliness();
-                    String gardenType =  parksFrag.getSurfaceTypePark();
-                    requestJson = JsonHelperService.createAddLocationDogParksRequestJson
-                            (address,lng, lat, name, subCategory,
-                                    category, busyLevevl, Cleanlines ,space, gardenType);
-                }
-                break;
-            case "Vet":
-                boolean allDayService = serviceVetFrag.getIsTwentyFourServiceHoursVet();
-                int priceLevel = (int) serviceVetFrag.getPriceLevel();
-                String treatmentVet = serviceVetFrag.getEditTextTreatment();
-                requestJson = JsonHelperService.createAddLocationServicesVetRequestJson
-                                    (address,lng, lat, name, subCategory,
-                                     category,treatmentVet,allDayService,priceLevel);
-                break;
-
-            case "Shop":
-                if (servicesShopFrag.validateFields()) {
-                    boolean isDelivery = servicesShopFrag.getIncludeDeliveryService();
-                    String deliveryAreas = servicesShopFrag.getEditTextDelAreaService();
-                    String treatmentShop = servicesShopFrag.getEditTextTreatment();
-                    int priceLevelShop = (int) servicesShopFrag.getPriceLevel();
-                    requestJson = JsonHelperService.createAddLocationServicesShopRequestJson
+                case "Nature":
+                    String shadowLevelNature = String.valueOf(natureFrag.getShadowLevelRatingNatureRatingBar());
+                    boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();
+                    boolean waterResource = natureFrag.getAvailableWaterCheckBox();
+                    requestJson = JsonHelperService.createAddLocationNatureRequestJson
                             (address, lng, lat, name, subCategory,
-                                    category, treatmentShop, priceLevelShop, isDelivery, deliveryAreas);
-                }
-                break;
+                                    category,
+                                    waterResource, releaseDog, shadowLevelNature);
+                    break;
 
-            case "Hotel":
-                if (vacationHotelFrag.validateFeilds()){
-                    int hotalStarts = (int) vacationHotelFrag.getNumberOfHotelStarts();
-                    int priceLevelHotel = (int) vacationHotelFrag.getPriceLevel();
-                    String additionalServicesHotel = vacationHotelFrag.getEditTextAddionalServices();
-                    boolean nextToBeachHotel = vacationHotelFrag.getNextToBeachHotel();
-                    boolean isFoodAround = vacationHotelFrag.getIsFoodAroundHotel();
+                case "Dog Park":
+                    if (parksFrag.isValidated()) {
+                        String space = parksFrag.getSpaceParkOpen();
+                        int busyLevevl = (int) parksFrag.getBusyRating();
+                        int Cleanlines = (int) parksFrag.getCleanliness();
+                        String gardenType = parksFrag.getSurfaceTypePark();
+                        requestJson = JsonHelperService.createAddLocationDogParksRequestJson
+                                (address, lng, lat, name, subCategory,
+                                        category, busyLevevl, Cleanlines, space, gardenType);
+                    }
+                    break;
+                case "Vet":
+                    boolean allDayService = serviceVetFrag.getIsTwentyFourServiceHoursVet();
+                    int priceLevel = (int) serviceVetFrag.getPriceLevel();
+                    String treatmentVet = serviceVetFrag.getEditTextTreatment();
+                    requestJson = JsonHelperService.createAddLocationServicesVetRequestJson
+                            (address, lng, lat, name, subCategory,
+                                    category, treatmentVet, allDayService, priceLevel);
+                    break;
+
+                case "Shop":
+                    if (servicesShopFrag.validateFields()) {
+                        boolean isDelivery = servicesShopFrag.getIncludeDeliveryService();
+                        String deliveryAreas = servicesShopFrag.getEditTextDelAreaService();
+                        String treatmentShop = servicesShopFrag.getEditTextTreatment();
+                        int priceLevelShop = (int) servicesShopFrag.getPriceLevel();
+                        requestJson = JsonHelperService.createAddLocationServicesShopRequestJson
+                                (address, lng, lat, name, subCategory,
+                                        category, treatmentShop, priceLevelShop, isDelivery, deliveryAreas);
+                    }
+                    break;
+
+                case "Hotel":
+                    if (vacationHotelFrag.validateFeilds()) {
+                        int hotalStarts = (int) vacationHotelFrag.getNumberOfHotelStarts();
+                        int priceLevelHotel = (int) vacationHotelFrag.getPriceLevel();
+                        String additionalServicesHotel = vacationHotelFrag.getEditTextAddionalServices();
+                        boolean nextToBeachHotel = vacationHotelFrag.getNextToBeachHotel();
+                        boolean isFoodAround = vacationHotelFrag.getIsFoodAroundHotel();
+                        requestJson = JsonHelperService.createAddLocationVacationRequestJson
+                                (address, lng, lat, name, subCategory,
+                                        category, additionalServicesHotel, isFoodAround, nextToBeachHotel, hotalStarts, priceLevelHotel);
+                    }
+                    break;
+
+                case "Camping":
+                    boolean nextTobeachCamping = vacationCampingFrag.getNextToBeachCamping();
+                    boolean dogFoogAround = vacationCampingFrag.getIsFoodAroundCamping();
+                    String additionalServicesCamping = vacationCampingFrag.getEditTextAdditionalServices();
+                    int priceLevelCamping = (int) vacationCampingFrag.getPriceLevel();
                     requestJson = JsonHelperService.createAddLocationVacationRequestJson
                             (address, lng, lat, name, subCategory,
-                                    category, additionalServicesHotel, isFoodAround, nextToBeachHotel, hotalStarts,priceLevelHotel);
-                }
-                break;
+                                    category, additionalServicesCamping, dogFoogAround, nextTobeachCamping, 0, priceLevelCamping);
+                    break;
+                case "Pension":
+                    requestJson = JsonHelperService.createAddLocationRequestJson(address, lng, lat, name, subCategory,
+                            category);
+                    break;
+            }
 
-            case "Camping":
-                boolean nextTobeachCamping = vacationCampingFrag.getNextToBeachCamping();
-                boolean dogFoogAround = vacationCampingFrag.getIsFoodAroundCamping();
-                String  additionalServicesCamping = vacationCampingFrag.getEditTextAdditionalServices();
-                int priceLevelCamping = (int) vacationCampingFrag.getPriceLevel();
-                requestJson = JsonHelperService.createAddLocationVacationRequestJson
-                    (address, lng, lat, name, subCategory,
-                            category, additionalServicesCamping, dogFoogAround, nextTobeachCamping, 0, priceLevelCamping);
-                break;
-            case "Pension":
-                requestJson = JsonHelperService.createAddLocationRequestJson(address, lng, lat, name, subCategory,
-                        category);
-                break;
+            mVolleyService.postDataStringResponseVolley("ADD_LOCATION_REQUEST",
+                    CREATE_LOCATION_PATH,
+                    requestJson, null);
         }
-
-        mVolleyService.postDataStringResponseVolley("ADD_LOCATION_REQUEST",
-                CREATE_LOCATION_PATH,
-                requestJson, null);
     }
 
     public boolean validateFields(){
@@ -318,6 +319,7 @@ public class AddLocation  extends AppCompatActivity {
             errorMessage = Toast.makeText(getApplicationContext(),
                     getString(R.string.noCategoryChosen), Toast.LENGTH_SHORT);
             errorMessage.show();
+            return false;
         }
         String name = listener.getSelectedPlaceName();
         String address = listener.getSelectedPlaceAddress();
@@ -325,6 +327,7 @@ public class AddLocation  extends AppCompatActivity {
             errorMessage = Toast.makeText(getApplicationContext(),
                     "Name field is empty!", Toast.LENGTH_SHORT);
             errorMessage.show();
+            return false;
         }
 
         return true;

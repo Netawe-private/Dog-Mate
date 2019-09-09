@@ -133,7 +133,7 @@ public class LocationDetails extends AppCompatActivity implements OnMapReadyCall
                                 servicesShop, "servicesShop").commit();
                     }
                     break;
-                case "Dog Park":
+                case "Dog Parks":
                     AddLocationFragmentParks parks = new AddLocationFragmentParks();
                     parks.setArguments(data);
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,

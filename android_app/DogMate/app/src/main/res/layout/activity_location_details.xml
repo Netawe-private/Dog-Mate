@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayoutDetails"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
         <TextView
@@ -29,14 +30,15 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:isIndicator="true"
-            android:layout_marginLeft="65dp" />
+            android:gravity="right"
+            android:layout_marginLeft="13dp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/locationDetailsAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="3dp"
+        android:padding="10dp"
         android:textSize="18sp" />
 
     <ScrollView

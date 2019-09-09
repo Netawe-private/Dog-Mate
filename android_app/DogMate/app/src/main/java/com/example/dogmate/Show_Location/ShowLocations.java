@@ -1,12 +1,19 @@
 package com.example.dogmate.Show_Location;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +30,8 @@ import com.example.dogmate.R;
 import com.example.dogmate.Scan_Location.LocationDetails;
 import com.example.dogmate.Scan_Location.ScanLocation;
 import com.example.dogmate.VolleyService;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,6 +40,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -42,10 +53,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.dogmate.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.dogmate.Constants.SEARCH_LOCATION_PATH;
 
 public class ShowLocations extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private String TAG = "ShowLocationActivity";
+    private boolean mLocationPermissionGranted = false;
+    private FusedLocationProviderClient mFusedLocationClient;
+    LocationManager locationManager;
 
     protected DrawerLayout drawer;
     NavigationView navigationView;
@@ -55,6 +70,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
     ArrayAdapter<String> categoriesAdapter;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
+    LatLng userLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +78,13 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.drawer_layout);
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getLocationPermission();
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -134,10 +154,23 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
     public void onMapReady(GoogleMap googleMap) {
         mLocationsMap = googleMap;
         mLocationsMap.setOnInfoWindowClickListener(this);
-        //get user location to zoom in
-        LatLng telAviv = new LatLng(32.078948, 34.772278);
-//        mLocationsMap.addMarker(new MarkerOptions().position(telAviv).title("Marker in Tel Aviv"));
-//        mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(telAviv,15));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+            Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+            if (userLocation != null){
+                mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+            }
+        }
     }
 
     public void onSearchLocationButton(View v){
@@ -246,6 +279,40 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         Intent intent = new Intent(ShowLocations.this, LocationDetails.class);
         intent.putExtra("locationDetails",String.valueOf(marker.getTag()));
         startActivity(intent);
+    }
+
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                }
+            }
+        }
     }
 }
 

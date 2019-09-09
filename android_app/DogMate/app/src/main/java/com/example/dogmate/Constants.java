@@ -16,6 +16,11 @@ public class Constants {
     public static final String DELETE_LOCATION_REQUEST_TYPE ="DELETE_LOCATION";
 
 
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
+    public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9003;
+    public static final int CAMERA_REQUEST_CODE = 100;
+
+
 
 
 }

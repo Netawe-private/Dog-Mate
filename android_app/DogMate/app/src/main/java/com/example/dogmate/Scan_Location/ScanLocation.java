@@ -1,9 +1,14 @@
 package com.example.dogmate.Scan_Location;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -19,6 +24,7 @@ import org.json.JSONObject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import static com.example.dogmate.Constants.CAMERA_REQUEST_CODE;
 import static com.example.dogmate.Constants.GET_LOCATION_PATH;
 
 public class ScanLocation extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -35,7 +41,8 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
         mScannerView = new ZXingScannerView(this);
-        onActivityStart();
+        askForCameraPermissions();
+        //onActivityStart();
 
     }
 
@@ -91,5 +98,25 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
                 startActivity(intent);
             }
         };
+    }
+
+    private void askForCameraPermissions(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                onActivityStart();
+            } else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

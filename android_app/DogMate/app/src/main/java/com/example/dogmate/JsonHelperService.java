@@ -140,7 +140,7 @@ public class JsonHelperService {
             returnJson.put( "busyLevel", busyLevel);
             returnJson.put( "cleanLevel", cleanLevel);
             returnJson.put( "gardenSpace", gardenSpace);
-            returnJson.put( "gardenSpace", gardenType);
+            returnJson.put( "gardenType", gardenType);
         } catch (JSONException e) {
             e.printStackTrace();
         }
