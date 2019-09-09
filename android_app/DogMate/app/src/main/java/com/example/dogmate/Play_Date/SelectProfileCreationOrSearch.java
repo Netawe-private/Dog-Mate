@@ -9,7 +9,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.dogmate.Login.SendEmailPage;
 import com.example.dogmate.R;
 
 import butterknife.BindView;

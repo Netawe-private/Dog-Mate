@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import com.example.dogmate.Login.SendEmailPage;
 import com.example.dogmate.R;
 
 import butterknife.BindView;
@@ -16,7 +16,8 @@ import butterknife.ButterKnife;
 
 public class DogProfileApproved extends AppCompatActivity {
 
-    @BindView(R.id.btn_search_date) Button searchDog;
+    @BindView(R.id.btn_back_to_login) Button searchDog;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,8 @@ public class DogProfileApproved extends AppCompatActivity {
                     .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
+
+        setSupportActionBar(mToolbar);
 
         searchDog.setOnClickListener(new View.OnClickListener() {
             @Override

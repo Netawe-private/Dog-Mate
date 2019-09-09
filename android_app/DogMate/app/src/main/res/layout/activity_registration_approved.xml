@@ -7,15 +7,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <FrameLayout
         android:id="@+id/frameLayout3"
         android:layout_width="417dp"
@@ -24,16 +15,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="parent">
 
         <FrameLayout
             android:id="@+id/frame1"
-            android:layout_width="341dp"
-            android:layout_height="533dp"
+            android:layout_width="350dp"
+            android:layout_height="572dp"
             android:layout_gravity="center"
-            android:layout_marginTop="-55dp"
+            android:layout_marginTop="25dp"
             android:background="@color/quantum_white_100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,10 +36,10 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="180dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Find a playmate for your dog"
+                android:text="Back to Login Page"
                 android:textColor="@color/quantum_white_100"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -61,19 +50,19 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="260dp"
-                android:src="@drawable/dogsplay" />
+                android:src="@drawable/dog_and_owner" />
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="317dp"
-                android:layout_height="129dp"
+                android:layout_width="320dp"
+                android:layout_height="96dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="70dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Your dog has been successfully registered to Play Date :)"
+                android:text="You have successfully registered to Dog Mate"
                 android:textColor="#3F51B5"
                 android:textSize="30sp"
                 android:textStyle="bold"

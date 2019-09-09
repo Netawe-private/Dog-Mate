@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -25,11 +24,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dogmate.MyApplication;
 import com.example.dogmate.R;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -108,6 +105,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     Log.e("Rest Response", response.toString());
+                                    Intent intent = new Intent(RegistrationActivity.this, RegistrationApproved.class );
+                                    startActivity(intent);
                                 }
                             },
                             new Response.ErrorListener() {
@@ -136,8 +135,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     // validate that the userName doesn't exist
                     // send a verification email to the user
 
-                    Intent intent = new Intent(RegistrationActivity.this, SendEmailPage.class );
-                    startActivity(intent);
+
                 }
             }
         });

@@ -17,13 +17,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.347" />
 
     <Button
         android:id="@+id/btn_findPlayDate"
         android:layout_width="265dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="172dp"
+        android:layout_marginBottom="160dp"
         android:text="Find a Play Date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
