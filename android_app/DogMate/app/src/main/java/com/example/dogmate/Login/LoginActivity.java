@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        email = findViewById(R.id.insertEmail);
+        email = findViewById(R.id.email);
         password = findViewById(R.id.insertPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // link to registration
-        TextView register = (TextView)findViewById(R.id.lnkRegister);
+        TextView register = (TextView)findViewById(R.id.im_dogphoto);
         register.setMovementMethod(LinkMovementMethod.getInstance());
         register.setOnClickListener(new View.OnClickListener() {
             @Override
