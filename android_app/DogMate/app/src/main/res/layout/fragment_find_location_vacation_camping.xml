@@ -5,20 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/addtionalSer" />
-
-    <EditText
-        android:id="@+id/editTextAddionalServicesCamping"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:maxLength="100"/>
 
     <CheckBox
         android:id="@+id/nextToBeachCamping"
@@ -33,5 +19,35 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/isFoodAround" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:text="@string/priceLevel" />
+
+    <RatingBar
+        android:id="@+id/campingPriceLevel"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:hint="@string/addtionalSer"
+        android:radius="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextAddionalServicesCamping"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:maxLength="100" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

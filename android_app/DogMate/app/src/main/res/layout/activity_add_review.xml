@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".Add_Review.AddReview">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="83dp">
+
+        <ImageView
+            android:id="@+id/locationQR"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/dogmate" />
+
+        <TextView
+            android:id="@+id/textViewLocName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/locationQR"
+            android:padding="10dp"
+            android:textColor="@color/quantum_deeppurple900"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewLocAddress"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewLocName"
+            android:padding="10dp"
+            android:textColor="@color/quantum_deeppurple900"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/textViewLocationReviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/Reviews"
+        android:textColor="@color/quantum_deeppurple900"
+        android:textSize="16sp" />
+
+    <ScrollView
+        android:id="@+id/reviewScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="238dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="7dp">
+
+        <LinearLayout
+            android:id="@+id/reviewLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textViewRateLoc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/quantum_deeppurple900"
+        android:text="@string/reatePlace"
+        android:gravity="center"
+        android:textSize="16sp" />
+
+    <RatingBar
+        android:id="@+id/reviewRating"
+        android:layout_width="240dp"
+        android:numStars="5"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/revComment"
+        android:paddingLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:radius="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextReviewComment"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:maxLength="100" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:onClick="onAddReviewToLocation"
+            android:text="@string/addReviewButton"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:textSize="10dp"
+            android:onClick="onClickDeleteLocation"
+            android:text="@string/deleteLocationButton"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"></androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

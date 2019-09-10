@@ -8,49 +8,66 @@
     android:fitsSystemWindows="true"
     tools:context=".Add_Location.AddLocation">
 
-    <com.google.android.material.textview.MaterialTextView
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
+
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/asul"
         android:padding="10dp"
         android:text="@string/locationName"
-        android:textSize="18sp" />
+        android:textColor="#090909"
+        android:textSize="16sp" />
 
     <fragment
         android:id="@+id/autocomplete_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         tools:layout="@layout/places_autocomplete_item_prediction" />
 
-    <Spinner
-        android:id="@+id/categories_spinner"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:entries="@array/categories_array"
-        android:padding="10dp"
-        android:prompt="@string/location_categories" />
+        android:radius="10dp"
+        android:layout_marginLeft="10dp"
+        android:hint="@string/chooseCat">
 
-    <Spinner
-        android:id="@+id/subcategories_spinner"
-        android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/categories_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:prompt="@string/location_categories" />
+        android:radius="10dp"
+        android:layout_marginLeft="10dp"
+        android:hint="@string/chooseSubCat">
+
+        <AutoCompleteTextView
+            android:id="@+id/subcategories_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/fragment_container_add_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp">
-
-
+        android:layout_marginLeft="7dp">
     </FrameLayout>
 
     <com.google.android.material.button.MaterialButton
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -58,5 +75,6 @@
         android:onClick="onClickSaveLocation"
         android:text="@string/addLocText"
         android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
 
 </LinearLayout>

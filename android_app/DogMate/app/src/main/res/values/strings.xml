@@ -1,6 +1,5 @@
 <resources>
 
-    <string name="google_maps_key">string1</string>
     <string name="app_name">Dog Mate</string>
     <string name="menuString">Dog Owners Social Media</string>
 
@@ -9,25 +8,34 @@
     <string name="location_categories">Choose Location Category</string>
     <string name="location_subcat">Choose Location Sub-Category</string>
     <string name="isInsideSitting">Is sitting allowed inside?</string>
-    <string name="isShadow">Is this place has Shadow</string>
-    <string name="shadowAmount">Degree of Shadow</string>
+    <string name="isShadow">Shadow level</string>
+    <string name="shadowAmount">Shadow level</string>
     <string name="releaseDog">Can release dog</string>
-    <string name="water">Water resources</string>
+    <string name="water">Are there water resources?</string>
     <string name="addLocText">Add Location!</string>
     <string name="locationName">Type Location Name:</string>
     <string name="surface">Surface Type:</string>
+    <string name="cleanliness">Cleanliness:</string>
+    <string name="busy">How busy:</string>
     <string name="openSpace">Open Space</string>
     <string name="closedSpace">Gated Space</string>
     <string name="serviceHours">24/7 service</string>
     <string name="delivery">Is delivery included</string>
     <string name="delArea">Delivery areas:</string>
     <string name="delAreaHint">i.e: North Tel Aviv</string>
+    <string name="treatmentHint">Tell us about the service you received</string>
     <string name="nextToBeach">Beach close by</string>
     <string name="addtionalSer">Addional Services:</string>
     <string name="isFoodAround">Dog food in the area</string>
     <string name="HotelStarts">Number of Starts</string>
+    <string name="priceLevel">Price Level</string>
+    <string name="chooseCat">Choose Category</string>
+    <string name="chooseSubCat">Choose Subcategory</string>
+    <string name="noCategoryChosen">You need to choose a category and subcategory</string>
+    <string name="addReviewButton">Add your review</string>
+    <string name="goToReviewPage">Go To Reviews Page</string>
 
-
+    <string name="deleteLocationButton">Delete Location</string>
     <string name="title_activity_show_locations">Map</string>
 
     <string name="SearchForPlaces">Search For Places</string>
@@ -36,20 +44,23 @@
 
     <string name="ShowLoc">Show Location</string>
 
+    <string name="revComment">Let us know More:</string>
+
+    <string name="reatePlace">Rate Location</string>
+    <string name="Reviews">Location Reviews</string>
+
     <string-array name="categories_array">
         <item>Nature</item>
         <item>Dog Parks</item>
         <item>Services</item>
         <item>Vacation</item>
-        <item>Places of Entertainment</item>
+        <item>Entertainment</item>
     </string-array>
-
     <string-array name="entertainment_array">
         <item>Restaurants</item>
         <item>Coffee Shop</item>
         <item>Pub</item>
     </string-array>
-
     <string-array name="nature_array">
         <item>Beaches</item>
         <item>Nature Reserve</item>
@@ -73,6 +84,11 @@
         <item>Gravel</item>
         <item>Soil</item>
     </string-array>
+    
+    <string name="title_activity_show_locations">Map</string>
+    <string name="SearchForPlaces">Search For Places</string>
+    <string name="searchPlaceHint">i.e. Dog park Dubnov</string>
+    <string name="ShowLoc">Show Location</string>
 
     <string-array name="search_cities">
         <item />

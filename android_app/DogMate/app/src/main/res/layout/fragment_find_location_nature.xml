@@ -4,34 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/shadow"
+    <CheckBox
+        android:id="@+id/availableWaterNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/shadowAmount" />
-
-    <RatingBar
-        android:id="@+id/degreeOfShadowRatingNature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/shadow2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="@string/water" />
 
-    <RatingBar
-        android:id="@+id/waterResNature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <CheckBox
-        android:id="@+id/isReleaseDogNature"
+        android:id="@+id/releaseDogIsAllowedNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="@string/releaseDog" />
+
+    <TextView
+        android:id="@+id/textViewShadowLevelNature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:text="@string/isShadow" />
+
+    <RatingBar
+        android:id="@+id/shadowLevelRatingNature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

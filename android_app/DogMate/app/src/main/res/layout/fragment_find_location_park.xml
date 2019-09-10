@@ -5,10 +5,11 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/shadow"
+        android:id="@+id/textViewWaterReNature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:textSize="16sp"
         android:text="@string/surface" />
 
     <Spinner
@@ -16,13 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/surface_type_array"
-        android:padding="10dp" />
+        android:padding="7dp" />
 
     <RadioGroup
         android:id="@+id/spaceParkGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="7dp">
 
         <RadioButton
             android:id="@+id/isopenSpacePark"
@@ -40,5 +41,31 @@
             android:padding="10dp"
             android:text="@string/closedSpace" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewClean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingLeft="10dp"
+        android:text="@string/cleanliness" />
+
+    <RatingBar
+        android:id="@+id/ratingBarCleanPark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textViewBusy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="@string/busy"
+        android:textSize="16sp" />
+
+    <RatingBar
+        android:id="@+id/ratingBarBusyPark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

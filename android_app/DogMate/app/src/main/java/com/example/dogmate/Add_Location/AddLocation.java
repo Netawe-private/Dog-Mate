@@ -1,50 +1,72 @@
 package com.example.dogmate.Add_Location;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.dogmate.DrawerMenu;
+import com.android.volley.VolleyError;
+import com.example.dogmate.IResult;
+import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
+import com.example.dogmate.VolleyService;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 
-import static com.example.dogmate.R.id.autocomplete_fragment;
-import static com.example.dogmate.R.id.fragment_container;
+import net.glxn.qrgen.android.QRCode;
 
-public class AddLocation extends DrawerMenu {
-    Spinner categoriesSpinner;
-    Spinner subCatSpinner;
+import org.json.JSONObject;
+
+import static com.example.dogmate.Constants.CREATE_LOCATION_PATH;
+import static com.example.dogmate.R.id.autocomplete_fragment;
+import static com.example.dogmate.R.id.fragment_container_add_location;
+
+public class AddLocation  extends AppCompatActivity {
+
     AutocompleteSupportFragment autocompleteFragment;
     String TAG;
     GooglePlaceSelectionListener listener;
+    AutoCompleteTextView categoriesAutoCom;
+    AutoCompleteTextView subCategoriesAutoCom;
+    VolleyService mVolleyService;
+    IResult mResultCallback = null;
 
-    AddLocationFragmentEntertainment EntertainmentFrag;
-    AddLocationFragmentNature NatureFrag;
-    AddLocationFragmentParks ParksFrag;
+
+    AddLocationFragmentEntertainment entertainmentFrag;
+    AddLocationFragmentNature natureFrag;
+    AddLocationFragmentParks parksFrag;
     AddLocationFragmentServicesShop servicesShopFrag;
     AddLocationFragmentServicesVet serviceVetFrag;
     AddLocationFragmentVacationCamping vacationCampingFrag;
     AddLocationFragmentVacationHotel vacationHotelFrag;
 
+    List<String> categoriesArray;
     List<String> natureArray;
     List<String> servicesArray;
     List<String> entertainmentArray;
     List<String> dogParkArray;
     List<String> vacationArray;
 
+    ArrayAdapter<String> categoriesAdapter;
     ArrayAdapter<String> natureAdapter;
     ArrayAdapter<String> serviceAdapter;
     ArrayAdapter<String> entertainmentAdapter;
@@ -53,14 +75,26 @@ public class AddLocation extends DrawerMenu {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_add_location);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_add_location, drawer, false);
-        drawer.addView(contentView, 0);
-        categoriesSpinner = findViewById(R.id.categories_spinner);
-        subCatSpinner = findViewById(R.id.subcategories_spinner);
         TAG = "PlacesAutoAdapter";
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_location);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        // Enable the Up button
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        initVolleyCallback();
+        mVolleyService = new VolleyService(mResultCallback,this);
+
+
+        categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
+        categoriesAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, categoriesArray);
+
+        categoriesAutoCom = findViewById(R.id.categories_spinner);
+        categoriesAutoCom.setAdapter(categoriesAdapter);
+
+        subCategoriesAutoCom = findViewById(R.id.subcategories_spinner);
 
         addListenerOnCategoriesSpinnerItemSelection();
 
@@ -69,7 +103,6 @@ public class AddLocation extends DrawerMenu {
         entertainmentArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.entertainment_array)));
         dogParkArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.dog_parks_array)));
         vacationArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.vacation_array)));
-
 
         natureAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, natureArray);
         serviceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servicesArray);
@@ -82,6 +115,7 @@ public class AddLocation extends DrawerMenu {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
 
+
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(autocomplete_fragment);
@@ -89,157 +123,270 @@ public class AddLocation extends DrawerMenu {
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteFragment.setCountry("IL");
         listener = new GooglePlaceSelectionListener();
-        autocompleteFragment.setOnPlaceSelectedListener(listener); //{
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//                String selectedPlaceAddress = place.getAddress();
-//                String selectedPlaceName = place.getName();
-//                LatLng selectedPlaceLatLng = place.getLatLng();
-//                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                Log.i(TAG, "An error occurred: " + status);
-//                Toast message = Toast.makeText(getApplicationContext(),"An error had occurred",Toast.LENGTH_SHORT);
-//                message.show();
-//            }
-//        });
+        autocompleteFragment.setOnPlaceSelectedListener(listener);
+
     }
 
     public void addListenerOnCategoriesSpinnerItemSelection() {
-        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categoriesAutoCom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCategory = categoriesSpinner.getSelectedItem().toString();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCategory = categoriesAutoCom.getText().toString();
                 String[] categories = getResources().getStringArray(R.array.categories_array);
                 if (selectedCategory.equals(categories[0])) {
-                    subCatSpinner.setAdapter(natureAdapter);
-                    NatureFrag = new AddLocationFragmentNature();
-                    getSupportFragmentManager().beginTransaction().replace(fragment_container,
-                            NatureFrag, "Nature").commit();
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(natureAdapter);
+                    natureFrag = new AddLocationFragmentNature();
+                    getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
+                            natureFrag, "Nature").commit();
 
                 } else if (selectedCategory.equals(categories[1])) {
-                    subCatSpinner.setAdapter(dogParkAdapter);
-                    ParksFrag = new AddLocationFragmentParks();
-                    getSupportFragmentManager().beginTransaction().replace(fragment_container,
-                            ParksFrag, "Park").commit();
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(dogParkAdapter);
+                    parksFrag = new AddLocationFragmentParks();
+                    getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
+                            parksFrag, "Dog Park").commit();
 
                 } else if (selectedCategory.equals(categories[2])) {
-                    subCatSpinner.setAdapter(serviceAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(serviceAdapter);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
+                            new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[3])) {
-                    subCatSpinner.setAdapter(vacationAdapter);
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(vacationAdapter);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
+                            new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[4])) {
-                    subCatSpinner.setAdapter(entertainmentAdapter);
-                    EntertainmentFrag = new AddLocationFragmentEntertainment();
-                    getSupportFragmentManager().beginTransaction().replace(fragment_container,
-                            EntertainmentFrag, "Entertainment").commit();
+                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
+                    subCategoriesAutoCom.setAdapter(entertainmentAdapter);
+                    entertainmentFrag = new AddLocationFragmentEntertainment();
+                    getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
+                            entertainmentFrag, "Entertainment").commit();
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
 
     }
 
     public void addListenerOnSubCategoriesSpinnerItemSelection() {
-        subCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        subCategoriesAutoCom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedSubCategory = subCatSpinner.getSelectedItem().toString();
-                if (selectedSubCategory.equalsIgnoreCase("Veterinarians")){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedSubCategory = subCategoriesAutoCom.getText().toString();
+                if (selectedSubCategory.equalsIgnoreCase("Veterinarians") || selectedSubCategory.equalsIgnoreCase("Barber Shop") ){
                     serviceVetFrag = new AddLocationFragmentServicesVet();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             serviceVetFrag, "Vet").commit();
                 }
                 else if (selectedSubCategory.equalsIgnoreCase("Pet Supply Store")){
                     servicesShopFrag = new AddLocationFragmentServicesShop();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             servicesShopFrag, "Shop").commit();
-                }
-                else if (selectedSubCategory.equalsIgnoreCase("Barber Shop")){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new Fragment()).commit();
                 }
                 else if (selectedSubCategory.equalsIgnoreCase("Hotel") ||
                         selectedSubCategory.equalsIgnoreCase("Zimmer")){
                     vacationHotelFrag = new AddLocationFragmentVacationHotel();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             vacationHotelFrag, "Hotel").commit();
                 }
 
                 else if (selectedSubCategory.equalsIgnoreCase("Camping Site")){
                     vacationCampingFrag = new AddLocationFragmentVacationCamping();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             vacationCampingFrag, "Camping").commit();
                 }
 
                 else if (selectedSubCategory.equalsIgnoreCase("Dog Pension")){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new Fragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
+                            new Fragment(),"Pension").commit();
                 }
 
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
     }
 
     public void onClickSaveLocation(View view){
-        validateFields();
-        Fragment current = getSupportFragmentManager().findFragmentById(fragment_container);
-        switch (current.getTag()){
-            case "Entertainment":
-                if(EntertainmentFrag.validateShadowField()){
-                    //get fields and save to Db
-                };
-                break;
+        if (validateFields()) {
+            String name = listener.getSelectedPlaceName();
+            String address = listener.getSelectedPlaceAddress();
+            LatLng locationLatLng = listener.getSelectedPlaceLatLng();
+            String lat = String.valueOf(locationLatLng.latitude);
+            String lng = String.valueOf(locationLatLng.longitude);
+            Fragment current = getSupportFragmentManager().findFragmentById(fragment_container_add_location);
+            String subCategory = subCategoriesAutoCom.getText().toString();
+            String category = categoriesAutoCom.getText().toString();
+            JSONObject requestJson = null;
+            switch (current.getTag()) {
+                case "Entertainment":
+                    int shadowLevelEnt = (int) entertainmentFrag.getDegreeOfShadowRatingEnt();
+                    boolean sittingInside = entertainmentFrag.getSittingInsideCheck();
+                    boolean shadowPlace = entertainmentFrag.getHasShadowCheck();
+                    if (entertainmentFrag.validateShadowField()) {
+                        requestJson = JsonHelperService.createAddLocationEntertainmentRequestJson
+                                (address, lat, name, "Entertainment",
+                                        "Entertainment",
+                                        lng, shadowLevelEnt, shadowPlace, sittingInside);
+                    }
+                    break;
 
-            case "Nature":
-                break;
+                case "Nature":
+                    String shadowLevelNature = String.valueOf(natureFrag.getShadowLevelRatingNatureRatingBar());
+                    boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();
+                    boolean waterResource = natureFrag.getAvailableWaterCheckBox();
+                    requestJson = JsonHelperService.createAddLocationNatureRequestJson
+                            (address, lng, lat, name, subCategory,
+                                    category,
+                                    waterResource, releaseDog, shadowLevelNature);
+                    break;
 
-            case "Park":
-                if(ParksFrag.isValidated()){
-                    ParksFrag.getSpaceParkOpen();
-                }
-                break;
+                case "Dog Park":
+                    if (parksFrag.isValidated()) {
+                        String space = parksFrag.getSpaceParkOpen();
+                        int busyLevevl = (int) parksFrag.getBusyRating();
+                        int Cleanlines = (int) parksFrag.getCleanliness();
+                        String gardenType = parksFrag.getSurfaceTypePark();
+                        requestJson = JsonHelperService.createAddLocationDogParksRequestJson
+                                (address, lng, lat, name, subCategory,
+                                        category, busyLevevl, Cleanlines, space, gardenType);
+                    }
+                    break;
+                case "Vet":
+                    boolean allDayService = serviceVetFrag.getIsTwentyFourServiceHoursVet();
+                    int priceLevel = (int) serviceVetFrag.getPriceLevel();
+                    String treatmentVet = serviceVetFrag.getEditTextTreatment();
+                    requestJson = JsonHelperService.createAddLocationServicesVetRequestJson
+                            (address, lng, lat, name, subCategory,
+                                    category, treatmentVet, allDayService, priceLevel);
+                    break;
 
-            case "Vet":
-                break;
+                case "Shop":
+                    if (servicesShopFrag.validateFields()) {
+                        boolean isDelivery = servicesShopFrag.getIncludeDeliveryService();
+                        String deliveryAreas = servicesShopFrag.getEditTextDelAreaService();
+                        String treatmentShop = servicesShopFrag.getEditTextTreatment();
+                        int priceLevelShop = (int) servicesShopFrag.getPriceLevel();
+                        requestJson = JsonHelperService.createAddLocationServicesShopRequestJson
+                                (address, lng, lat, name, subCategory,
+                                        category, treatmentShop, priceLevelShop, isDelivery, deliveryAreas);
+                    }
+                    break;
 
-            case "Shop":
-                break;
+                case "Hotel":
+                    if (vacationHotelFrag.validateFeilds()) {
+                        int hotalStarts = (int) vacationHotelFrag.getNumberOfHotelStarts();
+                        int priceLevelHotel = (int) vacationHotelFrag.getPriceLevel();
+                        String additionalServicesHotel = vacationHotelFrag.getEditTextAddionalServices();
+                        boolean nextToBeachHotel = vacationHotelFrag.getNextToBeachHotel();
+                        boolean isFoodAround = vacationHotelFrag.getIsFoodAroundHotel();
+                        requestJson = JsonHelperService.createAddLocationVacationRequestJson
+                                (address, lng, lat, name, subCategory,
+                                        category, additionalServicesHotel, isFoodAround, nextToBeachHotel, hotalStarts, priceLevelHotel);
+                    }
+                    break;
 
-            case "Hotel":
-                if (vacationHotelFrag.validateFeilds()){
-                    //save fields
-                }
-                break;
+                case "Camping":
+                    boolean nextTobeachCamping = vacationCampingFrag.getNextToBeachCamping();
+                    boolean dogFoogAround = vacationCampingFrag.getIsFoodAroundCamping();
+                    String additionalServicesCamping = vacationCampingFrag.getEditTextAdditionalServices();
+                    int priceLevelCamping = (int) vacationCampingFrag.getPriceLevel();
+                    requestJson = JsonHelperService.createAddLocationVacationRequestJson
+                            (address, lng, lat, name, subCategory,
+                                    category, additionalServicesCamping, dogFoogAround, nextTobeachCamping, 0, priceLevelCamping);
+                    break;
+                case "Pension":
+                    requestJson = JsonHelperService.createAddLocationRequestJson(address, lng, lat, name, subCategory,
+                            category);
+                    break;
+            }
 
-            case "Camping":
-                break;
+            mVolleyService.postDataStringResponseVolley("ADD_LOCATION_REQUEST",
+                    CREATE_LOCATION_PATH,
+                    requestJson, null);
         }
-
-        //check if location is empty
-        //get location details
-        //send to db for save
     }
 
     public boolean validateFields(){
-        //add validation here
-        String address = listener.getSelectedPlaceAddress();
+        Toast errorMessage;
+        if (categoriesAutoCom.getText().toString().equalsIgnoreCase(getString(R.string.chooseCat))
+            && subCategoriesAutoCom.getText().toString().equalsIgnoreCase(getString(R.string.chooseSubCat))){
+            errorMessage = Toast.makeText(getApplicationContext(),
+                    getString(R.string.noCategoryChosen), Toast.LENGTH_SHORT);
+            errorMessage.show();
+            return false;
+        }
         String name = listener.getSelectedPlaceName();
+        String address = listener.getSelectedPlaceAddress();
+        if (name == null || address == null) {
+            errorMessage = Toast.makeText(getApplicationContext(),
+                    "Name field is empty!", Toast.LENGTH_SHORT);
+            errorMessage.show();
+            return false;
+        }
 
         return true;
     }
+
+    public String generateQRCode(){
+        Bitmap qrBitMap = QRCode.from("www.example.org").bitmap();
+        String ecodedQR = generateQRStringForBackend(qrBitMap);
+        return ecodedQR;
+    }
+
+    public String generateQRStringForBackend(Bitmap myBitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+
+    }
+
+    void initVolleyCallback(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, JSONObject response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+                Toast approvalMessage = Toast.makeText(getApplicationContext(),
+                        "Your Location saved", Toast.LENGTH_SHORT);
+                approvalMessage.show();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post error: " + error);
+                String message;
+                if (error.networkResponse.statusCode == 409){
+                    message = "There's a place with that name already! try and find it in Show Location page!";
+                }
+                else {
+                    message = "An error occurred";
+                }
+                Toast errorMessage = Toast.makeText(getApplicationContext(),
+                        message, Toast.LENGTH_SHORT);
+                errorMessage.show();
+            }
+
+            @Override
+            public void notifySuccessString(String requestType, String response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+                Toast approvalMessage = Toast.makeText(getApplicationContext(),
+                        "Your Location saved", Toast.LENGTH_SHORT);
+                approvalMessage.show();
+            }
+        };
+    }
+
+
+
+
 }
