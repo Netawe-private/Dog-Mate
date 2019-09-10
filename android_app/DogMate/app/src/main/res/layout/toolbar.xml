@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:elevation="16dp"
-        android:paddingTop="20dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>

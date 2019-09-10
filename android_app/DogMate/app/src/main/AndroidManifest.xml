@@ -12,13 +12,7 @@
         android:theme="@style/AppTheme">
 	<activity android:name=".Play_Date.SelectProfileCreationOrSearch">
         </activity>
-	<activity android:name=".Play_Date.DogProfileApproved">
-        	<intent-filter>
-            	<action android:name="android.intent.action.MAIN" />
-            	<action android:name="android.intent.action.VIEW" />
-            	<category android:name="android.intent.category.LAUNCHER" />
-        	</intent-filter>
-	</activity>
+	<activity android:name=".Play_Date.DogProfileApproved"></activity>
         <activity android:name=".Play_Date.AddNewDog" />
         <activity android:name=".Login.RegistrationApproved" > </activity>
         <activity android:name=".Scan_Location.LocationDetails">

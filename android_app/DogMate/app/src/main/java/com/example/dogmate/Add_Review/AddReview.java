@@ -24,9 +24,6 @@ import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
 import com.example.dogmate.VolleyService;
-import com.mantraideas.simplehttp.datamanager.dmmodel.DataRequest;
-import com.mantraideas.simplehttp.datamanager.dmmodel.DataRequestPair;
-import com.mantraideas.simplehttp.datamanager.dmmodel.Method;
 
 import net.glxn.qrgen.android.QRCode;
 import org.json.JSONArray;
