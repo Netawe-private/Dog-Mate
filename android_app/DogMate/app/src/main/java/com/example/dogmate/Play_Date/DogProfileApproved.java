@@ -26,14 +26,6 @@ public class DogProfileApproved extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
-        {
-            getWindow()
-                    .getDecorView()
-                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-
         setSupportActionBar(mToolbar);
 
         searchDog.setOnClickListener(new View.OnClickListener() {

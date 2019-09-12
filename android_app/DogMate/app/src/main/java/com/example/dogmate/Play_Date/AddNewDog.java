@@ -1,11 +1,13 @@
 package com.example.dogmate.Play_Date;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,21 +16,36 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.VolleyError;
+import com.example.dogmate.Constants;
+import com.example.dogmate.IResult;
+import com.example.dogmate.JsonHelperService;
+import com.example.dogmate.Login.LoginActivity;
 import com.example.dogmate.R;
+import com.example.dogmate.Show_Location.ShowLocations;
+import com.example.dogmate.VolleyService;
 import com.squareup.picasso.Picasso;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.dogmate.Constants.ADD_DOG_PATH;
+
 
 public class AddNewDog extends AppCompatActivity implements View.OnClickListener{
-
+    IResult mResultCallback = null;
+    VolleyService mVolleyService;
+    SharedPreferences sharedPreferenceFile;
+    SharedPreferences.Editor editor;
     @BindView(R.id.toolbar) Toolbar mToolbar;
-
     @BindView(R.id.et_dogname) EditText mDogNameEditText;
     @BindView(R.id.im_dogphoto) ImageView mDogPhoto;
     @BindView(R.id.sp_cities) Spinner mCities;
@@ -39,6 +56,14 @@ public class AddNewDog extends AppCompatActivity implements View.OnClickListener
     @BindView(R.id.btn_createprofile) Button mCreateProfileButton;
 
     private static final int RESULT_LOAD_IMAGE = 1;
+    String dogName;
+    String city;
+    String neighborhood;
+    String  dogSize;
+    String breed;
+    String temperament;
+    Uri dogImage;
+    private String TAG = "Add_Dog";
 
     Uri mSelectedImage;
 
@@ -47,34 +72,42 @@ public class AddNewDog extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_dog);
         ButterKnife.bind(this);
+        initVolleyCallback();
+        mVolleyService = new VolleyService(mResultCallback,this);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
 
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
+        ActionBar actionBar = getSupportActionBar();
+        // Enable the Up button
+        actionBar.setDisplayHomeAsUpEnabled(true);
         mDogPhoto.setOnClickListener(this);
+    }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
-        {
-            getWindow()
-                    .getDecorView()
-                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    public void onClickAddDog(View view){
+        boolean isValid = checkDataEntered(mDogNameEditText, mSelectedImage, mCities,
+                                            mNeighborhoodEditText, mSizes, mBreeds, mTemperaments);
+        if (isValid) {
+            dogName = mDogNameEditText.getText().toString();
+            breed = mBreeds.getSelectedItem().toString();
+            city = mCities.getSelectedItem().toString();
+            neighborhood = mNeighborhoodEditText.getText().toString();
+            dogSize = mSizes.getSelectedItem().toString();
+            temperament = mTemperaments.getSelectedItem().toString();
+            String username = sharedPreferenceFile.getString("username", null);
+            String credentials = String.format("%s:%s",
+                                    sharedPreferenceFile.getString("username", null),
+                                    sharedPreferenceFile.getString("password", null));
+            JSONObject requestJson = JsonHelperService.createAddDogRequest(dogName, breed, dogSize,
+                                    temperament,neighborhood, username,city,"");
+            mVolleyService.postDataStringResponseVolley("POST_ADD_DOG", ADD_DOG_PATH,
+                                                                        requestJson, credentials);
+            // get fields and upload them to DB.
+            // save the registration date
+
+            Intent intent = new Intent(AddNewDog.this, DogProfileApproved.class );
+            startActivity(intent);
         }
-
-        //validations of all fields
-        mCreateProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isValid = checkDataEntered(mDogNameEditText, mSelectedImage, mCities, mNeighborhoodEditText, mSizes, mBreeds, mTemperaments);
-                if (isValid) {
-
-                    // get fields and upload them to DB.
-                    // save the registration date
-
-                    Intent intent = new Intent(AddNewDog.this, DogProfileApproved.class );
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
     @Override
@@ -94,7 +127,7 @@ public class AddNewDog extends AppCompatActivity implements View.OnClickListener
     }
 
     boolean isEmpty(EditText text) {
-        CharSequence str = text.getText().toString();
+        String str = text.getText().toString();
         return TextUtils.isEmpty(str);
     }
 
@@ -115,11 +148,11 @@ public class AddNewDog extends AppCompatActivity implements View.OnClickListener
             return false;
         }
 
-        else if (isEmptyImageView(mSelectedImage)) {
-            Toast t = Toast.makeText(this, "Please enter your dog's image", Toast.LENGTH_SHORT);
-            t.show();
-            return false;
-        }
+//        else if (isEmptyImageView(mSelectedImage)) {
+//            Toast t = Toast.makeText(this, "Please enter your dog's image", Toast.LENGTH_SHORT);
+//            t.show();
+//            return false;
+//        }
 
         else if (isSpinnerSelected(mCities)) {
             Toast t = Toast.makeText(this, "Please select your city", Toast.LENGTH_SHORT);
@@ -153,6 +186,40 @@ public class AddNewDog extends AppCompatActivity implements View.OnClickListener
 
         else
             return true;
+    }
+
+    void initVolleyCallback(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, JSONObject response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post error: " + error);
+                String  errorResponse = mVolleyService.parseVolleyError(error);
+                Toast errorMessage = Toast.makeText(getApplicationContext(),
+                        errorResponse, Toast.LENGTH_SHORT);
+                errorMessage.show();
+            }
+
+            @Override
+            public void notifySuccessString(String requestType, String response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley String post" + response);
+//                try {
+//                    JSONObject responseJson = new JSONObject(response);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                Intent intent = new Intent(AddNewDog.this, DogProfileApproved.class );
+                startActivity(intent);
+
+            }
+        };
     }
 }
 

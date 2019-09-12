@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,12 +21,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.dogmate.Add_Location.AddLocation;
+import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
+import com.example.dogmate.Play_Date.AddNewDog;
 import com.example.dogmate.R;
 import com.example.dogmate.Scan_Location.LocationDetails;
 import com.example.dogmate.Scan_Location.ScanLocation;
@@ -48,22 +53,27 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.example.dogmate.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.dogmate.Constants.SEARCH_LOCATION_PATH;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class ShowLocations extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private String TAG = "ShowLocationActivity";
     private boolean mLocationPermissionGranted = false;
     private FusedLocationProviderClient mFusedLocationClient;
     LocationManager locationManager;
+    SharedPreferences sharedPreferenceFile;
+    SharedPreferences.Editor editor;
 
     protected DrawerLayout drawer;
+    TextView navHeaderUserText;
     NavigationView navigationView;
+    String credentials;
+    String username;
     private GoogleMap mLocationsMap;
     AutoCompleteTextView editTextFilledExposedDropdown;
     List<String> categoriesArray;
@@ -80,6 +90,10 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         mVolleyService = new VolleyService(mResultCallback,this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
+        credentials = String.format("%s:%s",sharedPreferenceFile.getString("username", NULL),
+                sharedPreferenceFile.getString("password", NULL));
+        username = sharedPreferenceFile.getString("username", NULL);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -92,9 +106,11 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         drawer.addDrawerListener(toggle);
 
         toggle.syncState();
-
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View navHeader = navigationView.getHeaderView(0);
+        navHeaderUserText = navHeader.findViewById(R.id.userNameHeader);
+        navHeaderUserText.setText(username);
 
         categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
         categoriesAdapter = new ArrayAdapter<String>(this, R.layout.dropdown_item, categoriesArray);
@@ -134,6 +150,11 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
             case R.id.nav_show_location:
                 navigationView.setCheckedItem(R.id.nav_show_location);
                 nextActivity = new Intent(ShowLocations.this, ShowLocations.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.nav_add_dog:
+                navigationView.setCheckedItem(R.id.nav_add_dog);
+                nextActivity = new Intent(ShowLocations.this, AddNewDog.class);
                 startActivity(nextActivity);
                 break;
             case R.id.nav_matching:
@@ -178,7 +199,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
            JSONObject  requestJson = JsonHelperService.
                    createSearchLocationRequestJsonByType(editTextFilledExposedDropdown.getText().toString());
             mVolleyService.postDataStringResponseVolley("POSTCALL_SEARCH_LOCATION",
-                    SEARCH_LOCATION_PATH, requestJson, null);
+                    SEARCH_LOCATION_PATH, requestJson, credentials);
         }
 
     }

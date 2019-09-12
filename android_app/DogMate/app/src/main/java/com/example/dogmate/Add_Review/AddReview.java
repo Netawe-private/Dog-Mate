@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
@@ -29,10 +31,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import static com.example.dogmate.Constants.ADD_COMMENT_REVIEW_REQUEST_TYPE;
 import static com.example.dogmate.Constants.ADD_REVIEWS_REQUEST_TYPE;
 import static com.example.dogmate.Constants.ADD_REVIEW_PATH;
-import static com.example.dogmate.Constants.CREATE_LOCATION_PATH;
 import static com.example.dogmate.Constants.DELETE_LOCATION_REQUEST_TYPE;
 import static com.example.dogmate.Constants.DELETE_REVIEWS_REQUEST_TYPE;
 import static com.example.dogmate.Constants.DELETE_REVIEW_PATH;
@@ -40,9 +46,11 @@ import static com.example.dogmate.Constants.GET_LOCATION_PATH;
 import static com.example.dogmate.Constants.GET_REVIEWS_PATH;
 import static com.example.dogmate.Constants.GET_REVIEWS_REQUEST_TYPE;
 import static com.example.dogmate.Constants.REVIEW_COMMENT_PATH;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 
 public class AddReview extends AppCompatActivity {
+    SharedPreferences sharedPreferenceFile;
     RatingBar reviewRating;
     EditText reviewComment;
     TextView locationNameView;
@@ -55,6 +63,8 @@ public class AddReview extends AppCompatActivity {
     String locationId;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
+    String credentials;
+    String username;
     private String TAG = "AddReviewActivity";
 
 
@@ -63,6 +73,7 @@ public class AddReview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -72,7 +83,9 @@ public class AddReview extends AppCompatActivity {
 
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
-
+        credentials = String.format("%s:%s",sharedPreferenceFile.getString("username", NULL),
+                sharedPreferenceFile.getString("password", NULL));
+        username = sharedPreferenceFile.getString("username", NULL);
         reviewComment = findViewById(R.id.editTextReviewComment);
         reviewRating = findViewById(R.id.reviewRating);
         locationNameView = findViewById(R.id.textViewLocName);
@@ -109,10 +122,10 @@ public class AddReview extends AppCompatActivity {
         String reviewCommentText = reviewComment.getText().toString();
         String reviewRatingAmount = String.valueOf(reviewRating.getRating());
         JSONObject requestJson = JsonHelperService.createAddReviewRequestJson(locationId,
-                                        reviewCommentText, reviewRatingAmount, "hadasM" );
+                                        reviewCommentText, reviewRatingAmount, username );
         mVolleyService.postDataStringResponseVolley(ADD_REVIEWS_REQUEST_TYPE,
                 ADD_REVIEW_PATH,
-                requestJson, null);
+                requestJson, credentials);
     }
 
     public void setLocationNameRatingAndAddress(String name, String address){
@@ -213,9 +226,9 @@ public class AddReview extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             String buttonId = view.getTag().toString();
-            JSONObject requestJson = JsonHelperService.createReviewHelpfulRequest(buttonId,"hadas89" );
+            JSONObject requestJson = JsonHelperService.createReviewHelpfulRequest(buttonId,username );
             mVolleyService.postDataStringResponseVolley(ADD_COMMENT_REVIEW_REQUEST_TYPE, REVIEW_COMMENT_PATH,
-                                                            requestJson, null );
+                                                            requestJson, credentials );
         }
     };
 
@@ -226,7 +239,7 @@ public class AddReview extends AppCompatActivity {
             String deleteButtonReviewId = view.getTag().toString();
             String requestUrl = String.format(DELETE_REVIEW_PATH,deleteButtonReviewId, "x1234");
             mVolleyService.deleteDataStringResponseVolley(DELETE_REVIEWS_REQUEST_TYPE,
-                    requestUrl,null );
+                    requestUrl, credentials );
 
         }
     };
@@ -234,7 +247,7 @@ public class AddReview extends AppCompatActivity {
     public void onClickDeleteLocation(View view){
         String requestUrl = String.format(GET_LOCATION_PATH, locationId);
         mVolleyService.deleteDataStringResponseVolley(DELETE_LOCATION_REQUEST_TYPE,
-                requestUrl, null );
+                requestUrl, credentials);
 
     }
 
@@ -271,8 +284,14 @@ public class AddReview extends AppCompatActivity {
             public void notifyError(String requestType, VolleyError error) {
                 Log.d(TAG, "Volley requester " + requestType);
                 Log.d(TAG, "Volley JSON post error: " + error);
+                String message;
+                if (requestType.equalsIgnoreCase(DELETE_LOCATION_REQUEST_TYPE)){
+                    message = mVolleyService.parseVolleyError(error);
+                } else {
+                    message = "Error has occurred";
+                }
                 Toast errorMessage = Toast.makeText(getApplicationContext(),
-                        "Error has occurred", Toast.LENGTH_SHORT);
+                        message, Toast.LENGTH_SHORT);
                 errorMessage.show();
             }
 
@@ -323,12 +342,27 @@ public class AddReview extends AppCompatActivity {
     }
 
     private String reviewDateTimeFormat(String dateTime){
-        return dateTime.replace("T", " ").split("\\+")[0];
+        String retunDate = dateTime.replace("T", " ").split("\\+")[0] ;
+        String format = "yyyy-MM-dd HH:mm:ss";
+
+        try {
+            SimpleDateFormat utcFormatter = new SimpleDateFormat(format);
+            utcFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date reviewDate = utcFormatter.parse(dateTime.replace("T", " ").split("\\+")[0]);
+
+            SimpleDateFormat phoneTimeFormatter = new SimpleDateFormat(format);
+            phoneTimeFormatter.setTimeZone(TimeZone.getDefault());
+            retunDate = phoneTimeFormatter.format(reviewDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return retunDate;
+                //dateTime.replace("T", " ").split("\\+")[0];
     }
 
     private void sendGetReviewsRequest(){
         String requestUrl = String.format(GET_REVIEWS_PATH, locationId);
-        mVolleyService.getDataVolleyStringResponseVolley(GET_REVIEWS_REQUEST_TYPE, requestUrl);
+        mVolleyService.getDataVolleyStringResponseVolley(GET_REVIEWS_REQUEST_TYPE, requestUrl, credentials);
     }
 
 }

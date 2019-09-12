@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.dogmate.Add_Location.AddLocationFragmentServicesVet;
 import com.example.dogmate.Add_Location.AddLocationFragmentVacationCamping;
 import com.example.dogmate.Add_Location.AddLocationFragmentVacationHotel;
 import com.example.dogmate.Add_Review.AddReview;
+import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.R;
 import com.example.dogmate.VolleyService;
@@ -39,9 +41,12 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import static com.example.dogmate.Constants.GET_REVIEWS_PATH;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class LocationDetails extends AppCompatActivity implements OnMapReadyCallback {
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    SharedPreferences sharedPreferenceFile;
+
     String TAG;
     private TextView locatioNameView;
     private TextView locationAddressView;
@@ -51,6 +56,8 @@ public class LocationDetails extends AppCompatActivity implements OnMapReadyCall
     private RatingBar ratingLocationDetails;
     JSONObject locationDetails;
     JSONArray locationReviews;
+    String credentials;
+    String username;
 
     float locationRating;
     VolleyService mVolleyService;
@@ -60,6 +67,10 @@ public class LocationDetails extends AppCompatActivity implements OnMapReadyCall
     protected void onCreate( @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_details);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
+        credentials = String.format("%s:%s",sharedPreferenceFile.getString("username", NULL),
+                sharedPreferenceFile.getString("password", NULL));
+        username = sharedPreferenceFile.getString("username", NULL);
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
 
@@ -279,7 +290,7 @@ public class LocationDetails extends AppCompatActivity implements OnMapReadyCall
             String locationId = locationDetails.get("locationId").toString();
             //get reviews from DB
             String requestUrl = String.format(GET_REVIEWS_PATH, locationId);
-            mVolleyService.getDataVolleyStringResponseVolley("GET_REVIEWS_CALL",requestUrl);
+            mVolleyService.getDataVolleyStringResponseVolley("GET_REVIEWS_CALL",requestUrl, credentials);
 
         } catch (JSONException e) {
             e.printStackTrace();

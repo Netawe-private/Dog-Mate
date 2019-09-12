@@ -3,9 +3,11 @@ package com.example.dogmate.Login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -13,37 +15,45 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.example.dogmate.Constants;
+import com.example.dogmate.IResult;
+import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
 import com.example.dogmate.Show_Location.ShowLocations;
+import com.example.dogmate.VolleyService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.example.dogmate.Constants.LOGIN_PATH;
 
 public class LoginActivity extends AppCompatActivity {
+    SharedPreferences sharedPreferenceFile;
+    SharedPreferences.Editor editor;
+    IResult mResultCallback = null;
+    VolleyService mVolleyService;
+    private String TAG = "Login";
 
-    EditText email;
-    EditText password;
+
+    EditText usernameEditText;
+    EditText passwordEditText;
     Button btnLogin;
+    String username;
+    String password;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initVolleyCallback();
+        mVolleyService = new VolleyService(mResultCallback,this);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
 
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.insertPassword);
+        usernameEditText = findViewById(R.id.loginUsername);
+        passwordEditText = findViewById(R.id.insertPassword);
         btnLogin = findViewById(R.id.btnLogin);
-
-
-        //validations of email & password
-        btnLogin.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                boolean isValid = checkDataEntered(email, password);
-                if (isValid)
-                {
-                    Intent intent = new Intent(LoginActivity.this, ShowLocations.class );
-                    startActivity(intent);
-                }
-            }
-        });
 
         // link to registration
         TextView register = (TextView)findViewById(R.id.im_dogphoto);
@@ -57,29 +67,38 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    boolean isAdmin(EditText text1, EditText text2){
-        String email = text1.getText().toString();
-        String pass = text2.getText().toString();
-        return (email.equals("admin") && pass.equals("1234"));
+    public void onClickLoginButton(View view){
+        boolean isValid = checkDataEntered(usernameEditText, passwordEditText);
+        if (isValid)
+        {
+            password = passwordEditText.getText().toString();
+            username = usernameEditText.getText().toString();
+            JSONObject requestJson = JsonHelperService.createLoginRequest(username, password);
+            mVolleyService.postDataStringResponseVolleyWithoutAuth("POST_LOGIN_REQUEST", LOGIN_PATH,
+                                                            requestJson, null);
+
+        }
+    }
+
+    boolean isAdmin(EditText editTextUsername){
+        String username = editTextUsername.getText().toString();
+        return (username.equals("x1234") || username.equals("x123"));
     }
 
     boolean isEmailValid(EditText text){
-        CharSequence email = text.getText().toString();
-        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+        String username = text.getText().toString();
+        return (!TextUtils.isEmpty(username) /*&& Patterns.EMAIL_ADDRESS.matcher(email).matches()*/);
     }
 
     boolean isEmpty(EditText text) {
-        CharSequence str = text.getText().toString();
+        String str = text.getText().toString();
         return TextUtils.isEmpty(str);
     }
 
-    boolean checkDataEntered(EditText email, EditText password) {
+    boolean checkDataEntered(EditText usernameEditText, EditText password) {
 
-        if (isAdmin(email, password))
-            return true;
-
-        else if (isEmailValid(email) == false) {
-            Toast t = Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT);
+        if (!isEmailValid(usernameEditText)) {
+            Toast t = Toast.makeText(this, "Please enter a valid username", Toast.LENGTH_SHORT);
             t.show();
             return false;
         }
@@ -91,6 +110,50 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         else
-            return true;  // need to validate whether the email & password exist in the DB
+            return true;
+    }
+
+    void initVolleyCallback(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, JSONObject response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post" + response);
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley JSON post error: " + error);
+                String  errorResponse = mVolleyService.parseVolleyError(error);
+                Toast errorMessage = Toast.makeText(getApplicationContext(),
+                        errorResponse, Toast.LENGTH_SHORT);
+                errorMessage.show();
+            }
+
+            @Override
+            public void notifySuccessString(String requestType, String response) {
+                Log.d(TAG, "Volley requester " + requestType);
+                Log.d(TAG, "Volley String post" + response);
+                try {
+                    JSONObject responseJson = new JSONObject(response);
+                    addUserDetailsToSharedpreferenceFile(responseJson.getString("username"),
+                                                        responseJson.getString("password"),
+                                                        responseJson.getBoolean("isAdmin"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(LoginActivity.this, ShowLocations.class );
+                startActivity(intent);
+            }
+        };
+    }
+
+    private void addUserDetailsToSharedpreferenceFile(String username, String password, boolean isAdmin){
+        editor = sharedPreferenceFile.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putBoolean("isAdmin", isAdmin);
+        editor.apply();
     }
 }

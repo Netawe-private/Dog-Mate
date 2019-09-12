@@ -15,10 +15,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,8 +32,6 @@ public class VolleyService {
         mResultCallback = resultCallback;
         mContext = context;
     }
-
-
 
     public void postDataJSONResponseVolley(final String requestType, String url, JSONObject sendObj, @Nullable String credentials){
         try {
@@ -74,10 +72,10 @@ public class VolleyService {
 
                     return sendObj.toString().getBytes();
                 }
-//                @Override
-//                public String dgetBodyContentType() {
-//                    return "application/json";
-//                }
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
 
             };
 
@@ -111,7 +109,7 @@ public class VolleyService {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     try {
                         Map<String, String> headers  = new HashMap<>();
-                        String credentials = "x1234:ezjLSVmdQg98nFmH";
+                        //String credentials = "x1234:ezjLSVmdQg98nFmH";
                         String auth = "Basic "
                                 + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");
@@ -141,7 +139,59 @@ public class VolleyService {
         }
     }
 
-    public void getDataVolleyStringResponseVolley(final String requestType, String url){
+    public void postDataStringResponseVolleyWithoutAuth(final String requestType, String url, JSONObject parameters, @Nullable String credentials){
+        try {
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if(mResultCallback != null)
+                        mResultCallback.notifySuccessString (requestType,response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(mResultCallback != null)
+                        mResultCallback.notifyError(requestType,error);
+                }
+            })
+            {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    try {
+                        Map<String, String> headers  = new HashMap<>();
+//                        String credentials = "x1234:ezjLSVmdQg98nFmH";
+//                        String auth = "Basic "
+//                                + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        headers.put("Content-Type", "application/json");
+//                        headers.put("Authorization", auth);
+                        return headers;
+                    } catch (Exception e) {
+                        Log.e("Volley", "Authentication Failure" );
+                    }
+                    return super.getParams();
+                }
+                @Override
+                public byte[] getBody() {
+
+                    return parameters.toString().getBytes();
+                }
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+
+            };
+
+            queue.add(stringRequest);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void getDataVolleyStringResponseVolley(final String requestType, String url, @Nullable String credentials){
         try {
             RequestQueue queue = Volley.newRequestQueue(mContext);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -163,7 +213,7 @@ public class VolleyService {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 try {
                     Map<String, String> headers  = new HashMap<>();
-                    String credentials = "x1234:ezjLSVmdQg98nFmH";
+                    //String credentials = "x1234:ezjLSVmdQg98nFmH";
                     String auth = "Basic "
                             + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Content-Type", "application/json");
@@ -215,15 +265,6 @@ public class VolleyService {
                     }
                     return super.getParams();
                 }
-//                @Override
-//                public byte[] getBody() {
-//                    return parameters.toString().getBytes();
-//                }
-//                @Override
-//                public String getBodyContentType() {
-//                    return "application/json";
-//                }
-
             };
 
             queue.add(stringRequest);
@@ -231,5 +272,19 @@ public class VolleyService {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String parseVolleyError(VolleyError error) {
+        String errorMessage = null;
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            errorMessage = data.getString("message");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException errorEncoding) {
+            errorEncoding.printStackTrace();
+        }
+        return  errorMessage;
     }
 }

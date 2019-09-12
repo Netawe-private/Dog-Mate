@@ -1,12 +1,51 @@
 package com.example.dogmate;
 
+import android.net.Uri;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.UUID;
 
+import javax.sql.StatementEvent;
+
 
 public class JsonHelperService {
+
+    public static JSONObject createAddDogRequest(String dogName, String dogBreed, String dogSize,
+                                                 String dogTemper, String neighborhood, String username,
+                                                 String city, String imageRelativeUrl){
+        JSONObject returnJson = new JSONObject();
+        try {
+            returnJson.put("dogName", dogName);
+            returnJson.put("username", username);
+            returnJson.put("dogBreed", dogBreed);
+            returnJson.put("dogSize", dogSize);
+            returnJson.put("dogTemper", dogTemper);
+            returnJson.put("neighborhood", neighborhood);
+            returnJson.put("city", city);
+            returnJson.put("imageRelativeUrl", imageRelativeUrl);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return returnJson;
+
+    }
+
+    public static JSONObject createLoginRequest(String username, String password){
+        JSONObject returnJson = new JSONObject();
+        try {
+            returnJson.put("password", password);
+            returnJson.put("username", username);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return returnJson;
+    }
 
     public static JSONObject createReviewHelpfulRequest(String reviewId, String username){
         JSONObject returnJson = new JSONObject();
@@ -118,6 +157,28 @@ public class JsonHelperService {
             returnJson.put( "shippingArea", treatment);
             returnJson.put( "openAllDay", openAllDay);
             returnJson.put( "priceLevel", priceLevel);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return returnJson;
+    }
+
+    public static JSONObject createRegistrationRequest(String firstName, String lastName, String userName, String password, String emailAddress, int numberOfDogs, Uri selectedImage){
+        JSONObject returnJson = new JSONObject();
+
+        try {
+            returnJson.put("firstName", firstName);
+            returnJson.put("lastName", lastName);
+            returnJson.put("username", userName);
+            returnJson.put("password", password);
+            returnJson.put("email", emailAddress);
+            returnJson.put("numOfDogs", numberOfDogs);
+            if (selectedImage != null){                         // add image only if it was uploaded
+                returnJson.put("imageUrl", selectedImage);
+            } else {
+                returnJson.put("imageUrl", "");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

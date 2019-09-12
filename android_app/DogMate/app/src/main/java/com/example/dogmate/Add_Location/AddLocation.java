@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Base64;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.android.volley.VolleyError;
+import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
@@ -29,19 +31,16 @@ import com.example.dogmate.VolleyService;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-
 import net.glxn.qrgen.android.QRCode;
-
 import org.json.JSONObject;
-
 import static com.example.dogmate.Constants.CREATE_LOCATION_PATH;
 import static com.example.dogmate.R.id.autocomplete_fragment;
 import static com.example.dogmate.R.id.fragment_container_add_location;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class AddLocation  extends AppCompatActivity {
-
+    SharedPreferences sharedPreferenceFile;
     AutocompleteSupportFragment autocompleteFragment;
     String TAG;
     GooglePlaceSelectionListener listener;
@@ -49,7 +48,8 @@ public class AddLocation  extends AppCompatActivity {
     AutoCompleteTextView subCategoriesAutoCom;
     VolleyService mVolleyService;
     IResult mResultCallback = null;
-
+    String credentials;
+    String username;
 
     AddLocationFragmentEntertainment entertainmentFrag;
     AddLocationFragmentNature natureFrag;
@@ -78,6 +78,7 @@ public class AddLocation  extends AppCompatActivity {
         TAG = "PlacesAutoAdapter";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_location);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -86,6 +87,9 @@ public class AddLocation  extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
+        credentials = String.format("%s:%s",sharedPreferenceFile.getString("username", NULL),
+                sharedPreferenceFile.getString("password", NULL));
+        username = sharedPreferenceFile.getString("username", NULL);
 
 
         categoriesArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.categories_array)));
@@ -114,7 +118,6 @@ public class AddLocation  extends AppCompatActivity {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
-
 
         // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
@@ -308,7 +311,7 @@ public class AddLocation  extends AppCompatActivity {
 
             mVolleyService.postDataStringResponseVolley("ADD_LOCATION_REQUEST",
                     CREATE_LOCATION_PATH,
-                    requestJson, null);
+                    requestJson, credentials);
         }
     }
 
@@ -331,12 +334,6 @@ public class AddLocation  extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    public String generateQRCode(){
-        Bitmap qrBitMap = QRCode.from("www.example.org").bitmap();
-        String ecodedQR = generateQRStringForBackend(qrBitMap);
-        return ecodedQR;
     }
 
     public String generateQRStringForBackend(Bitmap myBitmap){

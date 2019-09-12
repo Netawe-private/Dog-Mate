@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.R;
 import com.example.dogmate.VolleyService;
@@ -26,11 +28,15 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.example.dogmate.Constants.CAMERA_REQUEST_CODE;
 import static com.example.dogmate.Constants.GET_LOCATION_PATH;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class ScanLocation extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     String TAG;
+    SharedPreferences sharedPreferenceFile;
     private ZXingScannerView mScannerView;
     LinearLayout linearLayout;
+    String credentials;
+    String username;
     VolleyService mVolleyService;
     IResult mResultCallback = null;
 
@@ -38,6 +44,10 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_location);
+        sharedPreferenceFile =  getSharedPreferences(Constants.SHAREDPREF_NAME, 0);
+        credentials = String.format("%s:%s",sharedPreferenceFile.getString("username", NULL),
+                sharedPreferenceFile.getString("password", NULL));
+        username = sharedPreferenceFile.getString("username", NULL);
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
         mScannerView = new ZXingScannerView(this);
@@ -66,7 +76,7 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
         String locationId = result.getText();
         String requestUrl = String.format(GET_LOCATION_PATH, locationId);
         mVolleyService.getDataVolleyStringResponseVolley("GETCALL",
-                requestUrl);
+                requestUrl, credentials);
     }
 
 

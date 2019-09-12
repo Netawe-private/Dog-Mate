@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 public class SelectProfileCreationOrSearch extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-
     @BindView(R.id.btn_createDogProfile) Button mCreateProfileButton;
     @BindView(R.id.btn_findPlayDate) Button mFindPlayDateButton;
 

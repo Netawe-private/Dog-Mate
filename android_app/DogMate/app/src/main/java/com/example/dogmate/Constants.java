@@ -8,6 +8,10 @@ public class Constants {
     public static final String DELETE_REVIEW_PATH = "http://vmedu196.mtacloud.co.il/reviews?reviewId=%s&username=%s";
     public static final String SEARCH_LOCATION_PATH = "http://vmedu196.mtacloud.co.il/locations/_search";
     public static final String REVIEW_COMMENT_PATH = "http://vmedu196.mtacloud.co.il/reviews/comments";
+    public static final String REGISTRATION_PATH = "http://vmedu196.mtacloud.co.il/register";
+    public static final String LOGIN_PATH = "http://vmedu196.mtacloud.co.il/login";
+    public static final String ADD_DOG_PATH = "http://vmedu196.mtacloud.co.il/dogs";
+
 
     public static final String GET_REVIEWS_REQUEST_TYPE = "GET_REVIEWS";
     public static final String DELETE_REVIEWS_REQUEST_TYPE = "DELETE_REVIEW";
@@ -17,8 +21,10 @@ public class Constants {
 
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
-    public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9003;
     public static final int CAMERA_REQUEST_CODE = 100;
+
+    public static final String SHAREDPREF_NAME = "SHAREDDB";
+
 
 
 
