@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="google_maps_key">string1</string>
     <string name="app_name">Dog Mate</string>
     <string name="menuString">Dog Owners Social Media</string>
 
@@ -42,6 +43,12 @@
     <string name="revComment">Let us know More:</string>
     <string name="reatePlace">Rate Location</string>
     <string name="Reviews">Location Reviews</string>
+    <string name="dog_item_name">Name:</string>
+    <string name="dog_item_city">City:</string>
+    <string name="dog_item_neighborhood">Neighborhood:</string>
+    <string name="dog_item_size">Size:</string>
+    <string name="dog_item_breed">Breed:</string>
+    <string name="dog_item_temperament">Temperament:</string>
 
     <string-array name="categories_array">
         <item>Nature</item>

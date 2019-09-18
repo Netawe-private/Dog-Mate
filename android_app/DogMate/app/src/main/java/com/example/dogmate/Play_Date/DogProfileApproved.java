@@ -36,7 +36,7 @@ public class DogProfileApproved extends AppCompatActivity {
         searchDog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DogProfileApproved.this, AddNewDog.class );
+                Intent intent = new Intent(DogProfileApproved.this, SearchActivity.class );
                 startActivity(intent);
             }
         });

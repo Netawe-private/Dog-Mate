@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../DogMate.iml" filepath="$PROJECT_DIR$/../DogMate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DogMate-app.iml" filepath="$PROJECT_DIR$/DogMate-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../android_app-DogMate.iml" filepath="$PROJECT_DIR$/../android_app-DogMate.iml" />
       <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" />
     </modules>
   </component>

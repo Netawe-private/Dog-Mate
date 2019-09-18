@@ -46,7 +46,7 @@ public class SelectProfileCreationOrSearch extends AppCompatActivity {
         mFindPlayDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectProfileCreationOrSearch.this, AddNewDog.class );
+                Intent intent = new Intent(SelectProfileCreationOrSearch.this, SearchActivity.class );
                 startActivity(intent);
             }
         });
