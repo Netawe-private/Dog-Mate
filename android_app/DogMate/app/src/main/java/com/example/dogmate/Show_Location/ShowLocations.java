@@ -31,6 +31,7 @@ import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.Play_Date.AddNewDog;
+import com.example.dogmate.Play_Date.SelectProfileCreationOrSearch;
 import com.example.dogmate.R;
 import com.example.dogmate.Scan_Location.LocationDetails;
 import com.example.dogmate.Scan_Location.ScanLocation;
@@ -158,6 +159,9 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                 startActivity(nextActivity);
                 break;
             case R.id.nav_matching:
+                navigationView.setCheckedItem(R.id.nav_add_dog);
+                nextActivity = new Intent(ShowLocations.this, SelectProfileCreationOrSearch.class);
+                startActivity(nextActivity);
                 break;
 
             case R.id.nav_barcode:
