@@ -238,7 +238,6 @@ public class AddLocation  extends AppCompatActivity {
                                         lng, shadowLevelEnt, shadowPlace, sittingInside);
                     }
                     break;
-
                 case "Nature":
                     String shadowLevelNature = String.valueOf(natureFrag.getShadowLevelRatingNatureRatingBar());
                     boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();

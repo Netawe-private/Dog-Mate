@@ -52,7 +52,7 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
         mVolleyService = new VolleyService(mResultCallback,this);
         mScannerView = new ZXingScannerView(this);
         askForCameraPermissions();
-        //onActivityStart();
+        onActivityStart();
 
     }
 
@@ -93,9 +93,6 @@ public class ScanLocation extends AppCompatActivity implements ZXingScannerView.
             public void notifyError(String requestType, VolleyError error) {
                 Log.d(TAG, "Volley requester " + requestType);
                 Log.d(TAG, "Volley JSON post error: " + error);
-                Toast errorMessage = Toast.makeText(getApplicationContext(),
-                        "an error occurred", Toast.LENGTH_SHORT);
-                errorMessage.show();
             }
 
             @Override
