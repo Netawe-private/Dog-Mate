@@ -44,37 +44,12 @@
 
 
     </RelativeLayout>
-    <TextView
-        android:id="@+id/textViewLocationReviews"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/Reviews"
-        android:textColor="@color/quantum_deeppurple900"
-        android:textSize="16sp" />
-
-    <ScrollView
-        android:id="@+id/reviewScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="238dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="7dp">
-
-        <LinearLayout
-            android:id="@+id/reviewLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        </LinearLayout>
-    </ScrollView>
 
     <TextView
         android:id="@+id/textViewRateLoc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_marginTop="12dp"
         android:textColor="@color/quantum_deeppurple900"
         android:text="@string/reatePlace"
         android:gravity="center"
@@ -131,7 +106,30 @@
             android:text="@string/deleteLocationButton"
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"></androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/textViewLocationReviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="@string/Reviews"
+        android:textColor="@color/quantum_deeppurple900"
+        android:textSize="16sp" />
+
+    <ScrollView
+        android:id="@+id/reviewScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="238dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="7dp">
+
+        <LinearLayout
+            android:id="@+id/reviewLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

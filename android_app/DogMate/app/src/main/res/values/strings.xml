@@ -43,6 +43,7 @@
     <string name="revComment">Let us know More:</string>
     <string name="reatePlace">Rate Location</string>
     <string name="Reviews">Location Reviews</string>
+    <string name="noReviews">"No Review yet. Be the first to rate!</string>
     <string name="dog_item_name">Name:</string>
     <string name="dog_item_city">City:</string>
     <string name="dog_item_neighborhood">Neighborhood:</string>

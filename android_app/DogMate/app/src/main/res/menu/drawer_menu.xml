@@ -13,12 +13,8 @@
             android:icon="@drawable/show_location_24dp"
             android:title="Find Dog Frienly Location" />
         <item
-            android:id="@+id/nav_add_dog"
-            android:icon="@drawable/ic_pets_blue_24dp"
-            android:title="Add Your Dog" />
-        <item
             android:id="@+id/nav_matching"
-            android:icon="@drawable/ic_group_black_24dp"
+            android:icon="@drawable/ic_pets_blue_24dp"
             android:title="Find a Play Date For your Dog" />
     </group>
 

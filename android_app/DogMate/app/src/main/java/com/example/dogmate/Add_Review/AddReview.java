@@ -67,8 +67,6 @@ public class AddReview extends AppCompatActivity {
     String username;
     private String TAG = "AddReviewActivity";
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -121,11 +119,25 @@ public class AddReview extends AppCompatActivity {
     public void onAddReviewToLocation(View view){
         String reviewCommentText = reviewComment.getText().toString();
         String reviewRatingAmount = String.valueOf(reviewRating.getRating());
-        JSONObject requestJson = JsonHelperService.createAddReviewRequestJson(locationId,
-                                        reviewCommentText, reviewRatingAmount, username );
-        mVolleyService.postDataStringResponseVolley(ADD_REVIEWS_REQUEST_TYPE,
-                ADD_REVIEW_PATH,
-                requestJson, credentials);
+        if (validateRatingField(reviewRatingAmount)) {
+            JSONObject requestJson = JsonHelperService.createAddReviewRequestJson(locationId,
+                    reviewCommentText, reviewRatingAmount, username);
+            mVolleyService.postDataStringResponseVolley(ADD_REVIEWS_REQUEST_TYPE,
+                    ADD_REVIEW_PATH,
+                    requestJson, credentials);
+        }
+    }
+
+    public boolean validateRatingField(String rating){
+        if (Float.parseFloat(rating) == 0.0){
+            Toast noRatingMessage = Toast.makeText(getApplicationContext(),
+                    "Please submit a rating before sending a review", Toast.LENGTH_SHORT);
+            noRatingMessage.show();
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     public void setLocationNameRatingAndAddress(String name, String address){
@@ -135,90 +147,91 @@ public class AddReview extends AppCompatActivity {
 
     public void addReviewsToView(JSONArray locationReviews){
         JSONArray reviewsArray = locationReviews;
+        TextView noReview = findViewById(R.id.textViewLocationReviews);
+        reviewLayout.removeAllViews();
         if (reviewsArray.length() == 0){
-            TextView noReview = findViewById(R.id.textViewLocationReviews);
-            noReview.setText("No Review yet. Be the first to rate!");
+            noReview.setText(R.string.noReviews);
         }
         else{
-        reviewLayout.removeAllViews();
-        for (int n = 0; n < reviewsArray.length(); n++)
-            {
-                try {
-                    JSONObject reviewObject = reviewsArray.getJSONObject(n);
-                    LinearLayout reviewBlock = new LinearLayout(this);
-                    LinearLayout.LayoutParams reviewBlockParams = new LinearLayout.LayoutParams
-                                                            (LinearLayout.LayoutParams.MATCH_PARENT,
-                                                            LinearLayout.LayoutParams.WRAP_CONTENT);
-                    reviewBlockParams.setMargins(0,0,0,15);
-                    reviewBlock.setOrientation(LinearLayout.VERTICAL);
-                    reviewBlock.setLayoutParams(reviewBlockParams);
+            noReview.setText(R.string.Reviews);
+            for (int n = 0; n < reviewsArray.length(); n++)
+                {
+                    try {
+                        JSONObject reviewObject = reviewsArray.getJSONObject(n);
+                        LinearLayout reviewBlock = new LinearLayout(this);
+                        LinearLayout.LayoutParams reviewBlockParams = new LinearLayout.LayoutParams
+                                                                (LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        reviewBlockParams.setMargins(0,0,0,15);
+                        reviewBlock.setOrientation(LinearLayout.VERTICAL);
+                        reviewBlock.setLayoutParams(reviewBlockParams);
 
-                    LinearLayout nameBlock = new LinearLayout(this);
-                    nameBlock.setLayoutParams(reviewBlockParams);
-                    nameBlock.setOrientation(LinearLayout.HORIZONTAL);
+                        LinearLayout nameBlock = new LinearLayout(this);
+                        nameBlock.setLayoutParams(reviewBlockParams);
+                        nameBlock.setOrientation(LinearLayout.HORIZONTAL);
 
-                    TextView reviewerName = new TextView(this);
-                    reviewerName.setPadding(40,10,10,10);
-                    reviewerName.setText(reviewObject.getString("username"));
-                    nameBlock.addView(reviewerName);
+                        TextView reviewerName = new TextView(this);
+                        reviewerName.setPadding(40,10,10,10);
+                        reviewerName.setText(reviewObject.getString("username"));
+                        nameBlock.addView(reviewerName);
 
-                    TextView reviewDate = new TextView(this);
-                    String dateTime = reviewObject.getString("createdAt");
-                    reviewDate.setText(reviewDateTimeFormat(dateTime));
-                    reviewDate.setPadding(30,30, 0,15);
-                    nameBlock.addView(reviewDate);
-                    reviewBlock.addView(nameBlock);
+                        TextView reviewDate = new TextView(this);
+                        String dateTime = reviewObject.getString("createdAt");
+                        reviewDate.setText(reviewDateTimeFormat(dateTime));
+                        reviewDate.setPadding(30,30, 0,15);
+                        nameBlock.addView(reviewDate);
+                        reviewBlock.addView(nameBlock);
 
-                    LinearLayout ratingBlock = new LinearLayout(this);
-                    ratingBlock.setLayoutParams(reviewBlockParams);
-                    ratingBlock.setOrientation(LinearLayout.HORIZONTAL);
+                        LinearLayout ratingBlock = new LinearLayout(this);
+                        ratingBlock.setLayoutParams(reviewBlockParams);
+                        ratingBlock.setOrientation(LinearLayout.HORIZONTAL);
 
-                    RatingBar reviewRating = new RatingBar(this);
-                    reviewRating.setRating(Float.valueOf(reviewObject.getString("reviewRank")));
-                    reviewRating.setNumStars(5);
-                    reviewRating.setIsIndicator(true);
-                    reviewRating.setPadding(20,0,0,0);
-                    ratingBlock.addView(reviewRating);
+                        RatingBar reviewRating = new RatingBar(this);
+                        reviewRating.setRating(Float.valueOf(reviewObject.getString("reviewRank")));
+                        reviewRating.setNumStars(5);
+                        reviewRating.setIsIndicator(true);
+                        reviewRating.setPadding(20,0,0,0);
+                        ratingBlock.addView(reviewRating);
 
-                    TextView reviewLikes = new TextView(this);
-                    int numberOfLikes = calculateNumberOfLikes(reviewObject.getJSONArray("commentList"));
-                    reviewLikes.setText(String.valueOf(numberOfLikes));
-                    reviewLikes.setPadding(30,30, 0,15);
-                    reviewLikes.setTag(reviewObject.getString("reviewId"));
-                    ratingBlock.addView(reviewLikes);
-                    reviewBlock.addView(ratingBlock);
+                        TextView reviewLikes = new TextView(this);
+                        int numberOfLikes = calculateNumberOfLikes(reviewObject.getJSONArray("commentList"));
+                        reviewLikes.setText(String.valueOf(numberOfLikes));
+                        reviewLikes.setPadding(30,30, 0,15);
+                        reviewLikes.setTag(reviewObject.getString("reviewId"));
+                        ratingBlock.addView(reviewLikes);
+                        reviewBlock.addView(ratingBlock);
 
-                    ImageButton likeButton = new ImageButton(this );
-                    ImageButton deleteButton = new ImageButton(this );
-                    likeButton.setImageResource(R.drawable.thumb_up_24dp);
-                    deleteButton.setImageResource(R.drawable.ic_delete_black_24dp);
-                    LinearLayout.LayoutParams iconButtonParams = new LinearLayout.LayoutParams
-                            (LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                    iconButtonParams.setMargins(30,0,0,0);
-                    deleteButton.setLayoutParams(iconButtonParams);
-                    likeButton.setLayoutParams(iconButtonParams);
-                    likeButton.setOnClickListener(likeButtonOnClickListener);
-                    deleteButton.setOnClickListener(deleteButtonOnClickListener);
-                    deleteButton.setTag(reviewObject.getString("reviewId"));
-                    likeButton.setTag(reviewObject.getString("reviewId"));
-                    ratingBlock.addView(likeButton);
-                    ratingBlock.addView(deleteButton);
+                        ImageButton likeButton = new ImageButton(this );
+                        ImageButton deleteButton = new ImageButton(this );
+                        likeButton.setImageResource(R.drawable.thumb_up_24dp);
+                        deleteButton.setImageResource(R.drawable.ic_delete_black_24dp);
+                        LinearLayout.LayoutParams iconButtonParams = new LinearLayout.LayoutParams
+                                (LinearLayout.LayoutParams.WRAP_CONTENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                        iconButtonParams.setMargins(30,0,0,0);
+                        deleteButton.setLayoutParams(iconButtonParams);
+                        likeButton.setLayoutParams(iconButtonParams);
+                        likeButton.setOnClickListener(likeButtonOnClickListener);
+                        deleteButton.setOnClickListener(deleteButtonOnClickListener);
+                        deleteButton.setTag(reviewObject.getString("reviewId"));
+                        likeButton.setTag(reviewObject.getString("reviewId"));
+                        ratingBlock.addView(likeButton);
+                        ratingBlock.addView(deleteButton);
 
 
-                    TextView reviewComment =new TextView(this);
-                    reviewComment.setText(reviewObject.getString("reviewContent"));
-                    reviewComment.setPadding(30,0,10,10);
-                    reviewComment.setLayoutParams(reviewBlockParams);
-                    reviewBlock.addView(reviewComment);
+                        TextView reviewComment =new TextView(this);
+                        reviewComment.setText(reviewObject.getString("reviewContent"));
+                        reviewComment.setPadding(30,0,10,10);
+                        reviewComment.setLayoutParams(reviewBlockParams);
+                        reviewBlock.addView(reviewComment);
 
-                    reviewLayout.addView(reviewBlock);
+                        reviewLayout.addView(reviewBlock);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
     }
 
     private View.OnClickListener likeButtonOnClickListener = new View.OnClickListener() {

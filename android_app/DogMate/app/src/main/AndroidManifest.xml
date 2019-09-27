@@ -12,14 +12,21 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".Play_Date.SelectProfileCreationOrSearch">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dogmate.Show_Location.ShowLocations" />
         </activity>
-        <activity android:name=".Play_Date.SearchActivity"/>
+        <activity android:name=".Play_Date.SearchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dogmate.Play_Date.SelectProfileCreationOrSearch" />
+        </activity>
 	    <activity android:name=".Play_Date.DogProfileApproved"></activity>
         <activity android:name=".Play_Date.AddNewDog" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.dogmate.Show_Location.ShowLocations" />
+                android:value="com.example.dogmate.Play_Date.SelectProfileCreationOrSearch" />
         </activity>
         <activity android:name=".Login.RegistrationApproved" >
             <meta-data

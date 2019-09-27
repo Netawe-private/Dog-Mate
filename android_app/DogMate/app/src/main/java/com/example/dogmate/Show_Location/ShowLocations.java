@@ -88,6 +88,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
         initVolleyCallback();
+        //getLocationPermission();
         mVolleyService = new VolleyService(mResultCallback,this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -99,7 +100,6 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getLocationPermission();
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -153,13 +153,8 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                 nextActivity = new Intent(ShowLocations.this, ShowLocations.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.nav_add_dog:
-                navigationView.setCheckedItem(R.id.nav_add_dog);
-                nextActivity = new Intent(ShowLocations.this, AddNewDog.class);
-                startActivity(nextActivity);
-                break;
             case R.id.nav_matching:
-                navigationView.setCheckedItem(R.id.nav_add_dog);
+                navigationView.setCheckedItem(R.id.nav_matching);
                 nextActivity = new Intent(ShowLocations.this, SelectProfileCreationOrSearch.class);
                 startActivity(nextActivity);
                 break;
@@ -179,23 +174,18 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
     public void onMapReady(GoogleMap googleMap) {
         mLocationsMap = googleMap;
         mLocationsMap.setOnInfoWindowClickListener(this);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            return;
         }
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-            Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-            if (userLocation != null){
-                mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
-            }
-        }
+
+        Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+        mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+
+
     }
 
     public void onSearchLocationButton(View v){
