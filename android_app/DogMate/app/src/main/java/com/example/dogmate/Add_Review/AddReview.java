@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -298,8 +299,14 @@ public class AddReview extends AppCompatActivity {
                 Log.d(TAG, "Volley requester " + requestType);
                 Log.d(TAG, "Volley JSON post error: " + error);
                 String message;
-                if (requestType.equalsIgnoreCase(DELETE_LOCATION_REQUEST_TYPE)){
-                    message = mVolleyService.parseVolleyError(error);
+                String responseBody = "";
+                try {
+                    responseBody = new String(error.networkResponse.data, "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                if (requestType.equalsIgnoreCase(DELETE_LOCATION_REQUEST_TYPE) && responseBody.contains("Unauthorized")){
+                    message = "Only system admin is authorized to delete locations";
                 } else {
                     message = "Error has occurred";
                 }
@@ -355,7 +362,7 @@ public class AddReview extends AppCompatActivity {
     }
 
     private String reviewDateTimeFormat(String dateTime){
-        String retunDate = dateTime.replace("T", " ").split("\\+")[0] ;
+        String returnDate = dateTime.replace("T", " ").split("\\+")[0] ;
         String format = "yyyy-MM-dd HH:mm:ss";
 
         try {
@@ -365,12 +372,11 @@ public class AddReview extends AppCompatActivity {
 
             SimpleDateFormat phoneTimeFormatter = new SimpleDateFormat(format);
             phoneTimeFormatter.setTimeZone(TimeZone.getDefault());
-            retunDate = phoneTimeFormatter.format(reviewDate);
+            returnDate = phoneTimeFormatter.format(reviewDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return retunDate;
-                //dateTime.replace("T", " ").split("\\+")[0];
+        return returnDate;
     }
 
     private void sendGetReviewsRequest(){

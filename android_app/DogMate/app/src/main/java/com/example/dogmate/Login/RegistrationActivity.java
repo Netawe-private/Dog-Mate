@@ -80,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-//        lnkImageImageView.setOnClickListener(this);
+       lnkImageImageView.setOnClickListener(this);
 //
 //        //validations of all fields
 //        createAccount.setOnClickListener(new View.OnClickListener() {

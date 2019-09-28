@@ -19,11 +19,13 @@ public class Constants {
     public static final String ADD_REVIEWS_REQUEST_TYPE = "ADD_REVIEW";
     public static final String DELETE_LOCATION_REQUEST_TYPE ="DELETE_LOCATION";
 
-
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
     public static final int CAMERA_REQUEST_CODE = 100;
 
     public static final String SHAREDPREF_NAME = "SHAREDDB";
+    public static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 101;
+    public static final int MY_PERMISSION_REQUEST_COARSE_LOCATION = 102;
+
 
 
 

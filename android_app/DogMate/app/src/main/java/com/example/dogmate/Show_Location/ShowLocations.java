@@ -30,7 +30,6 @@ import com.example.dogmate.Add_Location.AddLocation;
 import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
-import com.example.dogmate.Play_Date.AddNewDog;
 import com.example.dogmate.Play_Date.SelectProfileCreationOrSearch;
 import com.example.dogmate.R;
 import com.example.dogmate.Scan_Location.LocationDetails;
@@ -46,8 +45,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -58,6 +55,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.dogmate.Constants.MY_PERMISSION_REQUEST_COARSE_LOCATION;
+import static com.example.dogmate.Constants.MY_PERMISSION_REQUEST_FINE_LOCATION;
 import static com.example.dogmate.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.dogmate.Constants.SEARCH_LOCATION_PATH;
 import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
@@ -88,7 +87,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
         initVolleyCallback();
-        //getLocationPermission();
+        getLocationPermission();
         mVolleyService = new VolleyService(mResultCallback,this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -136,7 +135,6 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -176,16 +174,13 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         mLocationsMap.setOnInfoWindowClickListener(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+            mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+            //return;
         }
-
-        Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-        mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
-
-
     }
 
     public void onSearchLocationButton(View v){
@@ -319,14 +314,31 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            case MY_PERMISSION_REQUEST_FINE_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted
                     mLocationPermissionGranted = true;
+                    zoomMapToUSerLocation();
+                } else {
+                    //permission denied
+                    mLocationPermissionGranted = false;
+                    Toast.makeText(getApplicationContext(), "This app requires location permission to be granted", Toast.LENGTH_SHORT).show();
                 }
-            }
+                break;
+            case MY_PERMISSION_REQUEST_COARSE_LOCATION:
+                // do something for coarse location
+                break;
+        }
+    }
+    public void zoomMapToUSerLocation(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+            mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
         }
     }
 }

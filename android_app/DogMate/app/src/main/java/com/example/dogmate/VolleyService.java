@@ -213,7 +213,6 @@ public class VolleyService {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 try {
                     Map<String, String> headers  = new HashMap<>();
-                    //String credentials = "x1234:ezjLSVmdQg98nFmH";
                     String auth = "Basic "
                             + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                     headers.put("Content-Type", "application/json");
@@ -254,7 +253,7 @@ public class VolleyService {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     try {
                         Map<String, String> headers  = new HashMap<>();
-                        String credentials = "x1234:ezjLSVmdQg98nFmH";
+                        //String credentials = "x1234:ezjLSVmdQg98nFmH";
                         String auth = "Basic "
                                 + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                         headers.put("Content-Type", "application/json");

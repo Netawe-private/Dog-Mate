@@ -39,7 +39,7 @@
     <string name="title_activity_show_locations">Map</string>
     <string name="SearchForPlaces">Search For Places</string>
     <string name="searchPlaceHint">i.e. Dog park Dubnov</string>
-    <string name="ShowLoc">Show Location</string>
+    <string name="ShowLoc">Show Locations</string>
     <string name="revComment">Let us know More:</string>
     <string name="reatePlace">Rate Location</string>
     <string name="Reviews">Location Reviews</string>
