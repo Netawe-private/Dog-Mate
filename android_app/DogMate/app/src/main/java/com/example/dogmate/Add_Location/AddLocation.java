@@ -28,6 +28,7 @@ import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
 import com.example.dogmate.VolleyService;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -136,41 +137,38 @@ public class AddLocation  extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCategory = categoriesAutoCom.getText().toString();
                 String[] categories = getResources().getStringArray(R.array.categories_array);
+                subCategoriesAutoCom.setText(null);
                 if (selectedCategory.equals(categories[0])) {
-                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(natureAdapter);
                     natureFrag = new AddLocationFragmentNature();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
                             natureFrag, "Nature").commit();
 
                 } else if (selectedCategory.equals(categories[1])) {
-                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(dogParkAdapter);
                     parksFrag = new AddLocationFragmentParks();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
                             parksFrag, "Dog Park").commit();
 
                 } else if (selectedCategory.equals(categories[2])) {
-                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(serviceAdapter);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[3])) {
-                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(vacationAdapter);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_add_location,
                             new Fragment()).commit();
                     addListenerOnSubCategoriesSpinnerItemSelection();
 
                 } else if (selectedCategory.equals(categories[4])) {
-                    subCategoriesAutoCom.setText(R.string.chooseSubCat);
                     subCategoriesAutoCom.setAdapter(entertainmentAdapter);
                     entertainmentFrag = new AddLocationFragmentEntertainment();
                     getSupportFragmentManager().beginTransaction().replace(fragment_container_add_location,
                             entertainmentFrag, "Entertainment").commit();
                 }
+                subCategoriesAutoCom.showDropDown();
             }
 
         });
@@ -316,13 +314,6 @@ public class AddLocation  extends AppCompatActivity {
 
     public boolean validateFields(){
         Toast errorMessage;
-        if (categoriesAutoCom.getText().toString().equalsIgnoreCase(getString(R.string.chooseCat))
-            && subCategoriesAutoCom.getText().toString().equalsIgnoreCase(getString(R.string.chooseSubCat))){
-            errorMessage = Toast.makeText(getApplicationContext(),
-                    getString(R.string.noCategoryChosen), Toast.LENGTH_SHORT);
-            errorMessage.show();
-            return false;
-        }
         String name = listener.getSelectedPlaceName();
         String address = listener.getSelectedPlaceAddress();
         if (name == null || address == null) {
@@ -332,17 +323,53 @@ public class AddLocation  extends AppCompatActivity {
             return false;
         }
 
-        return true;
+        if (categoriesAutoCom.getText().toString().equals("")
+            || subCategoriesAutoCom.getText().toString().equals("") ||
+                subCategoriesAutoCom.getText().toString().equalsIgnoreCase(null)){
+            errorMessage = Toast.makeText(getApplicationContext(),
+                    getString(R.string.noCategoryChosen), Toast.LENGTH_SHORT);
+            errorMessage.show();
+            return false;
+        } else {
+            switch (categoriesAutoCom.getText().toString()){
+                case "Nature":
+                    if (Arrays.asList(getResources().getStringArray(R.array.nature_array))
+                                            .contains(subCategoriesAutoCom.getText().toString())){
+                        return true;
+                    }
+                    break;
+                case "Dog Parks":
+                    if (Arrays.asList(getResources().getStringArray(R.array.dog_parks_array))
+                            .contains(subCategoriesAutoCom.getText().toString())){
+                        return true;
+                    }
+                    break;
+                case "Services":
+                    if (Arrays.asList(getResources().getStringArray(R.array.services_array))
+                            .contains(subCategoriesAutoCom.getText().toString())){
+                        return true;
+                    }
+                    break;
+                case "Vacation":
+                    if (Arrays.asList(getResources().getStringArray(R.array.vacation_array))
+                            .contains(subCategoriesAutoCom.getText().toString())){
+                        return true;
+                    }
+                    break;
+                case "Entertainment":
+                    if (Arrays.asList(getResources().getStringArray(R.array.entertainment_array))
+                            .contains(subCategoriesAutoCom.getText().toString())){
+                        return true;
+                    }
+                    break;
+            }
+            errorMessage = Toast.makeText(getApplicationContext(),
+                    getString(R.string.incorrectCategoryChosen), Toast.LENGTH_SHORT);
+            errorMessage.show();
+            return false;
+        }
     }
 
-    public String generateQRStringForBackend(Bitmap myBitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
-
-    }
 
     void initVolleyCallback(){
         mResultCallback = new IResult() {

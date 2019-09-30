@@ -33,6 +33,7 @@
     <string name="chooseCat">Choose Category</string>
     <string name="chooseSubCat">Choose Subcategory</string>
     <string name="noCategoryChosen">You need to choose a category and subcategory</string>
+    <string name="incorrectCategoryChosen">Incorrect Subcategory Selected!</string>
     <string name="addReviewButton">Add your review</string>
     <string name="goToReviewPage">Go To Reviews Page</string>
     <string name="deleteLocationButton">Delete Location</string>

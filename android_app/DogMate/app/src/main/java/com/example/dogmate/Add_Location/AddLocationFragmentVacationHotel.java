@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.dogmate.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class AddLocationFragmentVacationHotel extends Fragment {
 
@@ -20,6 +21,7 @@ public class AddLocationFragmentVacationHotel extends Fragment {
     CheckBox isFoodAroundHotel;
     RatingBar hotelStars;
     RatingBar priceLevel;
+    TextInputLayout textInputLayoutAdditionalServicesHotel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class AddLocationFragmentVacationHotel extends Fragment {
         isFoodAroundHotel = rootView.findViewById(R.id.isFoodAroundHotel);
         hotelStars = rootView.findViewById(R.id.hotelStars);
         priceLevel = rootView.findViewById(R.id.hotelPriceLevel);
+        textInputLayoutAdditionalServicesHotel = rootView.findViewById(R.id.textInputLayoutAdditionalServicesHotel);
 
         if (getArguments() != null){
             setParametersVacationHotel(getArguments().getString("vacationAdditionalServices"),
@@ -78,10 +81,15 @@ public class AddLocationFragmentVacationHotel extends Fragment {
         }
         this.isFoodAroundHotel.setEnabled(false);
 
-        if (vacationAdditionalServices != null) {
+        if (vacationAdditionalServices != null && !vacationAdditionalServices.equals("")) {
             this.editTextAddionalServicesHotel.setText(vacationAdditionalServices);
+            this.editTextAddionalServicesHotel.setTextColor(getResources().getColor(R.color.quantum_black_text));
+            this.textInputLayoutAdditionalServicesHotel.setEnabled(false);
+            this.editTextAddionalServicesHotel.setEnabled(false);
         }
-        editTextAddionalServicesHotel.setEnabled(false);
+        else {
+            this.textInputLayoutAdditionalServicesHotel.setVisibility(View.GONE);
+        }
 
         if (vacationRating != null){
             this.hotelStars.setRating(Float.valueOf(vacationRating));

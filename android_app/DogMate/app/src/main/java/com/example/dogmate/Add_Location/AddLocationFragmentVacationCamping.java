@@ -12,12 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.dogmate.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class AddLocationFragmentVacationCamping extends Fragment {
     EditText editTextAdditionalServices;
     CheckBox nextToBeachCamping;
     CheckBox isFoodAroundCamping;
     RatingBar priceLevel;
+    TextInputLayout textInputLayoutAdditionalServicesCamping;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class AddLocationFragmentVacationCamping extends Fragment {
         nextToBeachCamping = rootView.findViewById(R.id.nextToBeachCamping);
         isFoodAroundCamping = rootView.findViewById(R.id.isFoodAroundCamping);
         priceLevel = rootView.findViewById(R.id.campingPriceLevel);
+        textInputLayoutAdditionalServicesCamping = rootView.findViewById(R.id.textInputLayoutAdditionalServicesCamping);
 
         if (getArguments() != null){
             setParametersVacationCamping(getArguments().getString("vacationAdditionalServices"),
@@ -64,10 +67,16 @@ public class AddLocationFragmentVacationCamping extends Fragment {
         }
         this.isFoodAroundCamping.setEnabled(false);
 
-        if (vacationAdditionalServices != null) {
+        if (vacationAdditionalServices != null && !vacationAdditionalServices.equals("")) {
             this.editTextAdditionalServices.setText(vacationAdditionalServices);
+            this.editTextAdditionalServices.setTextColor(getResources().getColor(R.color.quantum_black_text));
+            this.editTextAdditionalServices.setEnabled(false);
+            this.textInputLayoutAdditionalServicesCamping.setEnabled(false);
         }
-        editTextAdditionalServices.setEnabled(false);
+        else {
+            this.textInputLayoutAdditionalServicesCamping.setVisibility(View.GONE);
+
+        }
 
         if (priceLevel != null){
             this.priceLevel.setRating(Float.valueOf(priceLevel));

@@ -26,6 +26,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutTreatmentVet"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:hint="@string/treatmentHint"

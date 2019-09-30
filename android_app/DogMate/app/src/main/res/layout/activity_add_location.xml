@@ -12,7 +12,6 @@
         android:id="@+id/include"
         layout="@layout/toolbar" />
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -59,14 +58,20 @@
             android:layout_height="wrap_content"
             android:padding="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scrollbarFadeDuration="3"
+        android:scrollbarThumbVertical="@drawable/scrollview_thumb"
+        android:scrollbarTrackVertical="@drawable/vertical_scrollview_track">
 
     <FrameLayout
         android:id="@+id/fragment_container_add_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp">
+        android:layout_marginLeft="5dp">
     </FrameLayout>
-
+    </ScrollView>
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,6 +80,5 @@
         android:onClick="onClickSaveLocation"
         android:text="@string/addLocText"
         android:textAppearance="@style/TextAppearance.AppCompat.Button" />
-
 
 </LinearLayout>
