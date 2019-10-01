@@ -174,13 +174,13 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
         mLocationsMap.setOnInfoWindowClickListener(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-            mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
-            //return;
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
+        Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+        mLocationsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
     }
 
     public void onSearchLocationButton(View v){
@@ -196,7 +196,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
     public boolean validateField(AutoCompleteTextView textInput){
         String locationSearch = textInput.getText().toString();
         if (locationSearch.isEmpty()) {
-            Toast errorMessage = Toast.makeText(this, "Please enter a category", Toast.LENGTH_SHORT);
+            Toast errorMessage = Toast.makeText(this, "Please enter a category", Toast.LENGTH_LONG);
             errorMessage.show();
             return false;
         }
@@ -229,7 +229,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                     }
                     else {
                         Toast successMessage = Toast.makeText(getApplicationContext(),
-                                "No locations found! Want to add one?", Toast.LENGTH_SHORT);
+                                "No locations found! Want to add one?", Toast.LENGTH_LONG);
                         successMessage.show();
                     }
                 } catch (JSONException e) {
@@ -324,7 +324,7 @@ public class ShowLocations extends AppCompatActivity implements NavigationView.O
                 } else {
                     //permission denied
                     mLocationPermissionGranted = false;
-                    Toast.makeText(getApplicationContext(), "This app requires location permission to be granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "This app requires location permission to be granted", Toast.LENGTH_LONG).show();
                 }
                 break;
             case MY_PERMISSION_REQUEST_COARSE_LOCATION:

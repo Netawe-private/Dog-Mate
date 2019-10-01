@@ -25,6 +25,8 @@ import com.example.dogmate.Constants;
 import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
+import com.example.dogmate.Scan_Location.LocationDetails;
+import com.example.dogmate.Show_Location.ShowLocations;
 import com.example.dogmate.VolleyService;
 import net.glxn.qrgen.android.QRCode;
 import org.json.JSONArray;
@@ -66,6 +68,7 @@ public class AddReview extends AppCompatActivity {
     VolleyService mVolleyService;
     String credentials;
     String username;
+    JSONArray reviews;
     private String TAG = "AddReviewActivity";
 
     @Override
@@ -99,7 +102,6 @@ public class AddReview extends AppCompatActivity {
             locationName = locationDetails.getString("locationName");
             locationAddress = locationDetails.getString("address");
             locationId = locationDetails.getString("locationId");
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -108,13 +110,6 @@ public class AddReview extends AppCompatActivity {
         generateAndSetQRCode(locationId);
         addReviewsToView(locationReviews);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // Checks the API level of the device
-        {
-            getWindow()
-                    .getDecorView()
-                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
     }
 
     public void onAddReviewToLocation(View view){
@@ -132,7 +127,7 @@ public class AddReview extends AppCompatActivity {
     public boolean validateRatingField(String rating){
         if (Float.parseFloat(rating) == 0.0){
             Toast noRatingMessage = Toast.makeText(getApplicationContext(),
-                    "Please submit a rating before sending a review", Toast.LENGTH_SHORT);
+                    "Please submit a rating before sending a review", Toast.LENGTH_LONG);
             noRatingMessage.show();
             return false;
         }
@@ -240,7 +235,26 @@ public class AddReview extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             String buttonId = view.getTag().toString();
-            JSONObject requestJson = JsonHelperService.createReviewHelpfulRequest(buttonId,username );
+            boolean isHelpful = false;
+            for (int i = 0; i < locationReviews.length(); i++){
+                try {
+                    JSONObject review = locationReviews.getJSONObject(i);
+                    if (review.getString("reviewId").equalsIgnoreCase(buttonId)){
+                         JSONArray reviewComments = review.getJSONArray("commentList");
+                         for (int j = 0 ; j < reviewComments.length(); j++){
+                             JSONObject reviewComment = reviewComments.getJSONObject(j);
+                             if (reviewComment.getString("username").equalsIgnoreCase(username)){
+                                 isHelpful = reviewComment.getBoolean("helpful");
+                             }
+                         }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            JSONObject requestJson = JsonHelperService.createReviewHelpfulRequest(buttonId, username, !isHelpful);
             mVolleyService.postDataStringResponseVolley(ADD_COMMENT_REVIEW_REQUEST_TYPE, REVIEW_COMMENT_PATH,
                                                             requestJson, credentials );
         }
@@ -311,7 +325,7 @@ public class AddReview extends AppCompatActivity {
                     message = "Error has occurred";
                 }
                 Toast errorMessage = Toast.makeText(getApplicationContext(),
-                        message, Toast.LENGTH_SHORT);
+                        message, Toast.LENGTH_LONG);
                 errorMessage.show();
             }
 
@@ -329,6 +343,7 @@ public class AddReview extends AppCompatActivity {
             case GET_REVIEWS_REQUEST_TYPE:
                 try {
                     JSONArray updatedLocationReviews = new JSONArray(response);
+                    locationReviews = updatedLocationReviews;
                     addReviewsToView(updatedLocationReviews);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -337,26 +352,28 @@ public class AddReview extends AppCompatActivity {
             case ADD_REVIEWS_REQUEST_TYPE:
                 sendGetReviewsRequest();
                 Toast addReviewMessage = Toast.makeText(getApplicationContext(),
-                        "Great Success! Your review was added!", Toast.LENGTH_SHORT);
+                        "Great Success! Your review was added!", Toast.LENGTH_LONG);
                 addReviewMessage.show();
                 break;
             case ADD_COMMENT_REVIEW_REQUEST_TYPE:
                 sendGetReviewsRequest();
                 Toast likeReviewMessage = Toast.makeText(getApplicationContext(),
-                        "Thank you for approving the review!", Toast.LENGTH_SHORT);
+                        "Thank you for commenting!", Toast.LENGTH_LONG);
                 likeReviewMessage.show();
                 break;
             case DELETE_REVIEWS_REQUEST_TYPE:
                 sendGetReviewsRequest();
                 Toast deleteReviewMessage = Toast.makeText(getApplicationContext(),
-                        "Review was deleted!", Toast.LENGTH_SHORT);
+                        "Review was deleted!", Toast.LENGTH_LONG);
                 deleteReviewMessage.show();
                 break;
             case DELETE_LOCATION_REQUEST_TYPE:
                 sendGetReviewsRequest();
                 Toast deleteLocationMessage = Toast.makeText(getApplicationContext(),
-                        "Location is marked as deleted and will no be shown in the future", Toast.LENGTH_SHORT);
+                        "Location is marked as deleted and will no be shown in the future", Toast.LENGTH_LONG);
                 deleteLocationMessage.show();
+                Intent intent = new Intent(AddReview.this, ShowLocations.class);
+                startActivity(intent);
 
         }
     }

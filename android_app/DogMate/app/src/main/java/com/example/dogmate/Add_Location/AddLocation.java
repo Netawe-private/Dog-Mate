@@ -318,7 +318,7 @@ public class AddLocation  extends AppCompatActivity {
         String address = listener.getSelectedPlaceAddress();
         if (name == null || address == null) {
             errorMessage = Toast.makeText(getApplicationContext(),
-                    "Name field is empty!", Toast.LENGTH_SHORT);
+                    "Name field is empty!", Toast.LENGTH_LONG);
             errorMessage.show();
             return false;
         }
@@ -327,7 +327,7 @@ public class AddLocation  extends AppCompatActivity {
             || subCategoriesAutoCom.getText().toString().equals("") ||
                 subCategoriesAutoCom.getText().toString().equalsIgnoreCase(null)){
             errorMessage = Toast.makeText(getApplicationContext(),
-                    getString(R.string.noCategoryChosen), Toast.LENGTH_SHORT);
+                    getString(R.string.noCategoryChosen), Toast.LENGTH_LONG);
             errorMessage.show();
             return false;
         } else {
@@ -364,7 +364,7 @@ public class AddLocation  extends AppCompatActivity {
                     break;
             }
             errorMessage = Toast.makeText(getApplicationContext(),
-                    getString(R.string.incorrectCategoryChosen), Toast.LENGTH_SHORT);
+                    getString(R.string.incorrectCategoryChosen), Toast.LENGTH_LONG);
             errorMessage.show();
             return false;
         }
@@ -378,7 +378,7 @@ public class AddLocation  extends AppCompatActivity {
                 Log.d(TAG, "Volley requester " + requestType);
                 Log.d(TAG, "Volley JSON post" + response);
                 Toast approvalMessage = Toast.makeText(getApplicationContext(),
-                        "Your Location saved", Toast.LENGTH_SHORT);
+                        "Your Location saved", Toast.LENGTH_LONG);
                 approvalMessage.show();
             }
 
@@ -394,7 +394,7 @@ public class AddLocation  extends AppCompatActivity {
                     message = "An error occurred";
                 }
                 Toast errorMessage = Toast.makeText(getApplicationContext(),
-                        message, Toast.LENGTH_SHORT);
+                        message, Toast.LENGTH_LONG);
                 errorMessage.show();
             }
 
@@ -403,7 +403,7 @@ public class AddLocation  extends AppCompatActivity {
                 Log.d(TAG, "Volley requester " + requestType);
                 Log.d(TAG, "Volley JSON post" + response);
                 Toast approvalMessage = Toast.makeText(getApplicationContext(),
-                        "Your Location saved", Toast.LENGTH_SHORT);
+                        "Your Location saved", Toast.LENGTH_LONG);
                 approvalMessage.show();
             }
         };

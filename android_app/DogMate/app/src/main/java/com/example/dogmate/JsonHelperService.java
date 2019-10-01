@@ -47,12 +47,12 @@ public class JsonHelperService {
         return returnJson;
     }
 
-    public static JSONObject createReviewHelpfulRequest(String reviewId, String username){
+    public static JSONObject createReviewHelpfulRequest(String reviewId, String username, boolean isHelpful){
         JSONObject returnJson = new JSONObject();
         try {
             returnJson.put("reviewId", reviewId);
             returnJson.put("username", username);
-            returnJson.put("helpful", true);
+            returnJson.put("helpful", isHelpful);
             returnJson.put("comment", "");
 
         } catch (JSONException e) {
