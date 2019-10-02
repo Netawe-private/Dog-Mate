@@ -68,7 +68,7 @@ public class AddReview extends AppCompatActivity {
     VolleyService mVolleyService;
     String credentials;
     String username;
-    JSONArray reviews;
+    boolean isAdmin;
     private String TAG = "AddReviewActivity";
 
     @Override
@@ -88,6 +88,7 @@ public class AddReview extends AppCompatActivity {
         credentials = String.format("%s:%s",sharedPreferenceFile.getString("username", NULL),
                 sharedPreferenceFile.getString("password", NULL));
         username = sharedPreferenceFile.getString("username", NULL);
+        isAdmin = sharedPreferenceFile.getBoolean("isAdmin", false);
         reviewComment = findViewById(R.id.editTextReviewComment);
         reviewRating = findViewById(R.id.reviewRating);
         locationNameView = findViewById(R.id.textViewLocName);
@@ -108,7 +109,7 @@ public class AddReview extends AppCompatActivity {
 
         setLocationNameRatingAndAddress(locationName, locationAddress);
         generateAndSetQRCode(locationId);
-        addReviewsToView(locationReviews);
+        sendGetReviewsRequest();
 
     }
 
@@ -197,22 +198,27 @@ public class AddReview extends AppCompatActivity {
                         ratingBlock.addView(reviewLikes);
                         reviewBlock.addView(ratingBlock);
 
-                        ImageButton likeButton = new ImageButton(this );
-                        ImageButton deleteButton = new ImageButton(this );
-                        likeButton.setImageResource(R.drawable.thumb_up_24dp);
-                        deleteButton.setImageResource(R.drawable.ic_delete_black_24dp);
                         LinearLayout.LayoutParams iconButtonParams = new LinearLayout.LayoutParams
                                 (LinearLayout.LayoutParams.WRAP_CONTENT,
                                         LinearLayout.LayoutParams.WRAP_CONTENT);
                         iconButtonParams.setMargins(30,0,0,0);
-                        deleteButton.setLayoutParams(iconButtonParams);
+
+                        //add delete button only in case user is admin or wrote the comment
+                        if (isAdmin || reviewObject.getString("username").equals(username)){
+                            ImageButton deleteButton = new ImageButton(this );
+                            deleteButton.setImageResource(R.drawable.ic_delete_black_24dp);
+                            deleteButton.setLayoutParams(iconButtonParams);
+                            deleteButton.setOnClickListener(deleteButtonOnClickListener);
+                            deleteButton.setTag(reviewObject.getString("reviewId"));
+                            ratingBlock.addView(deleteButton);
+                        }
+                        ImageButton likeButton = new ImageButton(this );
+                        likeButton.setImageResource(R.drawable.thumb_up_24dp);
                         likeButton.setLayoutParams(iconButtonParams);
                         likeButton.setOnClickListener(likeButtonOnClickListener);
-                        deleteButton.setOnClickListener(deleteButtonOnClickListener);
-                        deleteButton.setTag(reviewObject.getString("reviewId"));
                         likeButton.setTag(reviewObject.getString("reviewId"));
                         ratingBlock.addView(likeButton);
-                        ratingBlock.addView(deleteButton);
+
 
 
                         TextView reviewComment =new TextView(this);
