@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.dogmate.Constants;
 import com.example.dogmate.R;
 
 import butterknife.BindView;
@@ -90,7 +91,7 @@ public class SearchActivity extends AppCompatActivity implements
     private void initViewModel() {
         mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         mSearchViewModel.setListener(this);         // The Activity sends itself as a listener to the View Model
-        String userName = getSharedPreferences("prefs_name", MODE_PRIVATE)
+        String userName = getSharedPreferences(Constants.SHAREDPREF_NAME, 0)
                 .getString("username", "");
         mSearchViewModel.setUserName(userName);
     }

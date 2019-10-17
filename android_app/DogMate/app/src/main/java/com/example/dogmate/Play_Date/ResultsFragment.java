@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,8 @@ public class ResultsFragment extends Fragment {
 
     @BindView(R.id.rv_dogs)
     RecyclerView mDogsRecyclerView; // Displays a scrolling list of elements based on large data sets
+    @BindView(R.id.tv_no_dogs) TextView mNoDogsMessage;
+    @BindView(R.id.tv_headline) TextView mResultsHeadline;
 
     @Nullable
     @Override
@@ -50,10 +53,17 @@ public class ResultsFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        mDogsAdapter = new DogsAdapter(getActivity(), (DogsAdapter.DogsAdapterListener) getActivity());     //Init the DogsAdapter Activity
-        mDogsAdapter.setDogs(mDogsList);        // sends the dogs list to DogsAdapter
-        mDogsRecyclerView.setAdapter(mDogsAdapter);     // Llnks the defined adapter to the RecyclerView
-        mDogsRecyclerView.setHasFixedSize(true);        // Improves performance when knowing that changes in content do not change the layout size of the RecyclerView
-        mDogsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));     // The RecyclerView fills itself with views provided by a layout manager
+        if(mDogsList.size() == 0){
+            mNoDogsMessage.setVisibility(View.VISIBLE);
+            mResultsHeadline.setVisibility(View.GONE);
+        } else {
+            mNoDogsMessage.setVisibility(View.GONE);
+            mResultsHeadline.setVisibility(View.VISIBLE);
+            mDogsAdapter = new DogsAdapter(getActivity(), (DogsAdapter.DogsAdapterListener) getActivity());     //Init the DogsAdapter Activity
+            mDogsAdapter.setDogs(mDogsList);        // sends the dogs list to DogsAdapter
+            mDogsRecyclerView.setAdapter(mDogsAdapter);     // Llnks the defined adapter to the RecyclerView
+            mDogsRecyclerView.setHasFixedSize(true);        // Improves performance when knowing that changes in content do not change the layout size of the RecyclerView
+            mDogsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));     // The RecyclerView fills itself with views provided by a layout manager
+        }
     }
 }

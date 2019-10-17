@@ -52,15 +52,24 @@ public class SearchViewModel extends AndroidViewModel {
         JSONObject parameter = new JSONObject();
 
         try {
-            parameter.put("username", "x123");
+            parameter.put("username", mUserName);
             parameter.put("city", city);
-            parameter.put("neighborhood", neighborhood);
-            parameter.put("dogSize", size);
-            parameter.put("dogBreed", breed);
-            parameter.put("dogTemper", temperament);
+            if(!neighborhood.equals("")) {
+                parameter.put("neighborhood", neighborhood);
+            }
+            if(!size.equals("")) {
+                parameter.put("dogSize", size);
+            }
+            if(!breed.equals("")) {
+                parameter.put("dogBreed", breed);
+            }
+            if(!temperament.equals("")) {
+                parameter.put("dogTemper", temperament);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.POST,
