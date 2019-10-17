@@ -189,13 +189,6 @@ public class AddReview extends AppCompatActivity {
                         reviewRating.setPadding(20,0,0,0);
                         ratingBlock.addView(reviewRating);
 
-                        TextView reviewLikes = new TextView(this);
-                        int numberOfLikes = calculateNumberOfLikes(reviewObject.getJSONArray("commentList"));
-                        reviewLikes.setText(String.valueOf(numberOfLikes));
-                        reviewLikes.setPadding(30,30, 0,15);
-                        reviewLikes.setTag(reviewObject.getString("reviewId"));
-                        ratingBlock.addView(reviewLikes);
-                        reviewBlock.addView(ratingBlock);
 
                         LinearLayout.LayoutParams iconButtonParams = new LinearLayout.LayoutParams
                                 (LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -218,8 +211,13 @@ public class AddReview extends AppCompatActivity {
                         likeButton.setTag(reviewObject.getString("reviewId"));
                         ratingBlock.addView(likeButton);
 
-
-
+                        TextView reviewLikes = new TextView(this);
+                        int numberOfLikes = calculateNumberOfLikes(reviewObject.getJSONArray("commentList"));
+                        reviewLikes.setText(String.valueOf(numberOfLikes));
+                        reviewLikes.setPadding(30,30, 0,15);
+                        reviewLikes.setTag(reviewObject.getString("reviewId"));
+                        ratingBlock.addView(reviewLikes);
+                        reviewBlock.addView(ratingBlock);
                         TextView reviewComment =new TextView(this);
                         reviewComment.setText(reviewObject.getString("reviewContent"));
                         reviewComment.setPadding(30,0,10,10);
