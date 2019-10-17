@@ -2,12 +2,9 @@ package com.example.dogmate;
 
 import android.net.Uri;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.UUID;
-
-import javax.sql.StatementEvent;
 
 
 public class JsonHelperService {
@@ -73,22 +70,22 @@ public class JsonHelperService {
         return returnJson;
     }
 
-    public static JSONObject createAddLocationRequestJson(String address, String longitude,
-                                                          String latitude, String locationName,
-                                                          String locationType, String locationSubType)  {
-        JSONObject returnJson = new JSONObject();
-        try {
-            returnJson.put("locationName", locationName);
-            returnJson.put("address", address);
-            returnJson.put("latitude", latitude);
-            returnJson.put("longitude", longitude);
-            returnJson.put("locationType", locationType);
-            returnJson.put("locationSubType", locationSubType);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return returnJson;
-    }
+//    public static JSONObject createAddLocationRequestJson(String address, String longitude,
+//                                                          String latitude, String locationName,
+//                                                          String locationType, String locationSubType)  {
+//        JSONObject returnJson = new JSONObject();
+//        try {
+//            returnJson.put("locationName", locationName);
+//            returnJson.put("address", address);
+//            returnJson.put("latitude", latitude);
+//            returnJson.put("longitude", longitude);
+//            returnJson.put("locationType", locationType);
+//            returnJson.put("locationSubType", locationSubType);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return returnJson;
+//    }
 
 
     public static JSONObject createAddLocationVacationRequestJson(String address,
@@ -103,7 +100,7 @@ public class JsonHelperService {
                                                                   int vacationRating,
                                                                   int priceLevel){
 
-        JSONObject returnJson = createLocationRequestJson(address,locationName,locationSubType,
+        JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                 locationType,longitude,latitude);
         try {
             returnJson.put( "vacationAdditionalServices", vacationAdditionalServices);
@@ -128,10 +125,10 @@ public class JsonHelperService {
                                                                       boolean doesShipping,
                                                                       String shippingArea ){
 
-        JSONObject returnJson = createLocationRequestJson(address,locationName,locationSubType,
+        JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                 locationType,longitude,latitude);
         try {
-            returnJson.put( "shippingArea", treatment);
+            returnJson.put( "treatment", treatment);
             returnJson.put( "priceLevel", priceLevel);
             returnJson.put( "doesShipping", doesShipping);
             returnJson.put( "shippingArea", shippingArea);
@@ -151,10 +148,10 @@ public class JsonHelperService {
                                                                      boolean openAllDay,
                                                                      int priceLevel ){
 
-        JSONObject returnJson = createLocationRequestJson(address,locationName,locationSubType,
+        JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                 locationType,longitude,latitude);
         try {
-            returnJson.put( "shippingArea", treatment);
+            returnJson.put( "treatment", treatment);
             returnJson.put( "openAllDay", openAllDay);
             returnJson.put( "priceLevel", priceLevel);
         } catch (JSONException e) {
@@ -195,7 +192,7 @@ public class JsonHelperService {
                                                                 int cleanLevel, String gardenSpace,
                                                                 String gardenType){
 
-        JSONObject returnJson = createLocationRequestJson(address,locationName,locationSubType,
+        JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                 locationType,longitude,latitude);
         try {
             returnJson.put( "busyLevel", busyLevel);
@@ -215,9 +212,9 @@ public class JsonHelperService {
                                                                 String locationType,
                                                                 boolean availableWater,
                                                                 boolean releaseDogIsAllowed,
-                                                                String shadowLevel){
+                                                                int shadowLevel){
 
-        JSONObject returnJson = createLocationRequestJson(address,locationName,locationSubType,
+        JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                                                             locationType,longitude,latitude);
         try {
             returnJson.put( "releaseDogIsAllowed", releaseDogIsAllowed);
@@ -238,7 +235,7 @@ public class JsonHelperService {
                                                           boolean shadowPlace,
                                                           boolean sittingInsideAllowed){
 
-        JSONObject returnJson = createLocationRequestJson(address, locationName, locationSubType,
+        JSONObject returnJson = createAddLocationRequestJson(address, locationName, locationSubType,
                                                                 locationType, longitude, latitude);
         try {
             returnJson.put( "shadowLevel", shadowLevel);
@@ -251,9 +248,9 @@ public class JsonHelperService {
         return returnJson;
     }
 
-    private static JSONObject createLocationRequestJson(String address,  String locationName,
-                                                       String locationSubType, String locationType,
-                                                       String longitude,String latitude){
+    public static JSONObject createAddLocationRequestJson(String address, String locationName,
+                                                          String locationSubType, String locationType,
+                                                          String longitude, String latitude){
         JSONObject returnJson = new JSONObject();
         try {
             returnJson.put( "locationType", locationType);

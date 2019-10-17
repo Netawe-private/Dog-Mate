@@ -9,7 +9,7 @@
     <string name="location_categories">Choose Location Category</string>
     <string name="location_subcat">Choose Location Sub-Category</string>
     <string name="isInsideSitting">Is sitting allowed inside?</string>
-    <string name="isShadow">Shadow level</string>
+    <string name="isShadow">Is shadowed</string>
     <string name="shadowAmount">Shadow level</string>
     <string name="releaseDog">Can release dog</string>
     <string name="water">Are there water resources?</string>
