@@ -21,7 +21,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dogmate.Play_Date.SelectProfileCreationOrSearch" />
         </activity>
-	    <activity android:name=".Play_Date.DogProfileApproved"></activity>
+	    <activity android:name=".Play_Date.DogProfileApproved">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dogmate.Play_Date.SelectProfileCreationOrSearch" />
+        </activity>
         <activity android:name=".Play_Date.AddNewDog" >
 
             <meta-data
@@ -45,7 +49,7 @@
         <activity android:name=".Add_Review.AddReview">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.dogmate.Show_Location.ShowLocations" />
+                android:value="com.example.dogmate.Scan_Location.LocationDetails" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

@@ -148,11 +148,11 @@ public class AddNewDog extends AppCompatActivity implements View.OnClickListener
             return false;
         }
 
-//        else if (isEmptyImageView(mSelectedImage)) {
-//            Toast t = Toast.makeText(this, "Please enter your dog's image", Toast.LENGTH_SHORT);
-//            t.show();
-//            return false;
-//        }
+        else if (isEmptyImageView(mSelectedImage)) {
+            Toast t = Toast.makeText(this, "Please enter your dog's image", Toast.LENGTH_SHORT);
+            t.show();
+            return false;
+        }
 
         else if (isSpinnerSelected(mCities)) {
             Toast t = Toast.makeText(this, "Please select your city", Toast.LENGTH_SHORT);

@@ -36,8 +36,7 @@ public class SearchActivity extends AppCompatActivity implements
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        // Enable the Up button
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         if(savedInstanceState == null) {            // If no state was saved, set Search Fragment
             setSearchFragment();

@@ -6,9 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +25,11 @@ import com.example.dogmate.IResult;
 import com.example.dogmate.JsonHelperService;
 import com.example.dogmate.R;
 import com.example.dogmate.VolleyService;
-import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import net.glxn.qrgen.android.QRCode;
+
 import org.json.JSONObject;
 import static com.example.dogmate.Constants.CREATE_LOCATION_PATH;
 import static com.example.dogmate.R.id.autocomplete_fragment;
@@ -237,7 +233,7 @@ public class AddLocation  extends AppCompatActivity {
                     }
                     break;
                 case "Nature":
-                    String shadowLevelNature = String.valueOf(natureFrag.getShadowLevelRatingNatureRatingBar());
+                    int shadowLevelNature = (int) natureFrag.getShadowLevelRatingNatureRatingBar();
                     boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();
                     boolean waterResource = natureFrag.getAvailableWaterCheckBox();
                     requestJson = JsonHelperService.createAddLocationNatureRequestJson
@@ -301,14 +297,13 @@ public class AddLocation  extends AppCompatActivity {
                                     category, additionalServicesCamping, dogFoogAround, nextTobeachCamping, 0, priceLevelCamping);
                     break;
                 case "Pension":
-                    requestJson = JsonHelperService.createAddLocationRequestJson(address, lng, lat, name, subCategory,
-                            category);
+                    requestJson = JsonHelperService.createAddLocationRequestJson(address,name,
+                                                                    subCategory, category, lng, lat);
                     break;
             }
 
             mVolleyService.postDataStringResponseVolley("ADD_LOCATION_REQUEST",
-                    CREATE_LOCATION_PATH,
-                    requestJson, credentials);
+                    CREATE_LOCATION_PATH, requestJson, credentials);
         }
     }
 

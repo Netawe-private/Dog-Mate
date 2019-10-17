@@ -23,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textSize="16sp"
-        android:text="@string/isShadow" />
+        android:text="@string/shadowAmount"
+        android:textSize="16sp" />
 
     <RatingBar
         android:id="@+id/shadowLevelRatingNature"

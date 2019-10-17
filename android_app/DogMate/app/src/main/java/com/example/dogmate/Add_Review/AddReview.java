@@ -80,8 +80,7 @@ public class AddReview extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        // Enable the Up button
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         initVolleyCallback();
         mVolleyService = new VolleyService(mResultCallback,this);
