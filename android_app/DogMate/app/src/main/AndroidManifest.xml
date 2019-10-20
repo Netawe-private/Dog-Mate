@@ -46,7 +46,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dogmate.Show_Location.ShowLocations" />
         </activity>
-        <activity android:name=".Add_Review.AddReview">
+        <activity
+            android:name=".Add_Review.AddReview"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dogmate.Scan_Location.LocationDetails" />
@@ -61,14 +63,18 @@
         -->
         <activity android:name=".Login.RegistrationActivity" />
 	
-        <activity android:name=".Login.LoginActivity">
+        <activity
+            android:name=".Login.LoginActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Add_Location.AddLocation">
+        <activity
+            android:name=".Add_Location.AddLocation"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dogmate.Show_Location.ShowLocations" />

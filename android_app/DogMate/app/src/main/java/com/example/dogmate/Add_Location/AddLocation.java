@@ -222,7 +222,7 @@ public class AddLocation  extends AppCompatActivity {
             JSONObject requestJson = null;
             switch (current.getTag()) {
                 case "Entertainment":
-                    int shadowLevelEnt = (int) entertainmentFrag.getDegreeOfShadowRatingEnt();
+                    float shadowLevelEnt = entertainmentFrag.getDegreeOfShadowRatingEnt();
                     boolean sittingInside = entertainmentFrag.getSittingInsideCheck();
                     boolean shadowPlace = entertainmentFrag.getHasShadowCheck();
                     if (entertainmentFrag.validateShadowField()) {
@@ -233,7 +233,7 @@ public class AddLocation  extends AppCompatActivity {
                     }
                     break;
                 case "Nature":
-                    int shadowLevelNature = (int) natureFrag.getShadowLevelRatingNatureRatingBar();
+                    float shadowLevelNature = natureFrag.getShadowLevelRatingNatureRatingBar();
                     boolean releaseDog = natureFrag.getIsReleaseDogCheckBox();
                     boolean waterResource = natureFrag.getAvailableWaterCheckBox();
                     requestJson = JsonHelperService.createAddLocationNatureRequestJson
@@ -245,17 +245,17 @@ public class AddLocation  extends AppCompatActivity {
                 case "Dog Park":
                     if (parksFrag.isValidated()) {
                         String space = parksFrag.getSpaceParkOpen();
-                        int busyLevevl = (int) parksFrag.getBusyRating();
-                        int Cleanlines = (int) parksFrag.getCleanliness();
+                        float busyLevel =  parksFrag.getBusyRating();
+                        float Cleanlines = parksFrag.getCleanliness();
                         String gardenType = parksFrag.getSurfaceTypePark();
                         requestJson = JsonHelperService.createAddLocationDogParksRequestJson
                                 (address, lng, lat, name, subCategory,
-                                        category, busyLevevl, Cleanlines, space, gardenType);
+                                        category, busyLevel, Cleanlines, space, gardenType);
                     }
                     break;
                 case "Vet":
                     boolean allDayService = serviceVetFrag.getIsTwentyFourServiceHoursVet();
-                    int priceLevel = (int) serviceVetFrag.getPriceLevel();
+                    float priceLevel = serviceVetFrag.getPriceLevel();
                     String treatmentVet = serviceVetFrag.getEditTextTreatment();
                     requestJson = JsonHelperService.createAddLocationServicesVetRequestJson
                             (address, lng, lat, name, subCategory,
@@ -267,7 +267,7 @@ public class AddLocation  extends AppCompatActivity {
                         boolean isDelivery = servicesShopFrag.getIncludeDeliveryService();
                         String deliveryAreas = servicesShopFrag.getEditTextDelAreaService();
                         String treatmentShop = servicesShopFrag.getEditTextTreatment();
-                        int priceLevelShop = (int) servicesShopFrag.getPriceLevel();
+                        float priceLevelShop = servicesShopFrag.getPriceLevel();
                         requestJson = JsonHelperService.createAddLocationServicesShopRequestJson
                                 (address, lng, lat, name, subCategory,
                                         category, treatmentShop, priceLevelShop, isDelivery, deliveryAreas);
@@ -276,25 +276,25 @@ public class AddLocation  extends AppCompatActivity {
 
                 case "Hotel":
                     if (vacationHotelFrag.validateFeilds()) {
-                        int hotalStarts = (int) vacationHotelFrag.getNumberOfHotelStarts();
-                        int priceLevelHotel = (int) vacationHotelFrag.getPriceLevel();
+                        float numberOfHotelStarts = vacationHotelFrag.getNumberOfHotelStarts();
+                        float priceLevelHotel =  vacationHotelFrag.getPriceLevel();
                         String additionalServicesHotel = vacationHotelFrag.getEditTextAddionalServices();
                         boolean nextToBeachHotel = vacationHotelFrag.getNextToBeachHotel();
                         boolean isFoodAround = vacationHotelFrag.getIsFoodAroundHotel();
                         requestJson = JsonHelperService.createAddLocationVacationRequestJson
                                 (address, lng, lat, name, subCategory,
-                                        category, additionalServicesHotel, isFoodAround, nextToBeachHotel, hotalStarts, priceLevelHotel);
+                                        category, additionalServicesHotel, isFoodAround, nextToBeachHotel, numberOfHotelStarts, priceLevelHotel);
                     }
                     break;
 
                 case "Camping":
-                    boolean nextTobeachCamping = vacationCampingFrag.getNextToBeachCamping();
-                    boolean dogFoogAround = vacationCampingFrag.getIsFoodAroundCamping();
+                    boolean nextToBeachCamping = vacationCampingFrag.getNextToBeachCamping();
+                    boolean dogFoodAround = vacationCampingFrag.getIsFoodAroundCamping();
                     String additionalServicesCamping = vacationCampingFrag.getEditTextAdditionalServices();
-                    int priceLevelCamping = (int) vacationCampingFrag.getPriceLevel();
+                    float priceLevelCamping =  vacationCampingFrag.getPriceLevel();
                     requestJson = JsonHelperService.createAddLocationVacationRequestJson
                             (address, lng, lat, name, subCategory,
-                                    category, additionalServicesCamping, dogFoogAround, nextTobeachCamping, 0, priceLevelCamping);
+                                    category, additionalServicesCamping, dogFoodAround, nextToBeachCamping, 0, priceLevelCamping);
                     break;
                 case "Pension":
                     requestJson = JsonHelperService.createAddLocationRequestJson(address,name,

@@ -114,7 +114,7 @@ public class AddReview extends AppCompatActivity {
 
     public void onAddReviewToLocation(View view){
         String reviewCommentText = reviewComment.getText().toString();
-        String reviewRatingAmount = String.valueOf(reviewRating.getRating());
+        Float reviewRatingAmount = reviewRating.getRating();
         if (validateRatingField(reviewRatingAmount)) {
             JSONObject requestJson = JsonHelperService.createAddReviewRequestJson(locationId,
                     reviewCommentText, reviewRatingAmount, username);
@@ -124,8 +124,8 @@ public class AddReview extends AppCompatActivity {
         }
     }
 
-    public boolean validateRatingField(String rating){
-        if (Float.parseFloat(rating) == 0.0){
+    public boolean validateRatingField(Float rating){
+        if (rating == 0.0){
             Toast noRatingMessage = Toast.makeText(getApplicationContext(),
                     "Please submit a rating before sending a review", Toast.LENGTH_LONG);
             noRatingMessage.show();

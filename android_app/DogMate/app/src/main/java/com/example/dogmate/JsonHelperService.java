@@ -97,8 +97,8 @@ public class JsonHelperService {
                                                                   String vacationAdditionalServices,
                                                                   boolean vacationDogFood,
                                                                   boolean vacationNextToBeach,
-                                                                  int vacationRating,
-                                                                  int priceLevel){
+                                                                  float vacationRating,
+                                                                  float priceLevel){
 
         JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                 locationType,longitude,latitude);
@@ -121,7 +121,7 @@ public class JsonHelperService {
                                                                       String locationSubType,
                                                                       String locationType,
                                                                       String treatment,
-                                                                      int priceLevel,
+                                                                      float priceLevel,
                                                                       boolean doesShipping,
                                                                       String shippingArea ){
 
@@ -146,7 +146,7 @@ public class JsonHelperService {
                                                                      String locationType,
                                                                      String treatment,
                                                                      boolean openAllDay,
-                                                                     int priceLevel ){
+                                                                     float priceLevel ){
 
         JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                 locationType,longitude,latitude);
@@ -188,8 +188,8 @@ public class JsonHelperService {
                                                                 String locationName,
                                                                 String locationSubType,
                                                                 String locationType,
-                                                                int busyLevel,
-                                                                int cleanLevel, String gardenSpace,
+                                                                float busyLevel,
+                                                                float cleanLevel, String gardenSpace,
                                                                 String gardenType){
 
         JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
@@ -212,7 +212,7 @@ public class JsonHelperService {
                                                                 String locationType,
                                                                 boolean availableWater,
                                                                 boolean releaseDogIsAllowed,
-                                                                int shadowLevel){
+                                                                float shadowLevel){
 
         JSONObject returnJson = createAddLocationRequestJson(address,locationName,locationSubType,
                                                             locationType,longitude,latitude);
@@ -231,7 +231,7 @@ public class JsonHelperService {
                                                           String locationSubType,
                                                           String locationType,
                                                           String longitude,
-                                                          int shadowLevel,
+                                                          float shadowLevel,
                                                           boolean shadowPlace,
                                                           boolean sittingInsideAllowed){
 
@@ -268,7 +268,7 @@ public class JsonHelperService {
         return returnJson;
     }
 
-    public static JSONObject createAddReviewRequestJson(String locationId, String reviewContent, String reviewRank, String username){
+    public static JSONObject createAddReviewRequestJson(String locationId, String reviewContent, Float reviewRank, String username){
         JSONObject returnJson = new JSONObject();
         try {
             returnJson.put("locationId", locationId);
