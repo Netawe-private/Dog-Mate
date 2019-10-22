@@ -38,7 +38,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     String userName;
     String email;
     String password;
-    int numberOfDogs;
+    String numberOfDogs;
     EditText lastNameEditText;
     EditText userNameEditText;
     EditText emailAddressEditText;
@@ -155,12 +155,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         firstName = firstNameEditText.getText().toString();
         lastName = lastNameEditText.getText().toString();
         password = passwordEditText.getText().toString();
-        numberOfDogs = Integer.valueOf(numberOfDogsEditText.getText().toString());
+        numberOfDogs = numberOfDogsEditText.getText().toString();
 
         boolean isValid = checkDataEntered(firstName, lastName, userName, email, password, numberOfDogs);
         if (isValid){
+            int numberOfDogsInt = Integer.parseInt(numberOfDogs);
             JSONObject requestJson = JsonHelperService.createRegistrationRequest(firstName, lastName,
-                                            userName, password, email, numberOfDogs, selectedImage);
+                                            userName, password, email, numberOfDogsInt, selectedImage);
             mVolleyService.postDataStringResponseVolleyWithoutAuth("POST_REGISTRATION_REQUEST",REGISTRATION_PATH,requestJson,null);
         }
 
@@ -203,16 +204,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         return true;
     }
 
-    boolean isNumOfDogsValid(int dogs) {
-        String numberOfDogs = String.valueOf(dogs);
-        if (TextUtils.isEmpty(numberOfDogs))
+    boolean isNumOfDogsValid(String dogs) {
+        if (TextUtils.isEmpty(dogs))
             return false;
-        else if (!TextUtils.isDigitsOnly(numberOfDogs))
+        else if (!TextUtils.isDigitsOnly(dogs))
             return false;
         return true;
     }
 
-    boolean checkDataEntered(String firstName, String lastName, String userName, String emailAddress, String password, int numberOfDogs) {
+    boolean checkDataEntered(String firstName, String lastName, String userName, String emailAddress, String password, String numberOfDogs) {
 
         if (isEmpty(firstName)) {
             Toast t = Toast.makeText(this, "Please enter your first name", Toast.LENGTH_SHORT);
@@ -233,7 +233,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
 
         else if (!isEmailValid(emailAddress)) {
-            Toast t = Toast.makeText(this, "Please enter a valid usernameEditText address", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT);
             t.show();
             return false;
         }
