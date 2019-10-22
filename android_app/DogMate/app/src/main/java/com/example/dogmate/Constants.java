@@ -11,6 +11,7 @@ public class Constants {
     public static final String REGISTRATION_PATH = "http://vmedu196.mtacloud.co.il/register";
     public static final String LOGIN_PATH = "http://vmedu196.mtacloud.co.il/login";
     public static final String ADD_DOG_PATH = "http://vmedu196.mtacloud.co.il/dogs";
+    public static final String ADD_IMAGE_PATH = "http://vmedu196.mtacloud.co.il/image";
 
 
     public static final String GET_REVIEWS_REQUEST_TYPE = "GET_REVIEWS";

@@ -175,6 +175,7 @@ public class SearchViewModel extends AndroidViewModel {
 
     private void parseSearchResults(JSONObject response) {
         try {
+            mOnSearchResultsDogList = new ArrayList<>();
             JSONArray jsonArray = response.getJSONArray("dogs");
             for(int i = 0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

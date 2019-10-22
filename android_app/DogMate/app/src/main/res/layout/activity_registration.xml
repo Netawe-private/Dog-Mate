@@ -48,19 +48,19 @@
         android:id="@+id/im_dogphoto"
         android:layout_width="124dp"
         android:layout_height="111dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginRight="28dp"
         android:layout_marginBottom="16dp"
+        android:src="@drawable/uploadimage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0"
-        android:src="@drawable/uploadimage" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/loginUsername"
-        android:layout_width="217dp"
+        android:layout_width="195dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -78,7 +78,7 @@
 
     <EditText
         android:id="@+id/lastName"
-        android:layout_width="214dp"
+        android:layout_width="195dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -96,7 +96,7 @@
 
     <EditText
         android:id="@+id/userName"
-        android:layout_width="213dp"
+        android:layout_width="195dp"
         android:layout_height="42dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -114,7 +114,7 @@
 
     <EditText
         android:id="@+id/emailAddress"
-        android:layout_width="368dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -132,7 +132,7 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="368dp"
+        android:layout_width="345dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -150,7 +150,7 @@
 
     <EditText
         android:id="@+id/numberOfDogs"
-        android:layout_width="368dp"
+        android:layout_width="345dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -192,10 +192,10 @@
         android:layout_height="60dp"
         android:layout_marginStart="28dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="7dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="264dp"
         android:gravity="left"
         android:text="Upload your photo, or your dog's photo if you wish :)"
         android:textColor="@color/quantum_googred400"
@@ -204,9 +204,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/userName"
-        app:layout_constraintTop_toBottomOf="@+id/im_dogphoto"
-        app:layout_constraintVertical_bias="0.0"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/im_userPhoto"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

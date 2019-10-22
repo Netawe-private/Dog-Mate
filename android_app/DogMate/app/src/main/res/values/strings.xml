@@ -51,6 +51,8 @@
     <string name="dog_item_size">Size:</string>
     <string name="dog_item_breed">Breed:</string>
     <string name="dog_item_temperament">Temperament:</string>
+    <string name="permission_necessary" />
+    <string name="storage_permission_is_encessary_to_wrote_event" />
 
     <string-array name="categories_array">
         <item>Nature</item>

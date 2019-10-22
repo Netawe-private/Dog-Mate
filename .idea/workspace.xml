@@ -24,8 +24,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>

@@ -22,7 +22,7 @@
 
     <EditText
         android:id="@+id/et_neighborhood"
-        android:layout_width="0dp"
+        android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -31,12 +31,14 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="@+id/sp_cities"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sp_cities"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.476" />
 
     <EditText
         android:id="@+id/et_dogname"
-        android:layout_width="229dp"
+        android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
@@ -63,14 +65,14 @@
 
     <Spinner
         android:id="@+id/sp_cities"
-        android:layout_width="232dp"
+        android:layout_width="215dp"
         android:layout_height="34dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:entries="@array/search_cities"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="@+id/im_dogphoto"
-        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintHorizontal_bias="0.186"
         app:layout_constraintStart_toStartOf="@+id/im_dogphoto"
         app:layout_constraintTop_toTopOf="@+id/textView4"
         app:layout_constraintVertical_bias="0.0" />
