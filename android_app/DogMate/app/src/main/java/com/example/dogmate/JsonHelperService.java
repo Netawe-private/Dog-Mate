@@ -160,7 +160,7 @@ public class JsonHelperService {
         return returnJson;
     }
 
-    public static JSONObject createRegistrationRequest(String firstName, String lastName, String userName, String password, String emailAddress, int numberOfDogs, Uri selectedImage){
+    public static JSONObject createRegistrationRequest(String firstName, String lastName, String userName, String password, String emailAddress, String numberOfDogs, String relativeImageUrl){
         JSONObject returnJson = new JSONObject();
 
         try {
@@ -170,8 +170,8 @@ public class JsonHelperService {
             returnJson.put("password", password);
             returnJson.put("email", emailAddress);
             returnJson.put("numOfDogs", numberOfDogs);
-            if (selectedImage != null){                         // add image only if it was uploaded
-                returnJson.put("imageUrl", selectedImage);
+            if (relativeImageUrl != null){                         // add image only if it was uploaded
+                returnJson.put("imageUrl", relativeImageUrl);
             } else {
                 returnJson.put("imageUrl", "");
             }
